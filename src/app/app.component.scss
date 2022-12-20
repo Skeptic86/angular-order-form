@@ -1,0 +1,19 @@
+
+.form {
+    width: 400px;
+    height: 400px;
+    margin-top: 200px;
+    background-color: #dcdcdc;
+    border: 2px thin #f0f8ff;
+    border-radius: 8px;
+}
+
+
+.container {
+    max-width: 1200px;
+    margin: 0 360px;
+    padding: 0 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
