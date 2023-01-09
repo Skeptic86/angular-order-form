@@ -1,16 +1,17 @@
 <form class="example-form">
-    <mat-form-field class="example-fill" appearance="fill">
+    <mat-icon class="icon" [ngStyle]="{color:iconColor}">
+      radio_button_checked
+    </mat-icon>
+    <mat-form-field class="example-full-width" appearance="fill">
       <mat-label>{{placeholderText}}</mat-label>
-      <input type="text"
-             placeholder="Адрес"
-             aria-label="Number"
-             matInput
-             [formControl]="myControl"
-             [matAutocomplete]="auto">
+      <input type="text" placeholder="Адрес" aria-label="Number" matInput [formControl]="myControl"[matAutocomplete]="auto" [(ngModel)]="value"> 
       <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
           {{option}}
         </mat-option>
       </mat-autocomplete>
+      <button type="button" *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value = ''">
+        <mat-icon>close</mat-icon>
+      </button>    
     </mat-form-field>
 </form>

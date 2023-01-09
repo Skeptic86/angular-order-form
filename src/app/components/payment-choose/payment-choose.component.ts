@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import { Input } from '@angular/core';
 
 @Component({
   selector: 'app-payment-choose',
@@ -7,6 +8,6 @@ import {Component} from '@angular/core';
 })
 export class PaymentChooseComponent {
 
-  selected = "account_balance_wallet";
+  selected = "attach_money";
 
 }
