@@ -20,6 +20,10 @@ export class TariffComponent {
     this.icon = this.arr[0].icon
   }
 
+  changeIcon(iconName:string) {
+    this.icon = iconName
+  }
+
   constructor(private tariffService:TariffService) {
 
   }

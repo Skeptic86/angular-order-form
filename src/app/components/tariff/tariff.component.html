@@ -9,19 +9,12 @@
     </button>
 </mat-menu>
 <ng-container *ngFor="let obj of arr;">
-    <mat-menu #cars="matMenu" *ngFor="let tariff of obj.types">
+    <mat-menu #[obj.value]="matMenu" *ngFor="let tariff of obj.types">
         <button mat-menu-item>{{tariff}}</button>
     </mat-menu>
 </ng-container> -->
 
-<mat-menu #cars="matMenu">
-    <button mat-menu-item>Эконом</button>
-    <button mat-menu-item>Комфорт</button>
-    <button mat-menu-item>Бизнес</button>
-    <button mat-menu-item>Компактвэн, 6 мест</button>
-    <button mat-menu-item>Минивэн, 7 мест</button>
-    <button mat-menu-item>Почасовая оплата</button>
-</mat-menu>
+
 
 <mat-menu #tariffs="matMenu">
     <button mat-menu-item [matMenuTriggerFor]="cars">
@@ -47,35 +40,35 @@
 </mat-menu>
 
 <mat-menu #cars="matMenu">
-    <button mat-menu-item>Эконом</button>
-    <button mat-menu-item>Комфорт</button>
-    <button mat-menu-item>Бизнес</button>
-    <button mat-menu-item>Компактвэн, 6 мест</button>
-    <button mat-menu-item>Минивэн, 7 мест</button>
-    <button mat-menu-item>Почасовая оплата</button>
+    <button mat-menu-item (click)="changeIcon('directions_car')">Эконом</button>
+    <button mat-menu-item  (click)="changeIcon('directions_car')">Комфорт</button>
+    <button mat-menu-item (click)="changeIcon('directions_car')">Бизнес</button>
+    <button mat-menu-item (click)="changeIcon('directions_car')">Компактвэн, 6 мест</button>
+    <button mat-menu-item (click)="changeIcon('directions_car')">Минивэн, 7 мест</button>
+    <button mat-menu-item (click)="changeIcon('directions_car')">Почасовая оплата</button>
 </mat-menu>
 
 <mat-menu #shipping="matMenu">
-    <button mat-menu-item>Курьер</button>
-    <button mat-menu-item>Купим и привезем</button>
+    <button mat-menu-item (click)="changeIcon('shopping_bag')">Курьер</button>
+    <button mat-menu-item (click)="changeIcon('shopping_bag')">Купим и привезем</button>
 </mat-menu>
 
 <mat-menu #heavy_cars="matMenu">
-    <button mat-menu-item>Маленький кузов</button>
-    <button mat-menu-item>Стандартный кузов</button>
-    <button mat-menu-item>Стандартный кузов + 1 грузчик</button>
-    <button mat-menu-item>Стандартный кузов + 2 грузчика</button>
-    <button mat-menu-item>Удлиненный кузов</button>
+    <button mat-menu-item (click)="changeIcon('local_shipping')">Маленький кузов</button>
+    <button mat-menu-item (click)="changeIcon('local_shipping')">Стандартный кузов</button>
+    <button mat-menu-item (click)="changeIcon('local_shipping')">Стандартный кузов + 1 грузчик</button>
+    <button mat-menu-item (click)="changeIcon('local_shipping')">Стандартный кузов + 2 грузчика</button>
+    <button mat-menu-item (click)="changeIcon('local_shipping')">Удлиненный кузов</button>
 </mat-menu>
 
 <mat-menu #buses="matMenu">
-    <button mat-menu-item>Автобус до 13 мест</button>
-    <button mat-menu-item>Автобус до 20 мест</button>
+    <button mat-menu-item (click)="changeIcon('airport_shuttle')">Автобус до 13 мест</button>
+    <button mat-menu-item (click)="changeIcon('airport_shuttle')">Автобус до 20 мест</button>
 </mat-menu>
 
 <mat-menu #service="matMenu">
-    <button mat-menu-item>Грузчик</button>
-    <button mat-menu-item>Личный водитель</button>
-    <button mat-menu-item>Буксировка</button>
-    <button mat-menu-item>Запуск двигателя</button>
+    <button mat-menu-item (click)="changeIcon('face')">Грузчик</button>
+    <button mat-menu-item (click)="changeIcon('face')">Личный водитель</button>
+    <button mat-menu-item (click)="changeIcon('face')">Буксировка</button>
+    <button mat-menu-item (click)="changeIcon('face')">Запуск двигателя</button>
 </mat-menu>
