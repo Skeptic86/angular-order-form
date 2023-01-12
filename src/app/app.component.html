@@ -1,11 +1,13 @@
-<div class="container">
-  <div class="form mat-typography">
-    <app-autocomplete class="mat-typography" placeholderText="Откуда?"></app-autocomplete>
-    <app-autocomplete class="mat-typography" iconColor="#ffdb4d" placeholderText="Куда?"></app-autocomplete>
-    <div class="buttons">
-      <app-payment-choose [index_]="0"></app-payment-choose>
-      <app-order-button></app-order-button>
-      <app-payment-choose [index_]="1"></app-payment-choose>
+<div class="picture">
+  <div  class="container">
+    <div class="form mat-typography">
+      <app-autocomplete class="mat-typography" placeholderText="Откуда?"></app-autocomplete>
+      <app-autocomplete class="mat-typography" iconColor="#ffdb4d" placeholderText="Куда?"></app-autocomplete>
+      <div class="buttons">
+        <app-payment-choose [index_]="0"></app-payment-choose>
+        <app-order-button></app-order-button>
+        <app-payment-choose [index_]="1"></app-payment-choose>
+      </div>
     </div>
   </div>
 </div>
