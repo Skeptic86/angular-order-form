@@ -1,12 +1,11 @@
-<mat-form-field appearance="outline" class="form_field">
-    <mat-select disableRipple [(value)]="selected">
-        <mat-select-trigger>
-            <mat-icon>{{selected}}</mat-icon>
-        </mat-select-trigger>
-        <ng-container  *ngFor="let value_ of arr[index_]" >
-            <mat-option [value]="value_.value">
-                <mat-icon> {{value_.value}} </mat-icon>
-            </mat-option>
-        </ng-container>
-    </mat-select>
-</mat-form-field>
+<button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>{{icon}}</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <ng-container *ngFor="let value of arr[index_]">
+        <button mat-menu-item (click)="buttonClick(value.value)">
+            <mat-icon>{{value.value}}</mat-icon>
+            <span>{{value.str}}</span>
+        </button>
+    </ng-container>
+</mat-menu>

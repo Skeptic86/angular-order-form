@@ -13,11 +13,16 @@ export class PaymentChooseComponent {
   payment = this.paymentChooseService.getPayment()
   tarrif = this.paymentChooseService.getTarrif()
   arr = [this.payment, this.tarrif]
-  
+  icon = ''
   selected = ''
+
+  buttonClick(iconName: string) {
+    this.icon = iconName;
+  }
 
   ngOnInit() {
     this.selected = this.arr[this.index_][0].value;
+    this.icon = this.arr[this.index_][0].value;
   }
 
   constructor(private paymentChooseService: PaymentChooseService ) {}

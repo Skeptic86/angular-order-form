@@ -7,10 +7,14 @@
 .form {
     width: 400px;
     height: 400px;
-    margin-top: 200px;
+    margin-top: 280px;
     background-color: #fff;
     border: 2px thin #f0f8ff;
     border-radius: 8px;
+}
+
+.inputs {
+    margin-top: 40px;
 }
 
 
@@ -28,5 +32,5 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 90px 0 20px 20px;
+    margin: 80px 0 20px 20px;
 }

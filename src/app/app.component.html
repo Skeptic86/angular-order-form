@@ -1,8 +1,10 @@
 <div class="picture">
   <div  class="container">
     <div class="form mat-typography">
-      <app-autocomplete class="mat-typography" placeholderText="Откуда?"></app-autocomplete>
-      <app-autocomplete class="mat-typography" iconColor="#ffdb4d" placeholderText="Куда?"></app-autocomplete>
+      <div class="inputs">
+        <app-autocomplete class="mat-typography" placeholderText="Откуда?"></app-autocomplete>
+        <app-autocomplete class="mat-typography" iconColor="#ffdb4d" placeholderText="Куда?"></app-autocomplete>
+      </div>
       <div class="buttons">
         <app-payment-choose [index_]="0"></app-payment-choose>
         <app-order-button></app-order-button>
