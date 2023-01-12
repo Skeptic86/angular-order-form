@@ -2,13 +2,19 @@
   <div  class="container">
     <div class="form mat-typography">
       <div class="inputs">
-        <app-autocomplete class="mat-typography" placeholderText="Откуда?"></app-autocomplete>
-        <app-autocomplete class="mat-typography" iconColor="#ffdb4d" placeholderText="Куда?"></app-autocomplete>
+        <div class="from">
+          <img class="from_img" src="../assets/from.svg" alt="from">
+          <app-autocomplete class="mat-typography" placeholderText="Откуда?"></app-autocomplete>
+        </div>
+        <div class="to">
+          <img class="to_img" src="../assets/to.svg" alt="to">
+          <app-autocomplete class="mat-typography" placeholderText="Куда?"></app-autocomplete>
+        </div>
       </div>
       <div class="buttons">
         <app-payment-choose [index_]="0"></app-payment-choose>
         <app-order-button></app-order-button>
-        <app-payment-choose [index_]="1"></app-payment-choose>
+        <app-tariff></app-tariff>
       </div>
     </div>
   </div>

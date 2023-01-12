@@ -12,7 +12,6 @@ import { Input } from '@angular/core';
 })
 export class AutocompleteComponent implements OnInit {
   @Input() placeholderText?: string;
-  @Input() iconColor?: string;
   myControl = new FormControl('');
   options: string[] = []
   filteredOptions!: Observable<string[]>;

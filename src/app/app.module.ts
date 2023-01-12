@@ -15,6 +15,7 @@ import { PaymentChooseComponent } from './components/payment-choose/payment-choo
 import {MatSelectModule} from '@angular/material/select';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
+import { TariffComponent } from './components/tariff/tariff.component';
 
 
 
@@ -26,7 +27,8 @@ import {MatMenuModule} from '@angular/material/menu';
     AppComponent,
     AutocompleteComponent,
     OrderButtonComponent,
-    PaymentChooseComponent
+    PaymentChooseComponent,
+    TariffComponent
   ],
   imports: [
     BrowserModule,

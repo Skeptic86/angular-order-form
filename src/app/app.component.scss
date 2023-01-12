@@ -5,8 +5,8 @@
 }
 
 .form {
-    width: 400px;
-    height: 400px;
+    width: 350px;
+    height: 300px;
     margin-top: 280px;
     background-color: #fff;
     border: 2px thin #f0f8ff;
@@ -28,9 +28,24 @@
 }
 
 .buttons {
-    width: 360px;
+    width: 300px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 80px 0 20px 20px;
+    margin: 1px 0 20px 20px;
 }
+
+.to, .from {
+    display: flex;
+    align-items: center;
+}
+
+.from_img, .to_img{
+    width:20px ;
+    margin:0 0 10px 15px;
+}
+
+// .from .to {
+//     display: flex;
+//     justify-content: space-between;
+// }

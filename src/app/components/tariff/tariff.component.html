@@ -1,0 +1,81 @@
+<button mat-icon-button [matMenuTriggerFor]="tariffs">
+    <mat-icon>{{icon}}</mat-icon>
+</button>
+
+<!-- <mat-menu #tariffs="matMenu" *ngFor="let obj of arr;">
+    <button mat-menu-item [matMenuTriggerFor]="obj.value">
+        <mat-icon>{{obj.icon}}</mat-icon>
+        <span>{{obj.title}}</span>
+    </button>
+</mat-menu>
+<ng-container *ngFor="let obj of arr;">
+    <mat-menu #cars="matMenu" *ngFor="let tariff of obj.types">
+        <button mat-menu-item>{{tariff}}</button>
+    </mat-menu>
+</ng-container> -->
+
+<mat-menu #cars="matMenu">
+    <button mat-menu-item>Эконом</button>
+    <button mat-menu-item>Комфорт</button>
+    <button mat-menu-item>Бизнес</button>
+    <button mat-menu-item>Компактвэн, 6 мест</button>
+    <button mat-menu-item>Минивэн, 7 мест</button>
+    <button mat-menu-item>Почасовая оплата</button>
+</mat-menu>
+
+<mat-menu #tariffs="matMenu">
+    <button mat-menu-item [matMenuTriggerFor]="cars">
+        <mat-icon>directions_car</mat-icon>
+        <span>Легковые</span>
+    </button>
+    <button mat-menu-item [matMenuTriggerFor]="shipping">
+        <mat-icon>shopping_bag</mat-icon>
+        <span>Доставка</span>
+    </button>
+    <button mat-menu-item [matMenuTriggerFor]="heavy_cars">
+        <mat-icon>local_shipping</mat-icon>
+        <span>Грузовые</span>
+    </button>
+    <button mat-menu-item [matMenuTriggerFor]="buses">
+        <mat-icon>airport_shuttle</mat-icon>
+        <span>Автобусы</span>
+    </button>
+    <button mat-menu-item [matMenuTriggerFor]="service">
+        <mat-icon>face</mat-icon>
+        <span>Услуги</span>
+    </button>
+</mat-menu>
+
+<mat-menu #cars="matMenu">
+    <button mat-menu-item>Эконом</button>
+    <button mat-menu-item>Комфорт</button>
+    <button mat-menu-item>Бизнес</button>
+    <button mat-menu-item>Компактвэн, 6 мест</button>
+    <button mat-menu-item>Минивэн, 7 мест</button>
+    <button mat-menu-item>Почасовая оплата</button>
+</mat-menu>
+
+<mat-menu #shipping="matMenu">
+    <button mat-menu-item>Курьер</button>
+    <button mat-menu-item>Купим и привезем</button>
+</mat-menu>
+
+<mat-menu #heavy_cars="matMenu">
+    <button mat-menu-item>Маленький кузов</button>
+    <button mat-menu-item>Стандартный кузов</button>
+    <button mat-menu-item>Стандартный кузов + 1 грузчик</button>
+    <button mat-menu-item>Стандартный кузов + 2 грузчика</button>
+    <button mat-menu-item>Удлиненный кузов</button>
+</mat-menu>
+
+<mat-menu #buses="matMenu">
+    <button mat-menu-item>Автобус до 13 мест</button>
+    <button mat-menu-item>Автобус до 20 мест</button>
+</mat-menu>
+
+<mat-menu #service="matMenu">
+    <button mat-menu-item>Грузчик</button>
+    <button mat-menu-item>Личный водитель</button>
+    <button mat-menu-item>Буксировка</button>
+    <button mat-menu-item>Запуск двигателя</button>
+</mat-menu>
