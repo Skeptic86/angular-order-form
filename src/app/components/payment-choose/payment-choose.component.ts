@@ -1,3 +1,4 @@
+import { PaymentChooseService } from './../../services/payment-choose/payment-choose.service';
 import {Component} from '@angular/core';
 import { Input } from '@angular/core';
 
@@ -7,7 +8,18 @@ import { Input } from '@angular/core';
   styleUrls: ['./payment-choose.component.scss']
 })
 export class PaymentChooseComponent {
+  @Input() index_!:number 
 
-  selected = "attach_money";
+  payment = this.paymentChooseService.getPayment()
+  tarrif = this.paymentChooseService.getTarrif()
+  arr = [this.payment, this.tarrif]
+  
+  selected = ''
+
+  ngOnInit() {
+    this.selected = this.arr[this.index_][0].value;
+  }
+
+  constructor(private paymentChooseService: PaymentChooseService ) {}
 
 }
