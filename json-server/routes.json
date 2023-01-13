@@ -1,0 +1,19 @@
+{
+  "/auth/info": "/authInfo",
+  "/addresses/coordinates-info\\?*": "/addressesCoordinatesInfo?",
+  "/addresses/meet-points\\?*": "/addressesMeetPoints?",
+  "/addresses\\?*": "/addresses?",
+  "/orders/tariffs-calc\\?*": "/ordersTariffsCalc?",
+  "/orders/calc\\?*": "/ordersCalc?",
+  "/defaults/info*": "/defaultsInfo",
+  "/routes/get\\?*": "/routesGet",
+  "/auth/send-code\\?*": "/sendCode",
+  "/auth/confirm-code\\?*": "/confirmCode",
+  "/auth/info\\?*": "/confirmCode",
+  "/orders/cancel-types\\?*": "/ordersCancelTypes?",
+  "/orders/cancel\\?*": "/ordersCancel?",
+  "/orders/send-receipt\\?*": "/ordersSendReceipt?",
+  "/orders/create\\?*": "/ordersCreate?",
+  "/orders\\?*": "/orders?",
+  "/order/*\\?*": "/order?"
+}

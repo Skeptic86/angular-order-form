@@ -1,5 +1,5 @@
 import { PaymentChooseService } from './../../services/payment-choose/payment-choose.service';
-import {Component} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Input } from '@angular/core';
 
 @Component({
@@ -7,7 +7,7 @@ import { Input } from '@angular/core';
   templateUrl: './payment-choose.component.html',
   styleUrls: ['./payment-choose.component.scss']
 })
-export class PaymentChooseComponent {
+export class PaymentChooseComponent implements OnInit{
   @Input() index_!:number 
 
   payment = this.paymentChooseService.getPayment()
