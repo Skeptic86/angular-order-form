@@ -1,4 +1,4 @@
-import { ITariffDefalut } from '../../interfaces/tariff-default';
+import { ITariffDefalut } from '../../interfaces/tariff-default.interface';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { catchError, tap, Observable, of, throwError } from 'rxjs';

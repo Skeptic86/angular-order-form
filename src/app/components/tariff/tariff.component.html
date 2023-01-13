@@ -2,17 +2,17 @@
     <mat-icon>{{icon}}</mat-icon>
 </button>
 
-<!-- codeIcons[tariffGroup.code] -->
+
 
 <mat-menu #tariffGroupsMenu="matMenu" >
     <ng-container *ngIf="data?.info">
-        <ng-container *ngFor="let tariffGroup of data.info.tarrifGroups">
+        <ng-container *ngFor="let tariffGroup of data.info.tariffGroups">
             <button mat-menu-item [matMenuTriggerFor]="tariffsMenu">
-                <mat-icon>{{ 'directions_car' }}</mat-icon>
+                <mat-icon>{{ tariffGroup.code | tariffCodeToIconName}}</mat-icon>
                 <span>{{tariffGroup.name}}</span>
             </button>
             <mat-menu #tariffsMenu="matMenu">
-                <button (click)="changeIcon('directions_car')" mat-menu-item *ngFor="let tariff of tariffGroup.tarrifs" >{{tariff.name}}</button>
+                <button (click)="changeIcon(tariffGroup.code)" mat-menu-item *ngFor="let tariff of tariffGroup.tariffs" >{{tariff.name}}</button>
             </mat-menu>
         </ng-container>
     </ng-container>

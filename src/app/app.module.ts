@@ -17,6 +17,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 import { TariffComponent } from './components/tariff/tariff.component';
+import { tariffCodeToIconNamePipe } from './pipes/tariffCodeToIconName.pipe';
 
 
 
@@ -29,7 +30,8 @@ import { TariffComponent } from './components/tariff/tariff.component';
     AutocompleteComponent,
     OrderButtonComponent,
     PaymentChooseComponent,
-    TariffComponent
+    TariffComponent,
+    tariffCodeToIconNamePipe
   ],
   imports: [
     BrowserModule,
