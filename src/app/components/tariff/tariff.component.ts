@@ -23,25 +23,25 @@ export class TariffComponent implements OnInit{
     SERVICE: 'face'
   }
 
-  getTariffGroups() {
-    return this.tariffService.getTariffGroups()
-  }
+  // getTariffGroups() {
+  //   return this.tariffService.getTariffGroups()
+  // }
 
  
-  getTariffGroupsHttp() {
-    return this.tariffService.getTariffGroupsHttp()
+  getTariffGroups() {
+    return this.tariffService.getTariffGroups()
     .subscribe((data: ITariffDefalut) => {
       this.data = {
         base: data.base,
         address: data.address,
         info: data.info
       }
+      this.changeIcon(this.data.info.tariffGroups[0].code)
     })
   }
 
   ngOnInit() {
-    this.icon = this.tariffGroups[0].icon
-    this.getTariffGroupsHttp()
+    this.getTariffGroups()
   }
 
   changeIcon(iconName:string) {

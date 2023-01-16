@@ -2,10 +2,14 @@
     <mat-icon>{{icon}}</mat-icon>
   </button>
   <mat-menu #menu="matMenu">
-    <ng-container *ngFor="let value of arr[index_]">
-        <button mat-menu-item (click)="buttonClick(value.value)">
-            <mat-icon>{{value.value}}</mat-icon>
-            <span>{{value.str}}</span>
+    <ng-container *ngFor="let value of payment.paymentMethods">
+        <button *ngIf="!value.bankCards.length" mat-menu-item (click)="changeIcon(value.type)">
+            <mat-icon>{{value.type | tariffCodeToIconName:this.codeIcons}}</mat-icon>
+            <span>{{value.name}}</span>
+        </button>
+        <button *ngIf="value.bankCards.length" mat-menu-item (click)="changeIcon(value.type)">
+            <mat-icon>{{value.type | tariffCodeToIconName:this.codeIcons}}</mat-icon>
+            <span>{{value.bankCards | choseActiveCard}}</span>
         </button>
     </ng-container>
 </mat-menu>

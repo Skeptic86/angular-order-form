@@ -11,7 +11,7 @@ export class TariffService {
 
   private jsonURL = 'http://localhost:3000/defaults';
 
-  getTariffGroupsHttp() {
+  getTariffGroups() {
     return this.http.get<ITariffDefalut>(this.jsonURL)
     .pipe(
       catchError(this.handleError)
@@ -32,66 +32,66 @@ export class TariffService {
     return throwError(() => new Error('Something bad happened; please try again later.'));
   }
 
-  tariffGroups = [
-    {
-      value: 'cars',
-      title: 'Легковые',
-      icon: 'directions_car',
-      types: [
-        'Эконом', 
-        'Комфорт',
-        'Бизнес', 
-        'Компактвэн, 6 мест', 
-        'Минивэн, 7 мест', 
-        'Почасовая оплата'
-      ]
-    },
-    {
-      value: 'shipping',
-      title: 'Доставка',
-      icon: 'shopping_bag',
-      types: [
-        'Курьер', 
-        'Купим и привезем'
-      ]
-    },
-    {
-      value: 'heavy_cars',
-      title: 'Грузовые',
-      icon: 'local_shipping',
-      types: [
-        'Маленький кузов', 
-        'Стандартный кузов',
-        'Стандартный кузов + 1 грузчик',
-        'Стандартный кузов + 2 грузчика',
-        'Удлиненный кузов'
-      ]
-    },
-    {
-      value: 'buses',
-      title: 'Автобусы',
-      icon: 'airport_shuttle',
-      types: [
-        'Автобус до 13 мест', 
-        'Автобус до 20 мест'
-      ]
-    },
-    {
-      value: 'service',
-      title: 'Услуги',
-      icon: 'face',
-      types: [
-        'Грузчик', 
-        'Личный водитель',
-        'Буксировка',
-        'Запуск двигателя'
-      ]
-    },
-  ]
+  // tariffGroups = [
+  //   {
+  //     value: 'cars',
+  //     title: 'Легковые',
+  //     icon: 'directions_car',
+  //     types: [
+  //       'Эконом', 
+  //       'Комфорт',
+  //       'Бизнес', 
+  //       'Компактвэн, 6 мест', 
+  //       'Минивэн, 7 мест', 
+  //       'Почасовая оплата'
+  //     ]
+  //   },
+  //   {
+  //     value: 'shipping',
+  //     title: 'Доставка',
+  //     icon: 'shopping_bag',
+  //     types: [
+  //       'Курьер', 
+  //       'Купим и привезем'
+  //     ]
+  //   },
+  //   {
+  //     value: 'heavy_cars',
+  //     title: 'Грузовые',
+  //     icon: 'local_shipping',
+  //     types: [
+  //       'Маленький кузов', 
+  //       'Стандартный кузов',
+  //       'Стандартный кузов + 1 грузчик',
+  //       'Стандартный кузов + 2 грузчика',
+  //       'Удлиненный кузов'
+  //     ]
+  //   },
+  //   {
+  //     value: 'buses',
+  //     title: 'Автобусы',
+  //     icon: 'airport_shuttle',
+  //     types: [
+  //       'Автобус до 13 мест', 
+  //       'Автобус до 20 мест'
+  //     ]
+  //   },
+  //   {
+  //     value: 'service',
+  //     title: 'Услуги',
+  //     icon: 'face',
+  //     types: [
+  //       'Грузчик', 
+  //       'Личный водитель',
+  //       'Буксировка',
+  //       'Запуск двигателя'
+  //     ]
+  //   },
+  // ]
 
-  getTariffGroups() {
-    return this.tariffGroups;
-  }
+  // getTariffGroups() {
+  //   return this.tariffGroups;
+  // }
 
   constructor(private http:HttpClient) { }
 }

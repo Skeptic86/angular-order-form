@@ -17,7 +17,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 import { TariffComponent } from './components/tariff/tariff.component';
-import { tariffCodeToIconNamePipe } from './pipes/tariffCodeToIconName.pipe';
+import { tariffCodeToIconNamePipe } from './pipes/tarrif-code-to-icon-name/tariffCodeToIconName.pipe';
+import { ChoseActiveCardPipe } from './pipes/chose-active-card/chose-active-card.pipe';
 
 
 
@@ -31,7 +32,8 @@ import { tariffCodeToIconNamePipe } from './pipes/tariffCodeToIconName.pipe';
     OrderButtonComponent,
     PaymentChooseComponent,
     TariffComponent,
-    tariffCodeToIconNamePipe
+    tariffCodeToIconNamePipe,
+    ChoseActiveCardPipe
   ],
   imports: [
     BrowserModule,

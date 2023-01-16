@@ -1,4 +1,5 @@
 export interface ITariff {
     classId: number,
-    name: string
+    name: string,
+    minPriceString: string
 }

@@ -8,11 +8,11 @@
     <ng-container *ngIf="data?.info">
         <ng-container *ngFor="let tariffGroup of data.info.tariffGroups">
             <button mat-menu-item [matMenuTriggerFor]="tariffsMenu">
-                <mat-icon>{{ tariffGroup.code | tariffCodeToIconName}}</mat-icon>
+                <mat-icon>{{ tariffGroup.code | tariffCodeToIconName:this.codeIcons}}</mat-icon>
                 <span>{{tariffGroup.name}}</span>
             </button>
             <mat-menu #tariffsMenu="matMenu">
-                <button (click)="changeIcon(tariffGroup.code)" mat-menu-item *ngFor="let tariff of tariffGroup.tariffs" >{{tariff.name}}</button>
+                <button (click)="changeIcon(tariffGroup.code)" mat-menu-item *ngFor="let tariff of tariffGroup.tariffs" >{{tariff.name}} ({{tariff.minPriceString}})</button>
             </mat-menu>
         </ng-container>
     </ng-container>
