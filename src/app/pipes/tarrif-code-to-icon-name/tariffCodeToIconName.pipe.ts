@@ -1,9 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'tariffCodeToIconName'
+  name: 'TariffCodeToIconName'
 })
-export class tariffCodeToIconNamePipe implements PipeTransform {
+export class TariffCodeToIconNamePipe implements PipeTransform {
 
   // codeIcons = {
   //   CAR: 'directions_car',

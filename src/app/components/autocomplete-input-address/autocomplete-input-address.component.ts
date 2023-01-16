@@ -1,20 +1,20 @@
-import { IAddress } from './../../interfaces/address.interface';
+import { IAddress } from '../../interfaces/address.interface';
 import { CompleteService } from '../../services/complete/complete.service';
 import {Component, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
-import {debounce, debounceTime, map, startWith} from 'rxjs/operators';
+import {debounceTime, map, startWith} from 'rxjs/operators';
 import { Input } from '@angular/core';
 
 @Component({
-  selector: 'app-autocomplete',
-  templateUrl: './autocomplete.component.html',
-  styleUrls: ['./autocomplete.component.scss']
+  selector: 'app-autocomplete-input-address',
+  templateUrl: './autocomplete-input-address.component.html',
+  styleUrls: ['./autocomplete-input-address.component.scss']
 })
-export class AutocompleteComponent implements OnInit {
+export class AutocompleteInputAddressComponent implements OnInit {
   @Input() placeholderText?: string;
-  myControl = new FormControl('');
-  options: IAddress[] = []
+  autocompleteInput = new FormControl('');
+  private options: IAddress[] = []
   filteredOptions!: Observable<IAddress[]>;
 
   value = '';
@@ -23,7 +23,7 @@ export class AutocompleteComponent implements OnInit {
   //   this.options = this.completeService.getOptions()
   // }
 
-  getOptions() {
+  private getOptions() {
     return this.completeService.getOptions()
     .subscribe((data) => {
       this.options = data as IAddress[]
@@ -32,7 +32,7 @@ export class AutocompleteComponent implements OnInit {
 
   ngOnInit() {
     this.getOptions();
-    this.filteredOptions = this.myControl.valueChanges.pipe(
+    this.filteredOptions = this.autocompleteInput.valueChanges.pipe(
       debounceTime(2000),
       startWith(''),
       map(value => this._filter(value || '')),

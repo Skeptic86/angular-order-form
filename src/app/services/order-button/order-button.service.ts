@@ -1,17 +1,17 @@
+import { ICalcPrice } from './../../interfaces/calc-price.interface';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, throwError } from 'rxjs';
-import {IPriceString} from 'src/app/interfaces/price-string.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderButtonService {
 
-  private jsonURL = 'http://localhost:3000/ordersCalc';
+  private readonly jsonURL = 'http://localhost:3000/ordersCalc';
 
   getPriceString() {
-    return this.http.get<IPriceString>(this.jsonURL)
+    return this.http.get<ICalcPrice>(this.jsonURL)
     .pipe(
       catchError(this.handleError)
     )

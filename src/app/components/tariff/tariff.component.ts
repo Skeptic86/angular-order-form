@@ -1,7 +1,10 @@
-import { ITariffDefalut } from '../../interfaces/tariff-default.interface';
-import { ITariffGroupInfo } from '../../interfaces/tariff-group-info.interface';
+import { AppStateService } from './../../services/app-state/app-state.service';
+import { IDefaultInfo } from '../../interfaces/default-info';
 import { TariffService } from './../../services/tariff/tariff.service';
 import { Component, OnInit } from '@angular/core';
+import { IDefault } from 'src/app/interfaces/default.interface';
+import { CodeIconsEnum } from '../../enums/tariff-code-to-icons-enum';
+
 
 @Component({
   selector: 'app-tariff',
@@ -11,45 +14,35 @@ import { Component, OnInit } from '@angular/core';
 export class TariffComponent implements OnInit{
 
   
-  tariffGroups = this.getTariffGroups()
-  data = {} as ITariffDefalut
+  data = {} as IDefault
   icon = ''
 
-  codeIcons = {
-    CAR: 'directions_car',
-    DELIVERY: 'shopping_bag',
-    TRUCK: 'local_shipping',
-    BUS: 'airport_shuttle',
-    SERVICE: 'face'
-  }
+  readonly codeIcons = CodeIconsEnum
 
   // getTariffGroups() {
   //   return this.tariffService.getTariffGroups()
   // }
 
  
-  getTariffGroups() {
+  private getDefault() {
     return this.tariffService.getTariffGroups()
-    .subscribe((data: ITariffDefalut) => {
-      this.data = {
-        base: data.base,
-        address: data.address,
-        info: data.info
-      }
+    .subscribe((data: IDefault) => {
+      this.data = data
       this.changeIcon(this.data.info.tariffGroups[0].code)
     })
   }
 
   ngOnInit() {
-    this.getTariffGroups()
+    this.getDefault()
   }
 
   changeIcon(iconName:string) {
     const keyTyped = iconName as keyof typeof this.codeIcons
     this.icon = this.codeIcons[keyTyped]
+    this.appStateService.sendClickEvent()
   }
 
-  constructor(private tariffService:TariffService) {
+  constructor(private tariffService:TariffService, private appStateService: AppStateService) {
 
   }
 

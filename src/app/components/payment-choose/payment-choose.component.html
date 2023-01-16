@@ -1,14 +1,14 @@
 <button mat-icon-button [matMenuTriggerFor]="menu">
     <mat-icon>{{icon}}</mat-icon>
-  </button>
-  <mat-menu #menu="matMenu">
+</button>
+<mat-menu #menu="matMenu">
     <ng-container *ngFor="let value of payment.paymentMethods">
         <button *ngIf="!value.bankCards.length" mat-menu-item (click)="changeIcon(value.type)">
-            <mat-icon>{{value.type | tariffCodeToIconName:this.codeIcons}}</mat-icon>
+            <mat-icon>{{value.type | TariffCodeToIconName:this.codeIcons}}</mat-icon>
             <span>{{value.name}}</span>
         </button>
         <button *ngIf="value.bankCards.length" mat-menu-item (click)="changeIcon(value.type)">
-            <mat-icon>{{value.type | tariffCodeToIconName:this.codeIcons}}</mat-icon>
+            <mat-icon>{{value.type | TariffCodeToIconName:this.codeIcons}}</mat-icon>
             <span>{{value.bankCards | choseActiveCard}}</span>
         </button>
     </ng-container>

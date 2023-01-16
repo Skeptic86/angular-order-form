@@ -14,7 +14,7 @@ export class CompleteService {
   //   return this.options;
   // }
 
-  private jsonURL = 'http://localhost:3000/addresses';
+  private readonly jsonURL = 'http://localhost:3000/addresses';
 
   getOptions() {
     return this.http.get<IAddress[]>(this.jsonURL)

@@ -7,7 +7,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class ChoseActiveCardPipe implements PipeTransform {
 
-  mask = ''
+  private mask = ''
 
   transform(bankCards: IBankCards[]): string {
     bankCards.forEach((elem) => {

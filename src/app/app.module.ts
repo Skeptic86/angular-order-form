@@ -1,10 +1,9 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
+import { AutocompleteInputAddressComponent } from './components/autocomplete-input-address/autocomplete-input-address.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -17,7 +16,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 import { TariffComponent } from './components/tariff/tariff.component';
-import { tariffCodeToIconNamePipe } from './pipes/tarrif-code-to-icon-name/tariffCodeToIconName.pipe';
+import { TariffCodeToIconNamePipe } from './pipes/tarrif-code-to-icon-name/tariffCodeToIconName.pipe';
 import { ChoseActiveCardPipe } from './pipes/chose-active-card/chose-active-card.pipe';
 
 
@@ -28,11 +27,11 @@ import { ChoseActiveCardPipe } from './pipes/chose-active-card/chose-active-card
 @NgModule({
   declarations: [
     AppComponent,
-    AutocompleteComponent,
+    AutocompleteInputAddressComponent,
     OrderButtonComponent,
     PaymentChooseComponent,
     TariffComponent,
-    tariffCodeToIconNamePipe,
+    TariffCodeToIconNamePipe,
     ChoseActiveCardPipe
   ],
   imports: [

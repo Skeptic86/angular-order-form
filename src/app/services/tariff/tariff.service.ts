@@ -1,18 +1,18 @@
-import { ITariffDefalut } from '../../interfaces/tariff-default.interface';
+import { IDefault } from '../../interfaces/default.interface';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { catchError, tap, Observable, of, throwError } from 'rxjs';
-import { ITariffGroupInfo } from 'src/app/interfaces/tariff-group-info.interface';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class TariffService {
 
-  private jsonURL = 'http://localhost:3000/defaults';
+  private readonly jsonURL = 'http://localhost:3000/defaults';
 
   getTariffGroups() {
-    return this.http.get<ITariffDefalut>(this.jsonURL)
+    return this.http.get<IDefault>(this.jsonURL)
     .pipe(
       catchError(this.handleError)
     )

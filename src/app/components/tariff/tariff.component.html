@@ -8,7 +8,7 @@
     <ng-container *ngIf="data?.info">
         <ng-container *ngFor="let tariffGroup of data.info.tariffGroups">
             <button mat-menu-item [matMenuTriggerFor]="tariffsMenu">
-                <mat-icon>{{ tariffGroup.code | tariffCodeToIconName:this.codeIcons}}</mat-icon>
+                <mat-icon>{{ tariffGroup.code | TariffCodeToIconName:this.codeIcons}}</mat-icon>
                 <span>{{tariffGroup.name}}</span>
             </button>
             <mat-menu #tariffsMenu="matMenu">

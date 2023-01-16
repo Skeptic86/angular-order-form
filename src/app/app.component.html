@@ -3,16 +3,16 @@
     <div class="form mat-typography">
       <div class="inputs">
         <div class="from">
-          <img class="from_img" src="../assets/from.svg" alt="from">
-          <app-autocomplete class="mat-typography" placeholderText="Откуда?"></app-autocomplete>
+          <img class="from-img" src="../assets/from.svg" alt="from">
+          <app-autocomplete-input-address class="mat-typography" placeholderText="Откуда?"></app-autocomplete-input-address>
         </div>
         <div class="to">
-          <img class="to_img" src="../assets/to.svg" alt="to">
-          <app-autocomplete class="mat-typography" placeholderText="Куда?"></app-autocomplete>
+          <img class="to-img" src="../assets/to.svg" alt="to">
+          <app-autocomplete-input-address class="mat-typography" placeholderText="Куда?"></app-autocomplete-input-address>
         </div>
       </div>
       <div class="buttons">
-        <app-payment-choose [index_]="0"></app-payment-choose>
+        <app-payment-choose></app-payment-choose>
         <app-order-button></app-order-button>
         <app-tariff></app-tariff>
       </div>

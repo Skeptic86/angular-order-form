@@ -13,10 +13,10 @@ export class PaymentChooseService {
   payment: IPayment = {} as IPayment
 
 
-  JsonURL = 'http://localhost:3000/authInfo'
+  private readonly jsonURL = 'http://localhost:3000/authInfo'
 
   getPayment() {
-    return this.http.get<IPayment>(this.JsonURL)
+    return this.http.get<IPayment>(this.jsonURL)
     .pipe(
       catchError(this.handleError)
     )
