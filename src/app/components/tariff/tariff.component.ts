@@ -5,45 +5,42 @@ import { Component, OnInit } from '@angular/core';
 import { IDefault } from 'src/app/interfaces/default.interface';
 import { CodeIconsEnum } from '../../enums/tariff-code-to-icons-enum';
 
-
 @Component({
   selector: 'app-tariff',
   templateUrl: './tariff.component.html',
-  styleUrls: ['./tariff.component.scss']
+  styleUrls: ['./tariff.component.scss'],
 })
-export class TariffComponent implements OnInit{
+export class TariffComponent implements OnInit {
+  data = {} as IDefault;
+  icon = '';
 
-  
-  data = {} as IDefault
-  icon = ''
-
-  readonly codeIcons = CodeIconsEnum
+  readonly codeIcons = CodeIconsEnum;
 
   // getTariffGroups() {
   //   return this.tariffService.getTariffGroups()
   // }
 
- 
   private getDefault() {
-    return this.tariffService.getTariffGroups()
-    .subscribe((data: IDefault) => {
-      this.data = data
-      this.changeIcon(this.data.info.tariffGroups[0].code)
-    })
+    return this.tariffService.getTariffGroups().subscribe((data: IDefault) => {
+      this.data = data;
+      this.changeIcon(this.data.info.tariffGroups[0].code);
+    });
   }
 
   ngOnInit() {
-    this.getDefault()
+    this.getDefault();
   }
 
-  changeIcon(iconName:string) {
-    const keyTyped = iconName as keyof typeof this.codeIcons
-    this.icon = this.codeIcons[keyTyped]
-    this.appStateService.sendClickEvent()
+  changeIcon(iconName: string) {
+    const keyTyped = iconName as keyof typeof this.codeIcons;
+    this.icon = this.codeIcons[keyTyped];
+    if (iconName !== this.icon && this.icon !== '') {
+      this.appStateService.sendClickEvent();
+    }
   }
 
-  constructor(private tariffService:TariffService, private appStateService: AppStateService) {
-
-  }
-
+  constructor(
+    private tariffService: TariffService,
+    private appStateService: AppStateService
+  ) {}
 }
