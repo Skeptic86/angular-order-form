@@ -1,4 +1,4 @@
-import { AppStateService } from './../../services/app-state/app-state.service';
+import { GetPriceService } from '../../services/get-price/get-price.service';
 import { ICalcPrice } from './../../interfaces/calc-price.interface';
 import { OrderButtonService } from './../../services/order-button/order-button.service';
 import { Component, OnInit } from '@angular/core';
@@ -32,9 +32,9 @@ export class OrderButtonComponent implements OnInit {
 
   constructor(
     private orderButtonService: OrderButtonService,
-    private appStateService: AppStateService
+    private getPriceService: GetPriceService
   ) {
-    this.clickEventSubscription = this.appStateService
+    this.clickEventSubscription = this.getPriceService
       .getClickEvent()
       .subscribe(() => {
         this.getPriceString();

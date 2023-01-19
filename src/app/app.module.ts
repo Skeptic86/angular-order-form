@@ -18,7 +18,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import { TariffComponent } from './components/tariff/tariff.component';
 import { TariffCodeToIconNamePipe } from './pipes/tarrif-code-to-icon-name/tariffCodeToIconName.pipe';
 import { ChoseActiveCardPipe } from './pipes/chose-active-card/chose-active-card.pipe';
-
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 
 
@@ -47,7 +47,8 @@ import { ChoseActiveCardPipe } from './pipes/chose-active-card/chose-active-card
     MatSelectModule,
     MatIconModule,
     MatMenuModule,
-    HttpClientModule
+    HttpClientModule,
+    DragDropModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,3 +1,3 @@
-export interface ICalcPrice{
-    priceString: string
+export interface ICalcPrice {
+  priceString: string;
 }

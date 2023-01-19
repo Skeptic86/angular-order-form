@@ -2,7 +2,7 @@ import { IPayment } from './../../interfaces/payment.interface';
 import { PaymentChooseService } from './../../services/payment-choose/payment-choose.service';
 import { Component, OnInit } from '@angular/core';
 import { NameIconsEnum } from '../../enums/payment-name-to-icons-enum';
-import { AppStateService } from 'src/app/services/app-state/app-state.service';
+import { GetPriceService } from 'src/app/services/get-price/get-price.service';
 
 @Component({
   selector: 'app-payment-choose',
@@ -35,6 +35,6 @@ export class PaymentChooseComponent implements OnInit {
 
   constructor(
     private paymentChooseService: PaymentChooseService,
-    private appStateService: AppStateService
+    private getPriceService: GetPriceService
   ) {}
 }

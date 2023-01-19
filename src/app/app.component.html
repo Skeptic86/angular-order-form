@@ -1,14 +1,14 @@
 <div class="picture">
   <div  class="container">
     <div class="form mat-typography">
-      <div class="inputs">
+      <div class="inputs" cdkDropList (cdkDropListDropped)="drop($event)">
         <div class="from">
           <img class="from-img" src="../assets/from.svg" alt="from">
-          <app-autocomplete-input-address class="mat-typography" placeholderText="Откуда?"></app-autocomplete-input-address>
+          <app-autocomplete-input-address (newItemEvent)="setAddress($event)" cdkDrag cdkDragBoundary=".form" class="mat-typography" placeholderText="Откуда?"></app-autocomplete-input-address>
         </div>
         <div class="to">
           <img class="to-img" src="../assets/to.svg" alt="to">
-          <app-autocomplete-input-address class="mat-typography" placeholderText="Куда?"></app-autocomplete-input-address>
+          <app-autocomplete-input-address cdkDrag cdkDragBoundary=".form" class="mat-typography" placeholderText="Куда?"></app-autocomplete-input-address>
         </div>
       </div>
       <div class="buttons">

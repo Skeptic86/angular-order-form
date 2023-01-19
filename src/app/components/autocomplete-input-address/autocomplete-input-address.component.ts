@@ -1,10 +1,11 @@
+import { IAppState } from './../../interfaces/app-state.interface';
 import { IAddress } from '../../interfaces/address.interface';
 import { CompleteService } from '../../services/complete/complete.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, tap } from 'rxjs';
 import { debounceTime, map, startWith } from 'rxjs/operators';
-import { Input } from '@angular/core';
+import { GetPriceService } from 'src/app/services/get-price/get-price.service';
 import { AppStateService } from 'src/app/services/app-state/app-state.service';
 
 @Component({
@@ -14,11 +15,16 @@ import { AppStateService } from 'src/app/services/app-state/app-state.service';
 })
 export class AutocompleteInputAddressComponent implements OnInit {
   @Input() placeholderText?: string;
+  @Output() newItemEvent = new EventEmitter<Partial<IAppState>>();
   autocompleteInput = new FormControl('');
   private options: IAddress[] = [];
   filteredOptions!: Observable<IAddress[]>;
 
   value = '';
+
+  addNewItem(value: Partial<IAppState>) {
+    this.newItemEvent.emit(value);
+  }
 
   private getOptions() {
     return this.completeService.getOptions().subscribe((data) => {
@@ -30,7 +36,8 @@ export class AutocompleteInputAddressComponent implements OnInit {
     this.getOptions();
     this.filteredOptions = this.autocompleteInput.valueChanges.pipe(
       debounceTime(2000),
-      tap(value => this.appStateService.sendClickEvent()),
+      tap((_) => this.getPriceService.sendClickEvent()),
+      tap((value) => this.addNewItem({ addressFrom: value })),
       startWith(''),
       map((value) => this._filter(value || ''))
     );
@@ -43,5 +50,9 @@ export class AutocompleteInputAddressComponent implements OnInit {
     );
   }
 
-  constructor(private completeService: CompleteService, private appStateService: AppStateService) {}
+  constructor(
+    private completeService: CompleteService,
+    private getPriceService: GetPriceService,
+    private appStateService: AppStateService
+  ) {}
 }

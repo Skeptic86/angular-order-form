@@ -1,20 +1,28 @@
+import { IAppState } from './../../interfaces/app-state.interface';
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AppStateService {
+  subject = new BehaviorSubject<IAppState>({
+    paymentType: null,
+    tariff: null,
+    addressFrom: null,
+    addressTo: null,
+  });
 
-  subject = new Subject<any>();
+  sendClickEvent() {}
 
-  sendClickEvent() {
-    this.subject.next(140);
+  setAppState(fieldsToUpdate: Partial<IAppState>) {
+    const newSubject = { ...this.subject.getValue(), ...fieldsToUpdate };
+    this.subject.next(newSubject);
   }
 
-  getClickEvent():Observable<any> {
+  getState(): Observable<IAppState | undefined> {
     return this.subject.asObservable();
   }
 
-  constructor() { }
+  constructor() {}
 }

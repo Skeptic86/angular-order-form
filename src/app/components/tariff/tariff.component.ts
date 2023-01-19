@@ -1,5 +1,5 @@
-import { AppStateService } from './../../services/app-state/app-state.service';
-import { IDefaultInfo } from '../../interfaces/default-info';
+import { GetPriceService } from '../../services/get-price/get-price.service';
+import { IDefaultInfo } from '../../interfaces/default-info.interface';
 import { TariffService } from './../../services/tariff/tariff.service';
 import { Component, OnInit } from '@angular/core';
 import { IDefault } from 'src/app/interfaces/default.interface';
@@ -34,13 +34,13 @@ export class TariffComponent implements OnInit {
   changeIcon(iconName: string) {
     const keyTyped = iconName as keyof typeof this.codeIcons;
     if (this.codeIcons[keyTyped] !== this.icon && this.icon !== '') {
-      this.appStateService.sendClickEvent();
+      this.getPriceService.sendClickEvent();
     }
     this.icon = this.codeIcons[keyTyped];
   }
 
   constructor(
     private tariffService: TariffService,
-    private appStateService: AppStateService
+    private getPriceService: GetPriceService
   ) {}
 }

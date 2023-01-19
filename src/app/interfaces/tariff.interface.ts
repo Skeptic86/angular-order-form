@@ -1,5 +1,5 @@
 export interface ITariff {
-    classId: number,
-    name: string,
-    minPriceString: string
+  classId: number;
+  name: string;
+  minPriceString: string;
 }
