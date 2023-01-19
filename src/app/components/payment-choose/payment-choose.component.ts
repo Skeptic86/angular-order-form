@@ -18,9 +18,6 @@ export class PaymentChooseComponent implements OnInit {
   changeIcon(iconName: string) {
     const keyTyped = iconName as keyof typeof this.codeIcons;
     this.icon = this.codeIcons[keyTyped];
-    if (iconName !== this.icon && this.icon !== '') {
-      this.appStateService.sendClickEvent();
-    }
   }
 
   private getPayment() {

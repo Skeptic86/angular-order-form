@@ -2,9 +2,10 @@ import { IAddress } from '../../interfaces/address.interface';
 import { CompleteService } from '../../services/complete/complete.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { debounceTime, map, startWith } from 'rxjs/operators';
 import { Input } from '@angular/core';
+import { AppStateService } from 'src/app/services/app-state/app-state.service';
 
 @Component({
   selector: 'app-autocomplete-input-address',
@@ -19,10 +20,6 @@ export class AutocompleteInputAddressComponent implements OnInit {
 
   value = '';
 
-  // getOptions(): void {
-  //   this.options = this.completeService.getOptions()
-  // }
-
   private getOptions() {
     return this.completeService.getOptions().subscribe((data) => {
       this.options = data as IAddress[];
@@ -33,6 +30,7 @@ export class AutocompleteInputAddressComponent implements OnInit {
     this.getOptions();
     this.filteredOptions = this.autocompleteInput.valueChanges.pipe(
       debounceTime(2000),
+      tap(value => this.appStateService.sendClickEvent()),
       startWith(''),
       map((value) => this._filter(value || ''))
     );
@@ -45,5 +43,5 @@ export class AutocompleteInputAddressComponent implements OnInit {
     );
   }
 
-  constructor(private completeService: CompleteService) {}
+  constructor(private completeService: CompleteService, private appStateService: AppStateService) {}
 }

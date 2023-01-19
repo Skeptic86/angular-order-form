@@ -33,10 +33,10 @@ export class TariffComponent implements OnInit {
 
   changeIcon(iconName: string) {
     const keyTyped = iconName as keyof typeof this.codeIcons;
-    this.icon = this.codeIcons[keyTyped];
-    if (iconName !== this.icon && this.icon !== '') {
+    if (this.codeIcons[keyTyped] !== this.icon && this.icon !== '') {
       this.appStateService.sendClickEvent();
     }
+    this.icon = this.codeIcons[keyTyped];
   }
 
   constructor(

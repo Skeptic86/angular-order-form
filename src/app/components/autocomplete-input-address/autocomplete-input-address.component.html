@@ -3,7 +3,7 @@
       <mat-label>{{placeholderText}}</mat-label>
       <input type="text" placeholder="Адрес" aria-label="Number" matInput [formControl]="autocompleteInput"[matAutocomplete]="auto" [(ngModel)]="value"> 
       <mat-autocomplete #auto="matAutocomplete">
-        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+        <mat-option *ngFor="let option of filteredOptions | async" [value]="option.title">
           {{option.title}}
         </mat-option>
       </mat-autocomplete>
