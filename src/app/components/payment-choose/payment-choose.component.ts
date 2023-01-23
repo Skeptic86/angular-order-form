@@ -33,8 +33,5 @@ export class PaymentChooseComponent implements OnInit {
     this.getPayment();
   }
 
-  constructor(
-    private paymentChooseService: PaymentChooseService,
-    private getPriceService: GetPriceService
-  ) {}
+  constructor(private paymentChooseService: PaymentChooseService) {}
 }

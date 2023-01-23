@@ -40,9 +40,13 @@
     align-items: center;
 }
 
-.from-img, .to-img{
+.from-img, .to-img, .to-icon, .from-icon{
     width:20px ;
     margin:0 0 10px 15px;
+}
+
+.from-icon, .to-icon {
+    cursor: move;
 }
 
 // ::ng-deep .mat-focused .mat-form-field-label {
