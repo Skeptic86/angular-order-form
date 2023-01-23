@@ -19,6 +19,7 @@ import { TariffComponent } from './components/tariff/tariff.component';
 import { TariffCodeToIconNamePipe } from './pipes/tarrif-code-to-icon-name/tariffCodeToIconName.pipe';
 import { ChoseActiveCardPipe } from './pipes/chose-active-card/chose-active-card.pipe';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 
 
@@ -32,7 +33,8 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     PaymentChooseComponent,
     TariffComponent,
     TariffCodeToIconNamePipe,
-    ChoseActiveCardPipe
+    ChoseActiveCardPipe,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,

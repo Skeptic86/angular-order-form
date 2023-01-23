@@ -1,3 +1,4 @@
+import { AppStateService } from './../../services/app-state/app-state.service';
 import { IPayment } from './../../interfaces/payment.interface';
 import { PaymentChooseService } from './../../services/payment-choose/payment-choose.service';
 import { Component, OnInit } from '@angular/core';
@@ -15,9 +16,14 @@ export class PaymentChooseComponent implements OnInit {
 
   readonly codeIcons = NameIconsEnum;
 
-  changeIcon(iconName: string) {
+  changeIcon(iconName: string, paymentName: string, bankCardMask?: string) {
     const keyTyped = iconName as keyof typeof this.codeIcons;
     this.icon = this.codeIcons[keyTyped];
+    if (bankCardMask) {
+      this.appStateService.setAppState({ paymentType: bankCardMask });
+    } else {
+      this.appStateService.setAppState({ paymentType: paymentName });
+    }
   }
 
   private getPayment() {
@@ -25,7 +31,10 @@ export class PaymentChooseComponent implements OnInit {
       .getPayment()
       .subscribe((data: IPayment) => {
         this.payment = data;
-        this.changeIcon(this.payment.paymentMethods[0].type);
+        this.changeIcon(
+          this.payment.paymentMethods[0].type,
+          this.payment.paymentMethods[0].name
+        );
       });
   }
 
@@ -33,5 +42,8 @@ export class PaymentChooseComponent implements OnInit {
     this.getPayment();
   }
 
-  constructor(private paymentChooseService: PaymentChooseService) {}
+  constructor(
+    private paymentChooseService: PaymentChooseService,
+    private appStateService: AppStateService
+  ) {}
 }

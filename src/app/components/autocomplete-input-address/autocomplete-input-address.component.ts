@@ -43,16 +43,8 @@ export class AutocompleteInputAddressComponent implements OnInit {
       tap((value) => {
         if (this.direction === AddressTypeEnum.To) {
           this.sendAddress({ addressTo: value });
-          const addressTo: Partial<IAppState> = {
-            addressTo: this.value,
-          };
-          this.appStateService.setAppState(addressTo);
         } else if (this.direction === AddressTypeEnum.From) {
           this.sendAddress({ addressFrom: value });
-          const addressFrom: Partial<IAppState> = {
-            addressFrom: this.value,
-          };
-          this.appStateService.setAppState(addressFrom);
         }
       }),
       startWith(''),
