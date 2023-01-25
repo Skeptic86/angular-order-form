@@ -1,3 +1,4 @@
+import { AppStateService } from './services/app-state/app-state.service';
 import { OrderButtonComponent } from './components/order-button/order-button.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { AppComponent } from './app.component';
@@ -6,7 +7,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: 'order', component: OrderButtonComponent },
+  {
+    path: 'order/addressTo/:addressFrom/:payment/:tariff',
+    component: OrderButtonComponent,
+  },
   { path: '', redirectTo: '/order', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
 ];
@@ -15,4 +19,6 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+  constructor(private appStateService: AppStateService) {}
+}

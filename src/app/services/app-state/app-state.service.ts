@@ -1,3 +1,4 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import { IAppState } from './../../interfaces/app-state.interface';
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
@@ -6,7 +7,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class AppStateService {
-  subject = new BehaviorSubject<IAppState>({
+  subject$ = new BehaviorSubject<IAppState>({
     paymentType: null,
     tariff: null,
     addressFrom: null,
@@ -15,14 +16,27 @@ export class AppStateService {
 
   sendClickEvent() {}
 
+  updateRoute() {
+    this.router.navigate([
+      '/order',
+      {
+        addressFrom: this.subject$.getValue().addressFrom,
+        addressTo: this.subject$.getValue().addressTo,
+        payment: this.subject$.getValue().paymentType,
+        tariff: this.subject$.getValue().tariff,
+      },
+    ]);
+  }
+
   setAppState(fieldsToUpdate: Partial<IAppState>) {
-    const newSubject = { ...this.subject.getValue(), ...fieldsToUpdate };
-    this.subject.next(newSubject);
+    const newSubject = { ...this.subject$.getValue(), ...fieldsToUpdate };
+    this.subject$.next(newSubject);
+    this.updateRoute();
   }
 
   getState(): Observable<IAppState | undefined> {
-    return this.subject.asObservable();
+    return this.subject$.asObservable();
   }
 
-  constructor() {}
+  constructor(private route: ActivatedRoute, private router: Router) {}
 }

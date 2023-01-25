@@ -9,17 +9,17 @@ import { AddressTypeEnum } from './enums/address-type.enum';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit, OnChanges {
+export class AppComponent {
   title = 'order-form';
 
   private fromAddress = '';
   private toAddress = '';
 
-  // private swapAddresses(): void {
-  //   const temp = this.fromAddress;
-  //   this.fromAddress = this.toAddress;
-  //   this.toAddress = temp;
-  // }
+  private swapAddresses(): void {
+    const temp = this.fromAddress;
+    this.fromAddress = this.toAddress;
+    this.toAddress = temp;
+  }
 
   setAddress(address: Partial<IAppState>) {
     if (address.addressFrom) {
@@ -27,27 +27,21 @@ export class AppComponent implements OnInit, OnChanges {
     } else if (address.addressTo) {
       this.toAddress = address.addressTo;
     }
+    const addresses: Partial<IAppState> = {
+      addressTo: this.toAddress,
+      addressFrom: this.fromAddress,
+    };
+    this.appStateService.setAppState(addresses);
   }
 
   constructor(private appStateService: AppStateService) {}
 
-  ngOnInit(): void {
-    // this.addFromAddress()
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    const addressTo: Partial<IAppState> = {
-      addressTo: this.toAddress,
-      addressFrom: this.fromAddress,
-    };
-    this.appStateService.setAppState(addressTo);
-  }
-
   drop(event: CdkDragDrop<string[]>) {
     if (event.currentIndex !== event.previousIndex) {
+      this.swapAddresses();
       const addresses: Partial<IAppState> = {
-        addressFrom: this.toAddress,
-        addressTo: this.fromAddress,
+        addressFrom: this.fromAddress,
+        addressTo: this.toAddress,
       };
       this.appStateService.setAppState(addresses);
     }

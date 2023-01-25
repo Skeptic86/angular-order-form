@@ -5,7 +5,12 @@ import { CompleteService } from '../../services/complete/complete.service';
 import { Component, EventEmitter, OnInit, Output, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, Subscription, tap } from 'rxjs';
-import { debounceTime, map, startWith } from 'rxjs/operators';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  startWith,
+} from 'rxjs/operators';
 import { GetPriceService } from 'src/app/services/get-price/get-price.service';
 import { AppStateService } from 'src/app/services/app-state/app-state.service';
 
@@ -38,7 +43,7 @@ export class AutocompleteInputAddressComponent implements OnInit {
   ngOnInit() {
     this.getOptions();
     this.filteredOptions = this.autocompleteInput.valueChanges.pipe(
-      debounceTime(1000),
+      debounceTime(2000),
       tap((_) => this.getPriceService.sendClickEvent()),
       tap((value) => {
         if (this.direction === AddressTypeEnum.To) {
@@ -66,6 +71,15 @@ export class AutocompleteInputAddressComponent implements OnInit {
   ) {
     this.clickEventSubscription = this.appStateService
       .getState()
+      .pipe(
+        distinctUntilChanged((prev, curr) => {
+          if (this.direction === AddressTypeEnum.To) {
+            return prev?.addressTo !== curr?.addressTo;
+          } else {
+            return prev?.addressFrom !== curr?.addressFrom;
+          }
+        })
+      )
       .subscribe((value) => {
         if (this.direction === AddressTypeEnum.To) {
           this.value = value?.addressTo!;
