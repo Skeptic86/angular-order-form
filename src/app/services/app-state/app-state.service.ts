@@ -8,7 +8,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 })
 export class AppStateService {
   subject$ = new BehaviorSubject<IAppState>({
-    paymentType: null,
+    payment: null,
     tariff: null,
     addressFrom: null,
     addressTo: null,
@@ -17,15 +17,15 @@ export class AppStateService {
   sendClickEvent() {}
 
   updateRoute() {
-    this.router.navigate([
-      '/order',
-      {
-        addressFrom: this.subject$.getValue().addressFrom,
-        addressTo: this.subject$.getValue().addressTo,
-        payment: this.subject$.getValue().paymentType,
-        tariff: this.subject$.getValue().tariff,
+    this.router.navigate(['/order'], {
+      queryParams: {
+        addressFrom: this.subject$.getValue().addressFrom?.title,
+        addressTo: this.subject$.getValue().addressTo?.title,
+        payment: this.subject$.getValue().payment?.paymentMethods[0].name,
+        tariff:
+          this.subject$.getValue().tariff?.info.tariffGroups[0].tariffs[0].name,
       },
-    ]);
+    });
   }
 
   setAppState(fieldsToUpdate: Partial<IAppState>) {

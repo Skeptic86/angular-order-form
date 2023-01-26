@@ -7,7 +7,7 @@
             <mat-icon>{{value.type | TariffCodeToIconName:this.codeIcons}}</mat-icon>
             <span>{{value.name}}</span>
         </button>
-        <button *ngIf="value.bankCards.length" mat-menu-item (click)="changeIcon(value.type, value.name, value.bankCards[0].maskedPan)">
+        <button *ngIf="value.bankCards.length" mat-menu-item (click)="changeIcon(value.type, value.bankCards[0].maskedPan)">
             <mat-icon>{{value.type | TariffCodeToIconName:this.codeIcons}}</mat-icon>
             <span>{{value.bankCards | choseActiveCard}}</span>
         </button>

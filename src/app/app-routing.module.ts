@@ -1,3 +1,4 @@
+import { MainComponent } from './components/main/main.component';
 import { AppStateService } from './services/app-state/app-state.service';
 import { OrderButtonComponent } from './components/order-button/order-button.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
@@ -8,10 +9,14 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'order/addressTo/:addressFrom/:payment/:tariff',
-    component: OrderButtonComponent,
+    path: 'order',
+    component: MainComponent,
   },
-  { path: '', redirectTo: '/order', pathMatch: 'full' },
+  {
+    path: '',
+    redirectTo: '/order',
+    pathMatch: 'full',
+  },
   { path: '**', component: PageNotFoundComponent },
 ];
 

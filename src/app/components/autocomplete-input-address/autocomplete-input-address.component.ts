@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { AddressTypeEnum } from './../../enums/address-type.enum';
 import { IAppState } from './../../interfaces/app-state.interface';
 import { IAddress } from '../../interfaces/address.interface';
@@ -67,26 +68,28 @@ export class AutocompleteInputAddressComponent implements OnInit {
   constructor(
     private completeService: CompleteService,
     private getPriceService: GetPriceService,
-    private appStateService: AppStateService
+    private appStateService: AppStateService,
+    private route: ActivatedRoute
   ) {
     this.clickEventSubscription = this.appStateService
       .getState()
       .pipe(
         distinctUntilChanged((prev, curr) => {
           if (this.direction === AddressTypeEnum.To) {
-            return prev?.addressTo !== curr?.addressTo;
+            return prev?.addressTo === curr?.addressTo;
           } else {
-            return prev?.addressFrom !== curr?.addressFrom;
+            return prev?.addressFrom === curr?.addressFrom;
           }
         })
       )
       .subscribe((value) => {
         if (this.direction === AddressTypeEnum.To) {
           this.value = value?.addressTo!;
-        } else if (this.direction === AddressTypeEnum.From) {
+          console.log(value);
+        } else {
           this.value = value?.addressFrom!;
+          console.log(value);
         }
-        console.log(value);
       });
   }
 }
