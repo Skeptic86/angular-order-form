@@ -1,5 +1,6 @@
+import { IAddress } from 'src/app/interfaces/address.interface';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IAppState } from 'src/app/interfaces/app-state.interface';
 import { AppStateService } from 'src/app/services/app-state/app-state.service';
@@ -9,7 +10,7 @@ import { AppStateService } from 'src/app/services/app-state/app-state.service';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
 })
-export class MainComponent {
+export class MainComponent implements OnInit {
   private fromAddress = '';
   private toAddress = '';
 
@@ -19,15 +20,17 @@ export class MainComponent {
     this.toAddress = temp;
   }
 
+  ngOnInit(): void {}
+
   setAddress(address: Partial<IAppState>) {
-    if (address.addressFrom || address.addressFrom === '') {
-      this.fromAddress = address.addressFrom;
-    } else if (address.addressTo || address.addressTo === '') {
-      this.toAddress = address.addressTo;
+    if (address.addressFrom?.title || address.addressFrom?.title === '') {
+      this.fromAddress = address.addressFrom.title;
+    } else if (address.addressTo?.title || address.addressTo?.title === '') {
+      this.toAddress = address.addressTo?.title;
     }
     const addresses: Partial<IAppState> = {
-      addressTo: this.toAddress,
-      addressFrom: this.fromAddress,
+      addressTo: { title: this.toAddress } as IAddress,
+      addressFrom: { title: this.fromAddress } as IAddress,
     };
     this.appStateService.setAppState(addresses);
   }
@@ -41,8 +44,8 @@ export class MainComponent {
     if (event.currentIndex !== event.previousIndex) {
       this.swapAddresses();
       const addresses: Partial<IAppState> = {
-        addressFrom: this.fromAddress,
-        addressTo: this.toAddress,
+        addressTo: { title: this.toAddress } as IAddress,
+        addressFrom: { title: this.fromAddress } as IAddress,
       };
       this.appStateService.setAppState(addresses);
     }

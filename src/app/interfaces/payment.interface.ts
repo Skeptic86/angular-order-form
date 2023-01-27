@@ -1,11 +1,11 @@
 import { IBankCards } from './bank-cards.interface';
 export interface IPayment {
-  paymentMethods: [
-    {
-      name: string;
-      id: number;
-      type: string;
-      bankCards: IBankCards[];
-    }
-  ];
+  token: string;
+  paymentMethods: IPaymentMethod[];
+}
+
+interface IPaymentMethod {
+  name: string;
+  type: string;
+  bankCards: IBankCards[];
 }

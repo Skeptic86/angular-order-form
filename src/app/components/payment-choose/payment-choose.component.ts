@@ -3,9 +3,9 @@ import { AppStateService } from './../../services/app-state/app-state.service';
 import { IPayment } from './../../interfaces/payment.interface';
 import { PaymentChooseService } from './../../services/payment-choose/payment-choose.service';
 import { Component, OnInit } from '@angular/core';
-import { NameIconsEnum } from '../../enums/payment-name-to-icons-enum';
+import { PaymentTypeIconsEnum } from '../../enums/payment-type-to-icons-enum';
 import { GetPriceService } from 'src/app/services/get-price/get-price.service';
-import { distinctUntilChanged, switchMap } from 'rxjs';
+import { distinctUntilChanged, switchMap, tap, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-payment-choose',
@@ -16,49 +16,57 @@ export class PaymentChooseComponent implements OnInit {
   payment: IPayment = {} as IPayment;
   icon = '';
 
-  readonly codeIcons = NameIconsEnum;
+  readonly codeIcons = PaymentTypeIconsEnum;
 
-  changeIcon(iconName: string, paymentName: string) {
-    const keyTyped = iconName as keyof typeof this.codeIcons;
-    this.icon = this.codeIcons[keyTyped];
-    this.setAppState(paymentName);
+  changePayment(paymentType: string, paymentName: string) {
+    const keyTypedPaymentType = paymentType as keyof typeof this.codeIcons;
+    this.icon = this.codeIcons[keyTypedPaymentType];
+    this.setAppStatePayment({
+      paymentMethods: [{ name: paymentName, type: paymentType }],
+    } as IPayment);
   }
 
-  private getPayment() {
+  private getPayment(): Observable<IPayment> {
     return this.paymentChooseService
       .getPayment()
-      .subscribe((data: IPayment) => {
-        this.payment = data;
-      });
+      .pipe(tap((value) => (this.payment = value)));
   }
 
-  private setAppState(paymentName: string) {
-    this.appStateService.setAppState({ paymentType: paymentName });
+  private setAppStatePayment(paymentObj: IPayment) {
+    this.appStateService.setAppState({ payment: paymentObj });
   }
 
-  private setPaymentStateFromURL(paymentURL: string | null) {
-    if (paymentURL) {
-      this.appStateService.setAppState({ paymentType: paymentURL });
-      const indexOfIcon = Object.values(this.codeIcons).indexOf(
-        paymentURL as NameIconsEnum
-      );
-      console.log(indexOfIcon, 'index');
-      const key = Object.keys(this.codeIcons)[indexOfIcon];
-      console.log(key, paymentURL);
-      this.changeIcon(key, paymentURL);
+  private setPaymentInit(paymentTypeURLParam: string | null) {
+    if (paymentTypeURLParam) {
+      const name = this.findNameByType(paymentTypeURLParam);
+      if (name) {
+        this.changePayment(paymentTypeURLParam, name);
+      }
     } else {
-      this.changeIcon(
+      this.changePayment(
         this.payment.paymentMethods[0].type,
         this.payment.paymentMethods[0].name
       );
     }
   }
 
+  private findNameByType(type: string) {
+    return this.payment.paymentMethods.find((elem) => elem.type === type)?.name;
+  }
+
   ngOnInit() {
-    this.getPayment();
-    const url_payment = this.route.snapshot.queryParamMap.get('payment');
-    console.log(url_payment);
-    this.setPaymentStateFromURL(url_payment);
+    this.getPayment()
+      .pipe
+      // tap((_) => {
+      //   const paymentTypeURLParam =
+      //     this.route.snapshot.queryParamMap.get('paymentType');
+      //   console.log('url', paymentTypeURLParam);
+      //   this.setPaymentInit(paymentTypeURLParam);
+      // })
+      ()
+      .subscribe((data: IPayment) => {
+        this.payment = data;
+      });
   }
 
   constructor(

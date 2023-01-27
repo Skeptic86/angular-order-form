@@ -1,8 +1,8 @@
 export interface IAddress {
   street: {
     id: number;
-    name: string | null;
+    name: string;
   };
-  title: string;
+  title: string | null;
   house: string;
 }

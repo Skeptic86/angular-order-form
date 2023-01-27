@@ -12,7 +12,7 @@
                 <span>{{tariffGroup.name}}</span>
             </button>
             <mat-menu #tariffsMenu="matMenu">
-                <button (click)="changeIcon(tariffGroup.code, tariff.name)" mat-menu-item *ngFor="let tariff of tariffGroup.tariffs" >{{tariff.name}} ({{tariff.minPriceString}})</button>
+                <button (click)="changeTarrif(tariffGroup.code, tariff.name, tariff.classId)" mat-menu-item *ngFor="let tariff of tariffGroup.tariffs" >{{tariff.name}} ({{tariff.minPriceString}})</button>
             </mat-menu>
         </ng-container>
     </ng-container>

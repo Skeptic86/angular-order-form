@@ -1,3 +1,4 @@
+import { AppstateResolver } from './resolvers/appstate/appstate.resolver';
 import { MainComponent } from './components/main/main.component';
 import { AppStateService } from './services/app-state/app-state.service';
 import { OrderButtonComponent } from './components/order-button/order-button.component';
@@ -11,6 +12,9 @@ const routes: Routes = [
   {
     path: 'order',
     component: MainComponent,
+    resolve: {
+      appstate: AppstateResolver,
+    },
   },
   {
     path: '',

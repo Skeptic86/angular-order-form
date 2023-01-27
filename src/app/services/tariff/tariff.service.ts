@@ -1,21 +1,22 @@
 import { IDefault } from '../../interfaces/default.interface';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { catchError, tap, Observable, of, throwError } from 'rxjs';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TariffService {
-
   private readonly jsonURL = 'http://localhost:3000/defaults';
 
-  getTariffGroups() {
-    return this.http.get<IDefault>(this.jsonURL)
-    .pipe(
-      catchError(this.handleError)
-    )
+  getTariffGroupsInfo() {
+    return this.http
+      .get<IDefault>(this.jsonURL)
+      .pipe(catchError(this.handleError));
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -26,10 +27,14 @@ export class TariffService {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong.
       console.error(
-        `Backend returned code ${error.status}, body was: `, error.error);
+        `Backend returned code ${error.status}, body was: `,
+        error.error
+      );
     }
     // Return an observable with a user-facing error message.
-    return throwError(() => new Error('Something bad happened; please try again later.'));
+    return throwError(
+      () => new Error('Something bad happened; please try again later.')
+    );
   }
 
   // tariffGroups = [
@@ -38,11 +43,11 @@ export class TariffService {
   //     title: 'Легковые',
   //     icon: 'directions_car',
   //     types: [
-  //       'Эконом', 
+  //       'Эконом',
   //       'Комфорт',
-  //       'Бизнес', 
-  //       'Компактвэн, 6 мест', 
-  //       'Минивэн, 7 мест', 
+  //       'Бизнес',
+  //       'Компактвэн, 6 мест',
+  //       'Минивэн, 7 мест',
   //       'Почасовая оплата'
   //     ]
   //   },
@@ -51,7 +56,7 @@ export class TariffService {
   //     title: 'Доставка',
   //     icon: 'shopping_bag',
   //     types: [
-  //       'Курьер', 
+  //       'Курьер',
   //       'Купим и привезем'
   //     ]
   //   },
@@ -60,7 +65,7 @@ export class TariffService {
   //     title: 'Грузовые',
   //     icon: 'local_shipping',
   //     types: [
-  //       'Маленький кузов', 
+  //       'Маленький кузов',
   //       'Стандартный кузов',
   //       'Стандартный кузов + 1 грузчик',
   //       'Стандартный кузов + 2 грузчика',
@@ -72,7 +77,7 @@ export class TariffService {
   //     title: 'Автобусы',
   //     icon: 'airport_shuttle',
   //     types: [
-  //       'Автобус до 13 мест', 
+  //       'Автобус до 13 мест',
   //       'Автобус до 20 мест'
   //     ]
   //   },
@@ -81,7 +86,7 @@ export class TariffService {
   //     title: 'Услуги',
   //     icon: 'face',
   //     types: [
-  //       'Грузчик', 
+  //       'Грузчик',
   //       'Личный водитель',
   //       'Буксировка',
   //       'Запуск двигателя'
@@ -93,5 +98,5 @@ export class TariffService {
   //   return this.tariffGroups;
   // }
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) {}
 }

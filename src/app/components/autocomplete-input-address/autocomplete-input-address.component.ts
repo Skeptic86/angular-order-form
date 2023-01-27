@@ -10,6 +10,7 @@ import {
   debounceTime,
   distinctUntilChanged,
   map,
+  skip,
   startWith,
 } from 'rxjs/operators';
 import { GetPriceService } from 'src/app/services/get-price/get-price.service';
@@ -45,12 +46,12 @@ export class AutocompleteInputAddressComponent implements OnInit {
     this.getOptions();
     this.filteredOptions = this.autocompleteInput.valueChanges.pipe(
       debounceTime(2000),
-      tap((_) => this.getPriceService.sendClickEvent()),
       tap((value) => {
+        this.getPriceService.sendClickEvent();
         if (this.direction === AddressTypeEnum.To) {
-          this.sendAddress({ addressTo: value });
+          this.sendAddress({ addressTo: { title: value } as IAddress });
         } else if (this.direction === AddressTypeEnum.From) {
-          this.sendAddress({ addressFrom: value });
+          this.sendAddress({ addressFrom: { title: value } as IAddress });
         }
       }),
       startWith(''),
@@ -61,7 +62,7 @@ export class AutocompleteInputAddressComponent implements OnInit {
   private _filter(value: string): IAddress[] {
     const filterValue = value.toLowerCase();
     return this.options.filter((option) =>
-      option.title.toLowerCase().includes(filterValue)
+      option.title!.toLowerCase().includes(filterValue)
     );
   }
 
@@ -76,19 +77,21 @@ export class AutocompleteInputAddressComponent implements OnInit {
       .pipe(
         distinctUntilChanged((prev, curr) => {
           if (this.direction === AddressTypeEnum.To) {
-            return prev?.addressTo === curr?.addressTo;
+            return prev?.addressTo?.title === curr?.addressTo?.title;
           } else {
-            return prev?.addressFrom === curr?.addressFrom;
+            return prev?.addressFrom?.title === curr?.addressFrom?.title;
           }
         })
       )
       .subscribe((value) => {
-        if (this.direction === AddressTypeEnum.To) {
-          this.value = value?.addressTo!;
-          console.log(value);
-        } else {
-          this.value = value?.addressFrom!;
-          console.log(value);
+        if (value?.addressFrom || value?.addressTo) {
+          if (this.direction === AddressTypeEnum.To) {
+            this.value = value?.addressTo!.title!;
+            console.log(value);
+          } else {
+            this.value = value?.addressFrom!.title!;
+            console.log(value);
+          }
         }
       });
   }

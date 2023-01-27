@@ -1,3 +1,7 @@
+import { IAddress } from './../../interfaces/address.interface';
+import { ITariff } from './../../interfaces/tariff.interface';
+import { IDefault } from './../../interfaces/default.interface';
+import { IPayment } from './../../interfaces/payment.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IAppState } from './../../interfaces/app-state.interface';
 import { Injectable } from '@angular/core';
@@ -8,22 +12,22 @@ import { Observable, BehaviorSubject } from 'rxjs';
 })
 export class AppStateService {
   subject$ = new BehaviorSubject<IAppState>({
-    payment: null,
-    tariff: null,
-    addressFrom: null,
-    addressTo: null,
+    payment: {} as IPayment,
+    tariff: {} as ITariff,
+    addressFrom: {} as IAddress,
+    addressTo: {} as IAddress,
   });
 
   sendClickEvent() {}
 
   updateRoute() {
+    console.log(this.subject$.getValue());
     this.router.navigate(['/order'], {
       queryParams: {
         addressFrom: this.subject$.getValue().addressFrom?.title,
         addressTo: this.subject$.getValue().addressTo?.title,
-        payment: this.subject$.getValue().payment?.paymentMethods[0].name,
-        tariff:
-          this.subject$.getValue().tariff?.info.tariffGroups[0].tariffs[0].name,
+        paymentType: this.subject$.getValue().payment?.paymentMethods[0].type,
+        tariffId: this.subject$.getValue().tariff?.classId,
       },
     });
   }
@@ -34,7 +38,7 @@ export class AppStateService {
     this.updateRoute();
   }
 
-  getState(): Observable<IAppState | undefined> {
+  getState(): Observable<IAppState> {
     return this.subject$.asObservable();
   }
 
