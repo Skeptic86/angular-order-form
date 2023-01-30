@@ -61,6 +61,7 @@ export class TariffComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('data', this.route.data);
     this.getDefault()
       .pipe
       // tap((_) => {

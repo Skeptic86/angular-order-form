@@ -20,7 +20,7 @@ export class AppStateService {
 
   sendClickEvent() {}
 
-  updateRoute() {
+  private updateRoute() {
     console.log(this.subject$.getValue());
     this.router.navigate(['/order'], {
       queryParams: {
@@ -29,6 +29,7 @@ export class AppStateService {
         paymentType: this.subject$.getValue().payment?.paymentMethods[0].type,
         tariffId: this.subject$.getValue().tariff?.classId,
       },
+      relativeTo: this.route,
     });
   }
 

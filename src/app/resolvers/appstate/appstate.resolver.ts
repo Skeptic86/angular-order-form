@@ -12,7 +12,7 @@ import { Observable, of } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class AppstateResolver implements Resolve<IAppState> {
+export class AppstateResolver implements Resolve<boolean> {
   constructor(private appStateService: AppStateService) {}
 
   private ConvertStringToNumber(input: string | null) {
@@ -20,10 +20,8 @@ export class AppstateResolver implements Resolve<IAppState> {
     return Number(input);
   }
 
-  resolve(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<IAppState> | Promise<IAppState> | IAppState {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    console.log('resolve');
     const paramState: IAppState = {
       tariff: {
         classId: this.ConvertStringToNumber(route.paramMap.get('classId')),
@@ -47,6 +45,7 @@ export class AppstateResolver implements Resolve<IAppState> {
         house: '',
       },
     };
-    return this.appStateService.getState();
+    this.appStateService.setAppState(paramState);
+    return true;
   }
 }
