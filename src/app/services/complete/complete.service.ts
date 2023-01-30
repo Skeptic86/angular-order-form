@@ -4,10 +4,9 @@ import { catchError, throwError } from 'rxjs';
 import { IAddress } from 'src/app/interfaces/address.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CompleteService {
-
   options: string[] = ['One', 'Two', 'Three'];
 
   // getOptions(): string[] {
@@ -16,11 +15,10 @@ export class CompleteService {
 
   private readonly jsonURL = 'http://localhost:3000/addresses';
 
-  getOptions() {
-    return this.http.get<IAddress[]>(this.jsonURL)
-    .pipe(
-      catchError(this.handleError)
-    )
+  getAddresses() {
+    return this.http
+      .get<IAddress[]>(this.jsonURL)
+      .pipe(catchError(this.handleError));
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -31,11 +29,15 @@ export class CompleteService {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong.
       console.error(
-        `Backend returned code ${error.status}, body was: `, error.error);
+        `Backend returned code ${error.status}, body was: `,
+        error.error
+      );
     }
     // Return an observable with a user-facing error message.
-    return throwError(() => new Error('Something bad happened; please try again later.'));
+    return throwError(
+      () => new Error('Something bad happened; please try again later.')
+    );
   }
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 }

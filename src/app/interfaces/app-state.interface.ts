@@ -3,8 +3,8 @@ import { ITariff } from './tariff.interface';
 import { IPayment } from './payment.interface';
 
 export interface IAppState {
-  payment: IPayment;
-  tariff: ITariff;
-  addressFrom: IAddress;
-  addressTo: IAddress;
+  payment: IPayment | undefined;
+  tariff: ITariff | undefined;
+  addressFrom: IAddress | undefined;
+  addressTo: IAddress | undefined;
 }
