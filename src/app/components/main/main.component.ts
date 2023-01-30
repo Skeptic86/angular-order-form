@@ -1,3 +1,4 @@
+import { FormService } from './../../services/form/form.service';
 import { IAddress } from 'src/app/interfaces/address.interface';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
@@ -20,7 +21,9 @@ export class MainComponent implements OnInit {
     this.toAddress = temp;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.formService.formInit();
+  }
 
   setAddress(address: Partial<IAppState>) {
     if (address.addressFrom?.title || address.addressFrom?.title === '') {
@@ -37,7 +40,8 @@ export class MainComponent implements OnInit {
 
   constructor(
     private appStateService: AppStateService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private formService: FormService
   ) {}
 
   drop(event: CdkDragDrop<string[]>) {

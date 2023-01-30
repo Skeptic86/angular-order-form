@@ -3,7 +3,7 @@ export interface IPayment {
   paymentMethods: IPaymentMethod[];
 }
 
-interface IPaymentMethod {
+export interface IPaymentMethod {
   name: string;
   type: string;
   bankCards: IBankCards[];

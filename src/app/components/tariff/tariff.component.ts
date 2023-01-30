@@ -63,15 +63,15 @@ export class TariffComponent implements OnInit {
   ngOnInit() {
     console.log('data', this.route.data);
     this.getDefault()
-      .pipe
-      // tap((_) => {
-      //   const tariffIdURLParam =
-      //     this.route.snapshot.queryParamMap.get('tariffId');
-      //   const nmbr = this.ConvertStringToNumber(tariffIdURLParam);
-      //   console.log('tariff str nmbr', tariffIdURLParam, nmbr);
-      //   this.setTariffInit(nmbr);
-      // })
-      ()
+      .pipe(
+        tap((_) => {
+          const tariffIdURLParam =
+            this.route.snapshot.queryParamMap.get('tariffId');
+          const nmbr = this.ConvertStringToNumber(tariffIdURLParam);
+          console.log('tariff str nmbr', tariffIdURLParam, nmbr);
+          this.setTariffInit(nmbr);
+        })
+      )
       .subscribe((data: IDefault) => {
         this.data = data;
       });
