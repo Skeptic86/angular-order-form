@@ -8,33 +8,35 @@ import { PaymentChooseService } from './../payment-choose/payment-choose.service
 import { CompleteService } from './../complete/complete.service';
 import { TariffService } from './../tariff/tariff.service';
 import { Injectable } from '@angular/core';
-import { Observable, tap, Subject } from 'rxjs';
+import {
+  Observable,
+  tap,
+  Subject,
+  BehaviorSubject,
+  forkJoin,
+  catchError,
+  of,
+} from 'rxjs';
 import { ITariff } from 'src/app/interfaces/tariff.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FormService {
-  private payment?: Subject<IPayment>;
-  private tariffInfo?: Subject<IDefault>;
-  private addresses?: Subject<IAddress[]>;
+  private payment$$ = new BehaviorSubject<IPayment | null>(null);
+  private tariffInfo$$ = new BehaviorSubject<IDefault | null>(null);
+  private addresses$$ = new BehaviorSubject<IAddress[] | null>(null);
 
   private getPayment(): Observable<IPayment> {
-    return this.paymentChooseService
-      .getPayment()
-      .pipe(tap((value) => (this.payment = value)));
+    return this.paymentChooseService.getPayment();
   }
 
   private getDefault(): Observable<IDefault> {
-    return this.tariffService
-      .getTariffGroupsInfo()
-      .pipe(tap((value) => (this.tariffInfo = value)));
+    return this.tariffService.getTariffGroupsInfo();
   }
 
-  private getAddresses() {
-    return this.completeService
-      .getAddresses()
-      .pipe(tap((value) => (this.addresses = value)));
+  private getAddresses(): Observable<IAddress[]> {
+    return this.completeService.getAddresses();
   }
 
   private ConvertStringToNumber(input: string | null) {
@@ -49,28 +51,26 @@ export class FormService {
   private addressFrom = this.route.snapshot.paramMap.get('addressFrom');
   private addressTo = this.route.snapshot.paramMap.get('addressTo');
 
-  private findPaymentMethodByType(type: string | null) {
+  private findPaymentMethodByType(payment: IPayment, type: string | null) {
     if (type !== null) {
-      console.log('pay', this.payment);
-      return this.payment?.paymentMethods.find((elem) => elem.type === type);
+      return payment?.paymentMethods.find((elem) => elem.type === type);
     }
     return {} as IPaymentMethod;
   }
 
-  private findAddressByTitle(title: string | null) {
+  private findAddressByTitle(addresses: IAddress[], title: string | null) {
     if (title !== null) {
-      console.log('addresses', this.addresses);
-      return this.addresses?.find((address) => address.title === title);
+      console.log('addresses', addresses);
+      return addresses.find((address) => address.title === title);
     }
     return {} as IAddress;
   }
 
-  private findTarrifNameById(id: number) {
+  private findTarrifNameById(tariffInfo: IDefault, id: number) {
     if (!isNaN(id)) {
       let temp: ITariff | undefined;
       let res: ITariff | undefined;
-      console.log('tariffs', this.tariffInfo);
-      this.tariffInfo?.info.tariffGroups.forEach((elem) => {
+      tariffInfo?.info.tariffGroups.forEach((elem) => {
         temp = elem.tariffs.find((tariff) => tariff.classId === id);
         if (temp) {
           res = temp;
@@ -90,27 +90,57 @@ export class FormService {
       this.route.snapshot.queryParamMap.get('addressFrom');
     const addressToURLParam =
       this.route.snapshot.queryParamMap.get('addressTo');
-    console.log(
-      'params: ',
-      numberTarrifIdURL,
-      paymentTypeURLParam,
-      addressFromURLParam
-    );
 
     const paramState: IAppState = {
-      tariff: this.findTarrifNameById(numberTarrifIdURL),
+      tariff: this.findTarrifNameById(
+        this.tariffInfo$$.getValue()!,
+        numberTarrifIdURL
+      ),
       payment: {
-        paymentMethods: [this.findPaymentMethodByType(paymentTypeURLParam)!],
+        paymentMethods: [
+          this.findPaymentMethodByType(
+            this.payment$$.getValue()!,
+            paymentTypeURLParam
+          )!,
+        ],
       },
-      addressFrom: this.findAddressByTitle(addressFromURLParam),
-      addressTo: this.findAddressByTitle(addressToURLParam),
+      addressFrom: this.findAddressByTitle(
+        this.addresses$$.getValue()!,
+        addressFromURLParam
+      ),
+      addressTo: this.findAddressByTitle(
+        this.addresses$$.getValue()!,
+        addressToURLParam
+      ),
     };
     return paramState;
   }
 
   formInit() {
-    console.log('appstate from url', this.getAppStateFromURL());
-    this.appStateService.setAppState(this.getAppStateFromURL());
+    forkJoin({
+      tariffs: this.getDefault(),
+      payments: this.getPayment(),
+      addresses: this.getAddresses(),
+    })
+      .pipe(
+        catchError((error) => of(error)),
+        tap(({ tariffs, payments, addresses }) => {
+          this.tariffInfo$$.next(tariffs);
+          this.payment$$.next(payments);
+          this.addresses$$.next(addresses);
+          this.appStateService.setAppState(this.getAppStateFromURL());
+        })
+      )
+      .subscribe();
+    // this.getAddresses().subscribe((value: IAddress[]) => {
+    //   this.addresses$$?.next(value);
+    // });
+    // this.getDefault().subscribe((value: IDefault) => {
+    //   this.tariffInfo$$?.next(value);
+    // });
+    // this.getPayment().subscribe((value: IPayment) => {
+    //   this.payment$$?.next(value);
+    // });
   }
 
   constructor(
@@ -119,15 +149,5 @@ export class FormService {
     private paymentChooseService: PaymentChooseService,
     private route: ActivatedRoute,
     private appStateService: AppStateService
-  ) {
-    this.getAddresses().subscribe((value: IAddress[]) => {
-      this.addresses = value;
-    });
-    this.getDefault().subscribe((value: IDefault) => {
-      this.tariffInfo = value;
-    });
-    this.getPayment().subscribe((value: IPayment) => {
-      this.payment = value;
-    });
-  }
+  ) {}
 }

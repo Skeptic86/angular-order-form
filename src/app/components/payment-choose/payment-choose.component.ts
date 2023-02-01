@@ -60,13 +60,10 @@ export class PaymentChooseComponent implements OnInit {
         tap((_) => {
           const paymentTypeURLParam =
             this.route.snapshot.queryParamMap.get('paymentType');
-          console.log('url', paymentTypeURLParam);
           this.setPaymentInit(paymentTypeURLParam);
         })
       )
-      .subscribe((data: IPayment) => {
-        this.payment = data;
-      });
+      .subscribe();
   }
 
   constructor(

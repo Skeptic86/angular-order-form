@@ -61,28 +61,22 @@ export class TariffComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('data', this.route.data);
     this.getDefault()
       .pipe(
         tap((_) => {
           const tariffIdURLParam =
             this.route.snapshot.queryParamMap.get('tariffId');
           const nmbr = this.ConvertStringToNumber(tariffIdURLParam);
-          console.log('tariff str nmbr', tariffIdURLParam, nmbr);
           this.setTariffInit(nmbr);
         })
       )
-      .subscribe((data: IDefault) => {
-        this.data = data;
-      });
+      .subscribe();
   }
 
   private setTariffInit(tarrifIdUrl: number | null) {
     if (tarrifIdUrl) {
       const name = this.findNameById(tarrifIdUrl);
       const code = this.findCodeById(tarrifIdUrl);
-      console.log('name: ', name);
-      console.log('code', code);
       if (name && code) {
         this.changeTarrif(code, name, tarrifIdUrl);
       }

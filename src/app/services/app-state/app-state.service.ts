@@ -21,7 +21,6 @@ export class AppStateService {
   sendClickEvent() {}
 
   private updateRoute() {
-    console.log(this.subject$.getValue());
     this.router.navigate(['/order'], {
       queryParams: {
         addressFrom: this.subject$.getValue().addressFrom?.title,
