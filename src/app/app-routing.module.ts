@@ -1,16 +1,14 @@
-import { MainComponent } from './components/main/main.component';
-import { AppStateService } from './services/app-state/app-state.service';
-import { OrderButtonComponent } from './components/order-button/order-button.component';
-import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { AppComponent } from './app.component';
-import { AppModule } from './app.module';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
     path: 'order',
-    component: MainComponent,
+    loadChildren: () =>
+      import('./modules/order-form/order-form.module').then(
+        (m) => m.OrderFormModule
+      ),
   },
   {
     path: '',
@@ -25,5 +23,5 @@ const routes: Routes = [
   exports: [RouterModule],
 })
 export class AppRoutingModule {
-  constructor(private appStateService: AppStateService) {}
+  constructor() {}
 }

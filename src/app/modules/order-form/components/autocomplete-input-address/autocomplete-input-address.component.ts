@@ -1,7 +1,7 @@
 import { ActivatedRoute } from '@angular/router';
-import { AddressTypeEnum } from './../../enums/address-type.enum';
-import { IAppState } from './../../interfaces/app-state.interface';
-import { IAddress } from '../../interfaces/address.interface';
+import { AddressTypeEnum } from './../../../../enums/address-type.enum';
+import { IAppState } from './../../../../interfaces/app-state.interface';
+import { IAddress } from '../../../../interfaces/address.interface';
 import { CompleteService } from '../../services/complete/complete.service';
 import { Component, EventEmitter, OnInit, Output, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
@@ -10,10 +10,9 @@ import {
   debounceTime,
   distinctUntilChanged,
   map,
-  skip,
   startWith,
 } from 'rxjs/operators';
-import { GetPriceService } from 'src/app/services/get-price/get-price.service';
+import { GetPriceService } from 'src/app/modules/order-form/services/get-price/get-price.service';
 import { AppStateService } from 'src/app/services/app-state/app-state.service';
 
 @Component({

@@ -1,25 +1,20 @@
-import { IPayment } from './../../interfaces/payment.interface';
+import { IPayment } from './../../../../interfaces/payment.interface';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { throwError, catchError } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PaymentChooseService {
+  payment: IPayment = {} as IPayment;
 
-  
-
-  payment: IPayment = {} as IPayment
-
-
-  private readonly jsonURL = 'http://localhost:3000/authInfo'
+  private readonly jsonURL = 'http://localhost:3000/authInfo';
 
   getPayment() {
-    return this.http.get<IPayment>(this.jsonURL)
-    .pipe(
-      catchError(this.handleError)
-    )
+    return this.http
+      .get<IPayment>(this.jsonURL)
+      .pipe(catchError(this.handleError));
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -30,11 +25,15 @@ export class PaymentChooseService {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong.
       console.error(
-        `Backend returned code ${error.status}, body was: `, error.error);
+        `Backend returned code ${error.status}, body was: `,
+        error.error
+      );
     }
     // Return an observable with a user-facing error message.
-    return throwError(() => new Error('Something bad happened; please try again later.'));
-  }  
+    return throwError(
+      () => new Error('Something bad happened; please try again later.')
+    );
+  }
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 }

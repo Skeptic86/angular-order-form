@@ -1,14 +1,14 @@
 import { ActivatedRoute } from '@angular/router';
 import { Observable, tap } from 'rxjs';
-import { ITariff } from './../../interfaces/tariff.interface';
-import { IAppState } from './../../interfaces/app-state.interface';
-import { AppStateService } from './../../services/app-state/app-state.service';
+import { ITariff } from './../../../../interfaces/tariff.interface';
+import { IAppState } from './../../../../interfaces/app-state.interface';
+import { AppStateService } from './../../../../services/app-state/app-state.service';
 import { GetPriceService } from '../../services/get-price/get-price.service';
-import { IDefaultInfo } from '../../interfaces/default-info.interface';
+import { IDefaultInfo } from '../../../../interfaces/default-info.interface';
 import { TariffService } from './../../services/tariff/tariff.service';
 import { Component, OnInit } from '@angular/core';
 import { IDefault } from 'src/app/interfaces/default.interface';
-import { CodeIconsEnum } from '../../enums/tariff-code-to-icons-enum';
+import { CodeIconsEnum } from '../../../../enums/tariff-code-to-icons-enum';
 
 @Component({
   selector: 'app-tariff',

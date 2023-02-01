@@ -1,5 +1,5 @@
 import { GetPriceService } from '../../services/get-price/get-price.service';
-import { ICalcPrice } from './../../interfaces/calc-price.interface';
+import { ICalcPrice } from './../../../../interfaces/calc-price.interface';
 import { OrderButtonService } from './../../services/order-button/order-button.service';
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';

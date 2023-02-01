@@ -1,60 +1,20 @@
-import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AutocompleteInputAddressComponent } from './components/autocomplete-input-address/autocomplete-input-address.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatInputModule} from '@angular/material/input';
-import { OrderButtonComponent } from './components/order-button/order-button.component';
-import {MatButtonModule} from '@angular/material/button';
-import { PaymentChooseComponent } from './components/payment-choose/payment-choose.component';
-import {MatSelectModule} from '@angular/material/select';
-import {MatIconModule} from '@angular/material/icon';
-import {MatMenuModule} from '@angular/material/menu';
-import { TariffComponent } from './components/tariff/tariff.component';
-import { TariffCodeToIconNamePipe } from './pipes/tarrif-code-to-icon-name/tariffCodeToIconName.pipe';
-import { ChoseActiveCardPipe } from './pipes/chose-active-card/chose-active-card.pipe';
-import {DragDropModule} from '@angular/cdk/drag-drop';
-import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { MainComponent } from './components/main/main.component';
-
-
-
-
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { OrderFormModule } from './modules/order-form/order-form.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    AutocompleteInputAddressComponent,
-    OrderButtonComponent,
-    PaymentChooseComponent,
-    TariffComponent,
-    TariffCodeToIconNamePipe,
-    ChoseActiveCardPipe,
-    PageNotFoundComponent,
-    MainComponent
-  ],
+  declarations: [AppComponent, PageNotFoundComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    OrderFormModule,
     BrowserAnimationsModule,
-    MatAutocompleteModule,
-    MatFormFieldModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatButtonModule,
-    MatSelectModule,
-    MatIconModule,
-    MatMenuModule,
-    HttpClientModule,
-    DragDropModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

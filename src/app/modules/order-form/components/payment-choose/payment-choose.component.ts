@@ -1,11 +1,10 @@
 import { ActivatedRoute } from '@angular/router';
-import { AppStateService } from './../../services/app-state/app-state.service';
-import { IPayment } from './../../interfaces/payment.interface';
+import { AppStateService } from './../../../../services/app-state/app-state.service';
+import { IPayment } from './../../../../interfaces/payment.interface';
 import { PaymentChooseService } from './../../services/payment-choose/payment-choose.service';
 import { Component, OnInit } from '@angular/core';
-import { PaymentTypeIconsEnum } from '../../enums/payment-type-to-icons-enum';
-import { GetPriceService } from 'src/app/services/get-price/get-price.service';
-import { distinctUntilChanged, switchMap, tap, Observable } from 'rxjs';
+import { PaymentTypeIconsEnum } from '../../../../enums/payment-type-to-icons-enum';
+import { tap, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-payment-choose',

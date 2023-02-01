@@ -1,9 +1,12 @@
 import { AppStateService } from 'src/app/services/app-state/app-state.service';
 import { ActivatedRoute } from '@angular/router';
-import { IAddress } from './../../interfaces/address.interface';
-import { IDefault } from './../../interfaces/default.interface';
-import { IPayment, IPaymentMethod } from './../../interfaces/payment.interface';
-import { IAppState } from './../../interfaces/app-state.interface';
+import { IAddress } from './../../../../interfaces/address.interface';
+import { IDefault } from './../../../../interfaces/default.interface';
+import {
+  IPayment,
+  IPaymentMethod,
+} from './../../../../interfaces/payment.interface';
+import { IAppState } from './../../../../interfaces/app-state.interface';
 import { PaymentChooseService } from './../payment-choose/payment-choose.service';
 import { CompleteService } from './../complete/complete.service';
 import { TariffService } from './../tariff/tariff.service';
@@ -11,7 +14,6 @@ import { Injectable } from '@angular/core';
 import {
   Observable,
   tap,
-  Subject,
   BehaviorSubject,
   forkJoin,
   catchError,
