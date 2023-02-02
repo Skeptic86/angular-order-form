@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MapDialogComponent } from '../map-dialog/map-dialog.component';
 
 @Component({
   selector: 'app-map-button',
@@ -6,7 +8,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./map-button.component.scss'],
 })
 export class MapButtonComponent {
-  openMapOnClick() {
-    alert('map opened');
+  constructor(public dialog: MatDialog) {}
+
+  openMapDialog() {
+    const dialogRef = this.dialog.open(MapDialogComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      // console.log(`Dialog result: ${result}`);
+    });
   }
 }

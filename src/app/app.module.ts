@@ -1,4 +1,3 @@
-import { MapModule } from './modules/map/map.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -14,7 +13,6 @@ import { OrderFormModule } from './modules/order-form/order-form.module';
     AppRoutingModule,
     OrderFormModule,
     BrowserAnimationsModule,
-    MapModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

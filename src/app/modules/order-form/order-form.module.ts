@@ -1,3 +1,4 @@
+import { MapModule } from './../map/map.module';
 import { AutocompleteInputAddressComponent } from './components/autocomplete-input-address/autocomplete-input-address.component';
 import { TariffComponent } from './components/tariff/tariff.component';
 import { PaymentChooseComponent } from './components/payment-choose/payment-choose.component';
@@ -44,6 +45,7 @@ import { OrderFormRoutingModule } from './order-form-routing.module';
     HttpClientModule,
     DragDropModule,
     OrderFormRoutingModule,
+    MapModule,
   ],
 })
 export class OrderFormModule {}
