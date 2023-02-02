@@ -46,13 +46,6 @@ export class FormService {
     return Number(input);
   }
 
-  private classId = this.ConvertStringToNumber(
-    this.route.snapshot.paramMap.get('classId')
-  );
-  private paymentType = this.route.snapshot.paramMap.get('paymentType');
-  private addressFrom = this.route.snapshot.paramMap.get('addressFrom');
-  private addressTo = this.route.snapshot.paramMap.get('addressTo');
-
   private findPaymentMethodByType(payment: IPayment, type: string | null) {
     if (type !== null) {
       return payment?.paymentMethods.find((elem) => elem.type === type);
@@ -62,7 +55,6 @@ export class FormService {
 
   private findAddressByTitle(addresses: IAddress[], title: string | null) {
     if (title !== null) {
-      console.log('addresses', addresses);
       return addresses.find((address) => address.title === title);
     }
     return {} as IAddress;

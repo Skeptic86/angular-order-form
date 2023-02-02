@@ -1,10 +1,11 @@
+import { IAddress } from './../../../../interfaces/address.interface';
 import { FormService } from './../../services/form/form.service';
-import { IAddress } from 'src/app/interfaces/address.interface';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IAppState } from 'src/app/interfaces/app-state.interface';
 import { AppStateService } from 'src/app/services/app-state/app-state.service';
+import { take, tap } from 'rxjs';
 
 @Component({
   selector: 'app-main',
@@ -27,31 +28,39 @@ export class MainComponent implements OnInit {
 
   setAddress(address: Partial<IAppState>) {
     if (address.addressFrom?.title || address.addressFrom?.title === '') {
-      this.fromAddress = address.addressFrom.title;
+      const addressFromAppState: Partial<IAppState> = {
+        addressFrom: { title: address.addressFrom.title } as IAddress,
+      };
+      this.appStateService.setAppState(addressFromAppState);
     } else if (address.addressTo?.title || address.addressTo?.title === '') {
-      this.toAddress = address.addressTo?.title;
+      const addressToAppState: Partial<IAppState> = {
+        addressTo: { title: address.addressTo.title } as IAddress,
+      };
+      this.appStateService.setAppState(addressToAppState);
     }
-    const addresses: Partial<IAppState> = {
-      addressTo: { title: this.toAddress } as IAddress,
-      addressFrom: { title: this.fromAddress } as IAddress,
-    };
-    this.appStateService.setAppState(addresses);
   }
 
   constructor(
     private appStateService: AppStateService,
-    private route: ActivatedRoute,
     private formService: FormService
   ) {}
 
   drop(event: CdkDragDrop<string[]>) {
     if (event.currentIndex !== event.previousIndex) {
-      this.swapAddresses();
-      const addresses: Partial<IAppState> = {
-        addressTo: { title: this.toAddress } as IAddress,
-        addressFrom: { title: this.fromAddress } as IAddress,
-      };
-      this.appStateService.setAppState(addresses);
+      const currentState = this.appStateService
+        .getState()
+        .pipe(
+          take(1),
+          tap((value) => {
+            const addresses: Partial<IAppState> = {
+              addressTo: { title: value.addressFrom?.title! },
+              addressFrom: { title: value.addressTo?.title! },
+            };
+            this.appStateService.setAppState(addresses);
+            console.log(1);
+          })
+        )
+        .subscribe();
     }
   }
 }

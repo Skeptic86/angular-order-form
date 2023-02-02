@@ -68,8 +68,7 @@ export class AutocompleteInputAddressComponent implements OnInit {
   constructor(
     private completeService: CompleteService,
     private getPriceService: GetPriceService,
-    private appStateService: AppStateService,
-    private route: ActivatedRoute
+    private appStateService: AppStateService
   ) {
     this.clickEventSubscription = this.appStateService
       .getState()
@@ -82,13 +81,13 @@ export class AutocompleteInputAddressComponent implements OnInit {
           }
         })
       )
-      .subscribe((value) => {
-        if (value?.addressFrom || value?.addressTo) {
+      .subscribe((value: IAppState) => {
+        if (value?.addressFrom?.title || value?.addressTo?.title) {
           if (this.direction === AddressTypeEnum.To) {
-            this.inputValue = value?.addressTo!.title!;
+            this.inputValue = value!.addressTo!.title!;
             console.log(value);
           } else {
-            this.inputValue = value?.addressFrom!.title!;
+            this.inputValue = value!.addressFrom!.title!;
             console.log(value);
           }
         }
