@@ -42,5 +42,9 @@ export class AppStateService {
     return this.subject$.asObservable();
   }
 
+  getValue(): BehaviorSubject<IAppState> {
+    return this.subject$;
+  }
+
   constructor(private route: ActivatedRoute, private router: Router) {}
 }

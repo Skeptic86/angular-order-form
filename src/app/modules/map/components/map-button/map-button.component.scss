@@ -1,0 +1,24 @@
+.map-button {
+    width: 150px;
+    height: 60px;
+    margin: 0 20px;
+    backface-visibility: hidden;
+    border-radius: 15px;
+    border-width: 0;
+    color: #000;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1.15;
+    outline: none;
+    overflow: hidden;
+    text-align: center;
+    text-transform: none;
+    transform: translateZ(0);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    &:hover, &:focus {
+        box-shadow: 0 0.5em 0.5em -0.4em #00BFFF;
+        transform: translateY(-0.25em);
+    }
+}

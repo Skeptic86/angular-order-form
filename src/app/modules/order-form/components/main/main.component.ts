@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IAppState } from 'src/app/interfaces/app-state.interface';
 import { AppStateService } from 'src/app/services/app-state/app-state.service';
-import { take, tap } from 'rxjs';
+import { first, take, tap } from 'rxjs';
 
 @Component({
   selector: 'app-main',
@@ -50,7 +50,7 @@ export class MainComponent implements OnInit {
       const currentState = this.appStateService
         .getState()
         .pipe(
-          take(1),
+          first(),
           tap((value) => {
             const addresses: Partial<IAppState> = {
               addressTo: { title: value.addressFrom?.title! },

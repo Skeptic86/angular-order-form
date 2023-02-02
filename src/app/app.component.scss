@@ -4,62 +4,17 @@
     height: 100%;
 }
 
-.form {
-    width: 350px;
-    height: 300px;
-    margin-top: 280px;
-    background-color: #fff;
-    border: 2px thin #f0f8ff;
-    border-radius: 8px;
-}
-
-.inputs {
-    margin-top: 40px;
-}
 
 
 .container {
     max-width: 1200px;
     margin: 0 360px;
-    padding: 0 15px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.buttons {
-    width: 300px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 1px 0 20px 20px;
+.map-button {
+    margin-top: 20px;
 }
-
-.to, .from {
-    display: flex;
-    align-items: center;
-}
-
-.from-img, .to-img, .to-icon, .from-icon{
-    width:20px ;
-    margin:0 0 10px 15px;
-}
-
-.from-icon, .to-icon {
-    cursor: move;
-}
-
-// ::ng-deep .mat-focused .mat-form-field-label {
-//     /*change color of label*/
-//     color: green !important;
-// }
-  
-// ::ng-deep.mat-form-field-underline {
-//     /*change color of underline*/
-//     background-color: green !important;
-// } 
-  
-// ::ng-deep.mat-form-field-ripple {
-//    /*change color of underline when focused*/
-//    background-color: green !important;
-// }
