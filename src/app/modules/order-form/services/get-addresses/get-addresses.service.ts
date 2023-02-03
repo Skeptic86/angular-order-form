@@ -6,7 +6,7 @@ import { IAddress } from 'src/app/interfaces/address.interface';
 @Injectable({
   providedIn: 'root',
 })
-export class CompleteService {
+export class GetAddressesService {
   options: string[] = ['One', 'Two', 'Three'];
 
   // getOptions(): string[] {

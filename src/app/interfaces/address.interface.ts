@@ -5,4 +5,7 @@ export interface IAddress {
   };
   title: string | null;
   house?: string;
+  subtitle?: string;
+  latitude: number;
+  longitude: number;
 }

@@ -8,7 +8,7 @@ import {
 } from './../../../../interfaces/payment.interface';
 import { IAppState } from './../../../../interfaces/app-state.interface';
 import { PaymentChooseService } from './../payment-choose/payment-choose.service';
-import { CompleteService } from './../complete/complete.service';
+import { GetAddressesService } from '../get-addresses/get-addresses.service';
 import { TariffService } from './../tariff/tariff.service';
 import { Injectable } from '@angular/core';
 import {
@@ -38,7 +38,7 @@ export class FormService {
   }
 
   private getAddresses(): Observable<IAddress[]> {
-    return this.completeService.getAddresses();
+    return this.getAddressesService.getAddresses();
   }
 
   private ConvertStringToNumber(input: string | null) {
@@ -139,7 +139,7 @@ export class FormService {
 
   constructor(
     private tariffService: TariffService,
-    private completeService: CompleteService,
+    private getAddressesService: GetAddressesService,
     private paymentChooseService: PaymentChooseService,
     private route: ActivatedRoute,
     private appStateService: AppStateService

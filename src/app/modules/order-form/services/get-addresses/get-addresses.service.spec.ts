@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CompleteService } from './complete.service';
+import { GetAddressesService } from './get-addresses.service';
 
-describe('CompleteService', () => {
-  let service: CompleteService;
+describe('GetAddressesService', () => {
+  let service: GetAddressesService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(CompleteService);
+    service = TestBed.inject(GetAddressesService);
   });
 
   it('should be created', () => {

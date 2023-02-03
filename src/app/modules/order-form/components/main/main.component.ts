@@ -2,10 +2,9 @@ import { IAddress } from './../../../../interfaces/address.interface';
 import { FormService } from './../../services/form/form.service';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { IAppState } from 'src/app/interfaces/app-state.interface';
 import { AppStateService } from 'src/app/services/app-state/app-state.service';
-import { first, take, tap } from 'rxjs';
+import { first, tap } from 'rxjs';
 
 @Component({
   selector: 'app-main',
@@ -13,15 +12,6 @@ import { first, take, tap } from 'rxjs';
   styleUrls: ['./main.component.scss'],
 })
 export class MainComponent implements OnInit {
-  private fromAddress = '';
-  private toAddress = '';
-
-  private swapAddresses(): void {
-    const temp = this.fromAddress;
-    this.fromAddress = this.toAddress;
-    this.toAddress = temp;
-  }
-
   ngOnInit(): void {
     this.formService.formInit();
   }
@@ -29,12 +19,20 @@ export class MainComponent implements OnInit {
   setAddress(address: Partial<IAppState>) {
     if (address.addressFrom?.title || address.addressFrom?.title === '') {
       const addressFromAppState: Partial<IAppState> = {
-        addressFrom: { title: address.addressFrom.title } as IAddress,
+        addressFrom: {
+          title: address.addressFrom.title,
+          longitude: address.addressFrom.longitude,
+          latitude: address.addressFrom.latitude,
+        } as IAddress,
       };
       this.appStateService.setAppState(addressFromAppState);
     } else if (address.addressTo?.title || address.addressTo?.title === '') {
       const addressToAppState: Partial<IAppState> = {
-        addressTo: { title: address.addressTo.title } as IAddress,
+        addressTo: {
+          title: address.addressTo.title,
+          longitude: address.addressTo.longitude,
+          latitude: address.addressTo.latitude,
+        } as IAddress,
       };
       this.appStateService.setAppState(addressToAppState);
     }
@@ -47,14 +45,22 @@ export class MainComponent implements OnInit {
 
   drop(event: CdkDragDrop<string[]>) {
     if (event.currentIndex !== event.previousIndex) {
-      const currentState = this.appStateService
+      this.appStateService
         .getState()
         .pipe(
           first(),
           tap((value) => {
             const addresses: Partial<IAppState> = {
-              addressTo: { title: value.addressFrom?.title! },
-              addressFrom: { title: value.addressTo?.title! },
+              addressTo: {
+                title: value.addressFrom?.title!,
+                longitude: value.addressFrom?.longitude!,
+                latitude: value.addressFrom?.latitude!,
+              },
+              addressFrom: {
+                title: value.addressTo?.title!,
+                longitude: value.addressTo?.longitude!,
+                latitude: value.addressTo?.latitude!,
+              },
             };
             this.appStateService.setAppState(addresses);
             console.log(1);

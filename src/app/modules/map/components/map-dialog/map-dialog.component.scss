@@ -1,5 +1,5 @@
-.close-button {
-    width: 180px;
+.close-button, .done-button {
+    width: 150px;
     height: 35px;
     margin: 0 20px;
     backface-visibility: hidden;
@@ -19,7 +19,12 @@
     touch-action: manipulation;
 }
 
-h2 {
+.title {
     text-align: center;
-    padding-right: 25px;
+}
+
+.address {
+    font-size: 18px;
+    text-align: center;
+    font-weight:normal;
 }

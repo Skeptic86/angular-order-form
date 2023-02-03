@@ -2,7 +2,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AddressTypeEnum } from './../../../../enums/address-type.enum';
 import { IAppState } from './../../../../interfaces/app-state.interface';
 import { IAddress } from '../../../../interfaces/address.interface';
-import { CompleteService } from '../../services/complete/complete.service';
+import { GetAddressesService } from '../../services/get-addresses/get-addresses.service';
 import { Component, EventEmitter, OnInit, Output, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, Subscription, tap } from 'rxjs';
@@ -36,9 +36,18 @@ export class AutocompleteInputAddressComponent implements OnInit {
   }
 
   private getAddresses() {
-    return this.completeService.getAddresses().subscribe((data) => {
+    return this.getAddressesService.getAddresses().subscribe((data) => {
       this.addresses = data as IAddress[];
     });
+  }
+
+  private findLngLatViaTitle(title: string | null) {
+    const address = this.addresses.find((address) => address.title === title);
+    if (address && title) {
+      return [address?.longitude, address?.latitude];
+    } else {
+      return [65.53553704887027, 57.15114882108171];
+    }
   }
 
   ngOnInit() {
@@ -47,10 +56,23 @@ export class AutocompleteInputAddressComponent implements OnInit {
       debounceTime(2000),
       tap((value) => {
         this.getPriceService.sendClickEvent();
+        const lngLat = this.findLngLatViaTitle(value);
         if (this.direction === AddressTypeEnum.To) {
-          this.sendAddress({ addressTo: { title: value } as IAddress });
+          this.sendAddress({
+            addressTo: {
+              title: value,
+              longitude: lngLat[0],
+              latitude: lngLat[1],
+            } as IAddress,
+          });
         } else if (this.direction === AddressTypeEnum.From) {
-          this.sendAddress({ addressFrom: { title: value } as IAddress });
+          this.sendAddress({
+            addressFrom: {
+              title: value,
+              longitude: lngLat[0],
+              latitude: lngLat[1],
+            } as IAddress,
+          });
         }
       }),
       startWith(''),
@@ -66,7 +88,7 @@ export class AutocompleteInputAddressComponent implements OnInit {
   }
 
   constructor(
-    private completeService: CompleteService,
+    private getAddressesService: GetAddressesService,
     private getPriceService: GetPriceService,
     private appStateService: AppStateService
   ) {
