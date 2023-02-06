@@ -44,7 +44,6 @@ export class MapDialogComponent implements OnInit {
   ngOnInit(): void {
     const stateFromForm = this.appStateService.getStateValue();
     if (stateFromForm.addressFrom?.title?.length) {
-      console.log(1);
       this.map = new maplibregl.Map({
         container: 'map',
         style:

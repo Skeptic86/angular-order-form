@@ -15,10 +15,17 @@ export class GetAddressesService {
 
   private readonly jsonURL = 'http://localhost:3000/addresses';
 
+  private readonly jsonURLApi =
+    'https://dev-api.taxsee.com/client/v1/addresses?base=3';
+
   getAddresses() {
     return this.http
       .get<IAddress[]>(this.jsonURL)
       .pipe(catchError(this.handleError));
+  }
+
+  getAddressesApi() {
+    return this.http.get(this.jsonURLApi).pipe(catchError(this.handleError));
   }
 
   private handleError(error: HttpErrorResponse) {

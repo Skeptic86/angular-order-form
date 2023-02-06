@@ -28,11 +28,21 @@ export class AutocompleteInputAddressComponent implements OnInit {
   private addresses: IAddress[] = [];
   filteredAddresses!: Observable<IAddress[]>;
   clickEventSubscription: Subscription;
+  data$?: any;
 
   inputValue = '';
 
   sendAddress(value: Partial<IAppState>) {
     this.sendAddressEvent.emit(value);
+  }
+
+  private getAddressesApi() {
+    return this.getAddressesService.getAddressesApi().pipe(
+      tap((value) => {
+        this.data$ = value;
+        console.log(this.data$, value);
+      })
+    );
   }
 
   private getAddresses() {
@@ -51,6 +61,7 @@ export class AutocompleteInputAddressComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getAddressesApi().subscribe();
     this.getAddresses();
     this.filteredAddresses = this.autocompleteInput.valueChanges.pipe(
       debounceTime(2000),
@@ -107,10 +118,8 @@ export class AutocompleteInputAddressComponent implements OnInit {
         if (value?.addressFrom?.title || value?.addressTo?.title) {
           if (this.direction === AddressTypeEnum.To) {
             this.inputValue = value!.addressTo!.title!;
-            console.log(value);
           } else {
             this.inputValue = value!.addressFrom!.title!;
-            console.log(value);
           }
         }
       });

@@ -1,0 +1,3655 @@
+openapi: 3.0.0
+info:
+  title: 'Taxsee API'
+  version: 1.2.3
+servers:
+  -
+    url: 'https://dev-api.taxsee.com/client/v1/'
+    description: Development
+  -
+    url: 'https://api.taxsee.com/client/v1/'
+    description: 'Production RU'
+  -
+    url: 'https://api.taximaxim.ir/client/v1/'
+    description: 'Production IR'
+  -
+    url: 'https://api-sea.taximaxim.com/client/v1/'
+    description: 'Production SG'
+  -
+    url: 'https://api-latam.taximaxim.com/client/v1/'
+    description: 'Production US'
+  -
+    url: 'https://api-id.taximaxim.com/client/v1/'
+    description: 'Production ID'
+paths:
+  /addresses:
+    get:
+      tags:
+        - address
+      summary: 'Поиск адресов'
+      description: 'Опциональная аутентификация, при передаче аутентификационных данных ответ может быть персонализирован'
+      operationId: address_index
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          $ref: '#/components/parameters/udid'
+        -
+          name: base
+          in: query
+          required: true
+          schema:
+            type: integer
+          example: 1
+        -
+          name: q
+          in: query
+          description: 'строка для поиска, если не передан, для аутентифицированных пользователей вернется список сохраненных адресов (из шаблонов и поездок)'
+          required: false
+          schema:
+            type: string
+          example: Машиностроителей
+        -
+          name: place
+          in: query
+          description: 'идентификатор населенного пункта'
+          required: false
+          schema:
+            type: integer
+        -
+          name: guid
+          in: query
+          description: 'уникальный идентификатор заказа'
+          required: false
+          schema:
+            type: string
+          example: 4fb9c87d-8cd0-4a21-829c-122204042bba
+      responses:
+        '200':
+          description: Addresses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Address'
+      security:
+        - {  }
+        -
+          bearerAuth: []
+  /addresses/meet-points:
+    get:
+      tags:
+        - address
+      summary: 'Места всречи'
+      operationId: address_meet-points
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          $ref: '#/components/parameters/udid'
+        -
+          name: base
+          in: query
+          required: true
+          schema:
+            type: integer
+          example: 1
+        -
+          name: streetId
+          in: query
+          required: false
+          schema:
+            type: integer
+          example: 100453
+        -
+          name: house
+          in: query
+          required: false
+          schema:
+            type: string
+          example: '70'
+        -
+          name: quickId
+          in: query
+          required: false
+          schema:
+            type: integer
+          example: 100082
+      responses:
+        '200':
+          description: 'Список мест встречи'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /addresses/coordinates-info:
+    get:
+      tags:
+        - address
+      summary: 'Адрес по координатам'
+      operationId: address_coordinates-info
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          $ref: '#/components/parameters/udid'
+        -
+          name: base
+          in: query
+          required: false
+          schema:
+            type: integer
+          example: 1
+        -
+          name: guid
+          in: query
+          description: 'уникальный идентификатор заказа'
+          required: false
+          schema:
+            type: string
+          example: 4fb9c87d-8cd0-4a21-829c-122204042bba
+        -
+          name: latitude
+          in: query
+          required: true
+          schema:
+            type: number
+          example: 55.440135872209
+        -
+          name: longitude
+          in: query
+          required: true
+          schema:
+            type: number
+          example: 65.350196063518
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Address'
+        '404':
+          description: 'Address not found'
+  /auth/send-code:
+    post:
+      tags:
+        - auth
+      summary: 'Отправка кода подтверждения'
+      description: 'Отправка кода подтверждения номера телефона. Полученный этим методом JWT-токен может использоваться только в действии auth/confirm-code'
+      operationId: auth_send-code
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          $ref: '#/components/parameters/udid'
+        -
+          name: base
+          in: query
+          description: 'обязателен, если не передан в теле запроса'
+          required: false
+          schema:
+            type: integer
+          example: 1
+      requestBody:
+        description: 'Параметры udid и base в теле запроса - имеют приоритет, над query-параметрами. type - способ отправки кода, зависит от подразделения, см. HelloResult.sendCodeTypes[n].key'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginForm'
+            example:
+              phone: '77770000001'
+              type: 0
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LoginForm'
+      responses:
+        '200':
+          description: 'успешная отправка кода для подтверждения номера телефона'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSendCodeResult'
+        '422':
+          description: 'не пройдена валидация или сервис вернул ошибку'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSendCodeResult'
+        '500':
+          description: 'неизвестная ошибка'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSendCodeResult'
+  /auth/confirm-code:
+    post:
+      tags:
+        - auth
+      description: 'Для аутентификации должен быть использован токен полученный в /auth/send-code'
+      operationId: auth_confirm-code
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          name: expand
+          in: query
+          required: false
+          schema:
+            description: 'tariffGroups.tariffs.services,profile,templates,paymentMethods.bankCards'
+            type: string
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                code:
+                  type: string
+              type: object
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                code:
+                  type: string
+              type: object
+      responses:
+        '200':
+          description: 'Токен для аутентификации и данные по подразделению и пользователю'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserHelloResult'
+        '401':
+          description: 'не передан или передан неверный токен из auth/send-code'
+          content:
+            application/json:
+              schema:
+                type: object
+        '422':
+          description: 'не пройдена валидация или сервис вернул ошибку'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserHelloResult'
+        '500':
+          description: 'неизвестная ошибка'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserHelloResult'
+      security:
+        -
+          bearerAuth: []
+  /auth/change-base:
+    post:
+      tags:
+        - auth
+      description: 'Смена подразделения'
+      operationId: auth_change-base
+      parameters:
+        -
+          name: base
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Новый токен для аутентификации и данные по подразделению и пользователю'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserHelloResult'
+        '401':
+          description: 'не передан или передан неверный токен из auth/send-code'
+          content:
+            application/json:
+              schema:
+                type: object
+        '422':
+          description: 'не пройдена валидация или сервис вернул ошибку'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserHelloResult'
+        '500':
+          description: 'неизвестная ошибка'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserHelloResult'
+      security:
+        -
+          bearerAuth: []
+  /auth/info:
+    post:
+      tags:
+        - auth
+      description: 'Данные по подразделению и пользователю'
+      operationId: auth_info
+      responses:
+        '200':
+          description: 'Данные по подразделению и пользователю'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserHelloResult'
+        '422':
+          description: 'не пройдена валидация или сервис вернул ошибку'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserHelloResult'
+        '500':
+          description: 'неизвестная ошибка'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserHelloResult'
+      security:
+        -
+          bearerAuth: []
+  /bank-cards:
+    get:
+      tags:
+        - bank-cards
+      operationId: bank-card_index
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          name: account
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Список банковских карт'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/taxsee.client.service.BankCard'
+      security:
+        -
+          bearerAuth: []
+  /bank-cards/create:
+    post:
+      tags:
+        - bank-cards
+      operationId: bank-card_create
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          name: account
+          in: query
+          required: false
+          schema:
+            type: integer
+        -
+          name: callback
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankCardBindingResult'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+        -
+          bearerAuth: []
+  /bank-cards/set:
+    post:
+      tags:
+        - bank-cards
+      operationId: bank-card_set
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          name: account
+          in: query
+          required: true
+          schema:
+            type: integer
+        -
+          name: binding
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimpleResult'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+        -
+          bearerAuth: []
+  /bank-cards/unset:
+    post:
+      tags:
+        - bank-cards
+      operationId: bank-card_unset
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          name: account
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimpleResult'
+      security:
+        -
+          bearerAuth: []
+  /bank-cards/delete:
+    post:
+      tags:
+        - bank-cards
+      operationId: bank-card_delete
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          name: account
+          in: query
+          required: true
+          schema:
+            type: integer
+        -
+          name: binding
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankCardBindingResult'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+        -
+          bearerAuth: []
+  /bases:
+    get:
+      tags:
+        - base
+      description: 'Список подразделений'
+      operationId: base_index
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          $ref: '#/components/parameters/udid'
+        -
+          name: country
+          in: query
+          required: true
+          schema:
+            type: string
+        -
+          name: q
+          in: query
+          description: 'Фильтр по названию'
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'список подразделений'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Base'
+  /bases/get-by-coordinates:
+    get:
+      tags:
+        - base
+      description: 'Подразделение по координатам'
+      operationId: base_get-by-coordinates
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          $ref: '#/components/parameters/udid'
+        -
+          name: country
+          in: query
+          required: true
+          schema:
+            type: string
+        -
+          name: latitude
+          in: query
+          required: true
+          schema:
+            type: number
+        -
+          name: longitude
+          in: query
+          required: true
+          schema:
+            type: number
+        -
+          name: place
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: подразделение
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - { $ref: '#/components/schemas/Base' }
+        '422':
+          description: 'невалидные координаты'
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+        '404':
+          description: 'подходящее подразделение не найдено'
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+  /countries:
+    get:
+      description: 'Список стран'
+      operationId: country_index
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          $ref: '#/components/parameters/udid'
+      responses:
+        '200':
+          description: 'список стран'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Country'
+  /defaults:
+    get:
+      tags:
+        - default
+      description: 'Определение информации о локализации и местоположении'
+      operationId: default_index
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          $ref: '#/components/parameters/udid'
+        -
+          name: country
+          in: query
+          description: 'код страны ISO 3166-1 Alpha-2, например: RU'
+          required: false
+          schema:
+            type: string
+        -
+          name: latitude
+          in: query
+          required: false
+          schema:
+            type: number
+        -
+          name: longitude
+          in: query
+          required: false
+          schema:
+            type: number
+        -
+          name: base
+          in: query
+          required: false
+          schema:
+            type: integer
+        -
+          name: expand
+          in: query
+          required: false
+          schema:
+            enum:
+              - info
+              - info.tariffGroups
+              - info.tariffGroups.tariffs
+              - info.tariffGroups.tariffs.services
+      responses:
+        '200':
+          description: 'информация о локализации и местоположении'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultsResult'
+  /defaults/info:
+    get:
+      tags:
+        - default
+      description: 'Общая информация по подразделению'
+      operationId: default_info
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          $ref: '#/components/parameters/udid'
+        -
+          name: base
+          in: query
+          required: true
+          schema:
+            type: integer
+        -
+          name: expand
+          in: query
+          required: false
+          schema:
+            enum:
+              - tariffGroups
+              - tariffGroups.tariffs
+              - tariffGroups.tariffs.services
+      responses:
+        '200':
+          description: 'информация о подразделении'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HelloResult'
+  /languages:
+    get:
+      operationId: language_index
+      responses:
+        '200':
+          description: 'language list'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+  /orders/create:
+    post:
+      tags:
+        - orders
+      description: 'Создание заказа'
+      operationId: order_create
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderForm'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrderForm'
+      responses:
+        '200':
+          description: 'успешное создание заказа'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResult'
+        '422':
+          description: 'не пройдена валидация или сервис вернул ошибку'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResult'
+      security:
+        -
+          bearerAuth: []
+  '/orders/{id}':
+    get:
+      tags:
+        - orders
+      operationId: order_view
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        -
+          name: base
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Данные заказа'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderStatus'
+        '404':
+          description: 'Заказ не найден'
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+        -
+          bearerAuth: []
+    post:
+      tags:
+        - orders
+      description: 'Создание заказа'
+      operationId: order_update
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderForm'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrderForm'
+      responses:
+        '200':
+          description: 'успешное изменение заказа'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResult'
+        '422':
+          description: 'не пройдена валидация или сервис вернул ошибку'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResult'
+        '404':
+          description: 'не найден заказ'
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+        '400':
+          description: 'неверный запрос, например, пропущен параметр id'
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+      security:
+        -
+          bearerAuth: []
+  /orders/calc:
+    post:
+      tags:
+        - orders
+      operationId: order_calc
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          $ref: '#/components/parameters/udid'
+      requestBody:
+        description: 'Order calc data'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderCalcForm'
+      responses:
+        '200':
+          description: 'calculate result'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderCalcResult'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderCalcResult'
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+        - {  }
+        -
+          bearerAuth: []
+  /orders/tariffs-calc:
+    post:
+      tags:
+        - orders
+      operationId: order_tariffs-calc
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          $ref: '#/components/parameters/udid'
+      requestBody:
+        description: 'Данные для расчета'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderTariffsCalcForm'
+      responses:
+        '200':
+          description: 'calculate result'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TariffCalc'
+        '422':
+          description: 'не пройдена валидация'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimpleResult'
+      security:
+        - {  }
+        -
+          bearerAuth: []
+  /orders:
+    get:
+      tags:
+        - orders
+      operationId: order_index
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          name: base
+          in: query
+          required: false
+          schema:
+            type: integer
+        -
+          name: close
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Список последних заказов'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderStatus'
+      security:
+        -
+          bearerAuth: []
+  /orders/cancel:
+    post:
+      tags:
+        - orders
+      operationId: order_cancel
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          name: id
+          in: query
+          required: true
+          schema:
+            type: integer
+        -
+          name: base
+          in: query
+          required: true
+          schema:
+            type: integer
+        -
+          name: type
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResult'
+      security:
+        -
+          bearerAuth: []
+  /orders/mark-deleted:
+    post:
+      tags:
+        - orders
+      operationId: order_mark-deleted
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          name: id
+          in: query
+          required: true
+          schema:
+            type: integer
+        -
+          name: base
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResult'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+        -
+          bearerAuth: []
+  /orders/send-receipt:
+    post:
+      tags:
+        - orders
+      operationId: order_send-receipt
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          name: id
+          in: query
+          required: true
+          schema:
+            type: integer
+        -
+          name: base
+          in: query
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Email
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReceiptForm'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimpleResult'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+        -
+          bearerAuth: []
+  /orders/send-review:
+    post:
+      tags:
+        - orders
+      operationId: order_send-review
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          name: id
+          in: query
+          required: true
+          schema:
+            type: integer
+        -
+          name: base
+          in: query
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: 'Данные отзыва'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewForm'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimpleResult'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+        -
+          bearerAuth: []
+  /orders/cancel-types:
+    get:
+      tags:
+        - orders
+      operationId: order_cancel-types
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          name: id
+          in: query
+          required: true
+          schema:
+            type: integer
+        -
+          name: base
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Причины отмен'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CancelType'
+      security:
+        -
+          bearerAuth: []
+  /orders/track:
+    get:
+      tags:
+        - orders
+      operationId: order_track
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          name: id
+          in: query
+          required: true
+          schema:
+            type: integer
+        -
+          name: base
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Track'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+        -
+          bearerAuth: []
+  /orders/payment-methods:
+    get:
+      tags:
+        - orders
+      operationId: order_payment-methods
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          name: base
+          in: query
+          required: true
+          schema:
+            type: integer
+        -
+          name: tariffClasses
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+        -
+          name: id
+          in: query
+          required: false
+          schema:
+            type: integer
+        -
+          name: expand
+          in: query
+          required: false
+          schema:
+            enum:
+              - bankCards
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/taxsee.client.service.PaymentMethod'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+        -
+          bearerAuth: []
+  /profile:
+    get:
+      tags:
+        - profile
+      operationId: profile_index
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+      responses:
+        '200':
+          description: 'Данные профиля'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+      security:
+        -
+          bearerAuth: []
+    post:
+      tags:
+        - profile
+      operationId: profile_update
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+      requestBody:
+        description: 'Данные профиля'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileForm'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimpleResult'
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimpleResult'
+      security:
+        -
+          bearerAuth: []
+  /pushes/subscribe:
+    post:
+      tags:
+        - push
+      operationId: push_subscribe
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+      requestBody:
+        description: 'Данные токена'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PushSubscribeForm'
+      responses:
+        '200':
+          description: 'токен отправлен'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimpleResult'
+        '422':
+          description: 'ошибка валидации'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimpleResult'
+        '404':
+          description: 'Not implemented'
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+        -
+          bearerAuth: []
+  /routes/get:
+    post:
+      tags:
+        - routes
+      summary: 'Маршрут по точкам в формате GeoJSON'
+      operationId: route_get
+      parameters:
+        -
+          name: base
+          in: query
+          required: false
+          schema:
+            type: integer
+          example: 1
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                points:
+                  type: array
+                  items: { $ref: '#/components/schemas/GeoPointForm' }
+              type: object
+              example:
+                points:
+                  - { latitude: 55.498889, longitude: 65.31003 }
+                  - { latitude: 55.456837, longitude: 65.338354 }
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                properties:
+                  type: { type: string, enum: [LineString] }
+                  coordinates: { type: array, items: { type: array, items: { type: number } } }
+                type: object
+                nullable: true
+              example:
+                type: LineString
+                coordinates:
+                  - [65.310098, 55.498789]
+                  - [65.309176, 55.498589]
+        '400':
+          description: 'Bad request'
+        '422':
+          description: 'Validation errors'
+  /tariffs:
+    get:
+      tags:
+        - tariffs
+      operationId: tariff_index
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          $ref: '#/components/parameters/udid'
+        -
+          name: base
+          in: query
+          required: true
+          schema:
+            type: integer
+        -
+          name: expand
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - tariffs
+              - tariffs.services
+      responses:
+        '200':
+          description: Тарифы
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TariffGroup'
+  '/tariffs/{code}':
+    get:
+      tags:
+        - tariffs
+      operationId: tariff_view
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          $ref: '#/components/parameters/udid'
+        -
+          name: code
+          in: path
+          required: true
+          schema:
+            type: string
+        -
+          name: base
+          in: query
+          required: true
+          schema:
+            type: integer
+        -
+          name: expand
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - tariffs
+              - tariffs.services
+      responses:
+        '200':
+          description: 'Группа тарифов'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TariffGroup'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+  '/tariffs/{code}/{classId}':
+    get:
+      tags:
+        - tariffs
+      operationId: tariff_item
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          $ref: '#/components/parameters/udid'
+        -
+          name: code
+          in: path
+          required: true
+          schema:
+            type: string
+        -
+          name: classId
+          in: path
+          required: true
+          schema:
+            type: integer
+        -
+          name: base
+          in: query
+          required: true
+          schema:
+            type: integer
+        -
+          name: expand
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - services
+      responses:
+        '200':
+          description: 'Группа тарифов'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tariff'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+  /templates:
+    get:
+      tags:
+        - templates
+      operationId: template_index
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          name: base
+          in: query
+          required: false
+          schema:
+            type: integer
+        -
+          name: phone
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: withHistory
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Список шаблонов'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderTemplate'
+      security:
+        -
+          bearerAuth: []
+  /templates/set:
+    post:
+      tags:
+        - templates
+      operationId: template_set
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+      requestBody:
+        description: 'Данные шаблона'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderTemplateForm'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResult'
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResult'
+      security:
+        -
+          bearerAuth: []
+  /templates/delete:
+    post:
+      tags:
+        - templates
+      operationId: template_delete
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResult'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResult'
+      security:
+        -
+          bearerAuth: []
+  /templates/marker-colors:
+    get:
+      tags:
+        - templates
+      operationId: template_marker-colors
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+      responses:
+        '200':
+          description: 'Список цветов'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+      security:
+        -
+          bearerAuth: []
+  /track-maps:
+    get:
+      operationId: track-map_index
+      parameters:
+        -
+          $ref: '#/components/parameters/Accept'
+        -
+          name: code
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'order track for map'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Track'
+        '404':
+          description: 'order not found'
+          content:
+            application/json:
+              schema:
+                type: object
+components:
+  schemas:
+    ValidationErrors:
+      description: 'Ошибки валидации, в формате имя_поля: [ошибка1, ошибка2], например {base: [''must be integer'']}'
+      type: object
+      nullable: true
+      additionalProperties:
+        type: array
+        items:
+          type: string
+    Address:
+      description: 'Class Address'
+      properties:
+        title:
+          type: string
+        subtitle:
+          nullable: true
+          type: string
+        isQuick:
+          type: boolean
+        isPlace:
+          type: boolean
+        isFull:
+          description: 'Если true - можно считать адрес полным. Если isPlace = true и isFull = false - необходимо уточнить адрес по place.id'
+          type: boolean
+        place:
+          nullable: true
+          properties:
+            id:
+              nullable: true
+              type: integer
+            name:
+              nullable: true
+              type: string
+            description:
+              nullable: true
+              type: string
+          type: object
+        quick:
+          nullable: true
+          properties:
+            id:
+              nullable: true
+              type: integer
+            name:
+              nullable: true
+              type: string
+          type: object
+        street:
+          nullable: true
+          properties:
+            id:
+              nullable: true
+              type: integer
+            name:
+              nullable: true
+              type: string
+          type: object
+        zone:
+          nullable: true
+          properties:
+            id:
+              nullable: true
+              type: integer
+            name:
+              nullable: true
+              type: string
+          type: object
+        house:
+          nullable: true
+          type: string
+        latitude:
+          nullable: true
+          type: number
+        longitude:
+          nullable: true
+          type: number
+        comment:
+          nullable: true
+          type: string
+        isCoordinates:
+          type: boolean
+      type: object
+    AddressForm:
+      description: 'Class AddressForm'
+      allOf:
+        -
+          properties:
+            title:
+              nullable: true
+              type: string
+            quick:
+              nullable: true
+              properties:
+                id:
+                  nullable: true
+                  type: integer
+              type: object
+            street:
+              nullable: true
+              properties:
+                id:
+                  nullable: true
+                  type: integer
+              type: object
+            place:
+              nullable: true
+              properties:
+                id:
+                  nullable: true
+                  type: integer
+              type: object
+            zone:
+              nullable: true
+              properties:
+                id:
+                  nullable: true
+                  type: integer
+              type: object
+            house:
+              nullable: true
+              type: string
+            latitude:
+              nullable: true
+              type: number
+            longitude:
+              nullable: true
+              type: number
+            comment:
+              nullable: true
+              type: string
+        -
+          $ref: '#/components/schemas/GeoPointForm'
+    BankCardBindingResult:
+      description: 'Class BankCardBindingResult'
+      properties:
+        success:
+          nullable: true
+          type: boolean
+        message:
+          nullable: true
+          type: string
+        formUrl:
+          nullable: true
+          type: string
+      type: object
+    Base:
+      description: 'Class Base'
+      properties:
+        id:
+          type: integer
+        latitude:
+          nullable: true
+          type: number
+        longitude:
+          nullable: true
+          type: number
+        name:
+          type: string
+        placeId:
+          type: integer
+        region:
+          nullable: true
+          type: string
+        regionId:
+          nullable: true
+          type: integer
+      type: object
+    CancelType:
+      description: 'Class CancelType'
+      properties:
+        key:
+          type: integer
+        value:
+          type: string
+      type: object
+    CoordinatePoint:
+      description: 'Class CoordinatePoint'
+      properties:
+        latitude:
+          type: number
+        longitude:
+          type: number
+        name:
+          type: string
+      type: object
+    Country:
+      description: 'Class Country'
+      properties:
+        name:
+          type: string
+        code:
+          type: string
+        phoneFormats:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneFormat'
+      type: object
+    DefaultsResult:
+      description: 'Общая информация'
+      properties:
+        intl:
+          nullable: true
+          type: string
+        country:
+          nullable: true
+          oneOf:
+            -
+              $ref: '#/components/schemas/Country'
+        base:
+          nullable: true
+          oneOf:
+            -
+              $ref: '#/components/schemas/Base'
+        address:
+          nullable: true
+          oneOf:
+            -
+              $ref: '#/components/schemas/Address'
+        info:
+          nullable: true
+          oneOf:
+            -
+              $ref: '#/components/schemas/HelloResult'
+        phoneFormatsRecords:
+          nullable: true
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneFormat'
+        verifyTypes:
+          nullable: true
+          type: array
+          items:
+            $ref: '#/components/schemas/VerifyType'
+        apiUrl:
+          nullable: true
+          description: 'адрес API для подразделния / страны'
+          type: string
+      type: object
+    Delivery:
+      description: 'Class Delivery'
+      properties:
+        info:
+          nullable: true
+          type: string
+        senderName:
+          nullable: true
+          type: string
+        senderPhone:
+          nullable: true
+          type: string
+        receiverName:
+          nullable: true
+          type: string
+        receiverPhone:
+          nullable: true
+          type: string
+      type: object
+    DeliveryForm:
+      description: 'Class DeliveryForm'
+      properties:
+        info:
+          nullable: true
+          type: string
+        senderName:
+          nullable: true
+          type: string
+        senderPhone:
+          nullable: true
+          type: string
+        receiverName:
+          nullable: true
+          type: string
+        receiverPhone:
+          nullable: true
+          type: string
+      type: object
+    DriverPosition:
+      description: 'Class DriverPosition'
+      properties:
+        id:
+          type: integer
+        latitude:
+          type: number
+        longitude:
+          type: number
+        bearing:
+          type: number
+        minZoom:
+          type: integer
+        categoryCode:
+          type: string
+      type: object
+    GeoPointForm:
+      properties:
+        latitude:
+          type: number
+          maximum: 90
+          minimum: -90
+        longitude:
+          type: number
+          maximum: 180
+          minimum: -180
+      type: object
+    HelloResult:
+      description: 'Общие данные сервиса'
+      type: object
+      allOf:
+        -
+          properties:
+            tileSource:
+              $ref: '#/components/schemas/TileSource'
+            tariffGroups:
+              description: 'extra field'
+              type: array
+              items:
+                $ref: '#/components/schemas/TariffGroup'
+        -
+          $ref: '#/components/schemas/taxsee.client.service.HelloResult'
+    LoginForm:
+      description: 'Форма входа, **verify** может быть обязательным, если ранее в ответе auth/send-code пришла ошибка валидации этого поля (errors.verify)'
+      required:
+        - phone
+        - udid
+        - base
+      properties:
+        udid:
+          type: string
+        phone:
+          description: '- минимум 10 знаков, только цифры'
+          type: string
+        base:
+          type: integer
+        type:
+          description: '- 0 - SMS, 1 - автоинформатор продиктует код, 2 - последние цифры входящего звонка - код'
+          type: integer
+        verify:
+          $ref: '#/components/schemas/VerifyForm'
+      type: object
+    OrderBaseForm:
+      description: 'Class OrderBaseForm'
+      required:
+        - addresses
+      properties:
+        base:
+          description: '- id подразделения'
+          type: integer
+        account:
+          nullable: true
+          description: '- ID аккаунта для оплаты. Если null - оплата наличными водителю.'
+          type: integer
+        binding:
+          nullable: true
+          description: '- ID привязанной банковской карты, если задан то атрибут {@link $account} - обязателен'
+          type: integer
+        paymentType:
+          nullable: true
+          description: '- Cash, Account, Card, Sberbank, если не определен и задан {@link $account} то воспринимается как Account, иначе Cash'
+          type: string
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/TariffServiceForm'
+        addresses:
+          description: "При смене адреса подачи необходимо проверить и, при необходимости, сменить подразделение.\n * адрес **N** является обязательным, если выполняется хотя бы одно из условий:\n    * *tariff.routeMeta.points\\[**N**\\].required* == true,\n    * **N** == 0 и *tariff.routeMeta.points\\[**N**\\].required* не задано,\n * дополнительное поле *addresses[**N**].comment* должно быть заполнено если выполняется хотя бы одно из условий:\n    * *tariff.routeMeta.points\\[**N**\\].meetPoint.isRequired* == true,\n    * если в первом тарифе *tariff.askMeetPoint* === true и *tariff.routeMeta.points\\[**N**\\].meetPoint.isRequired* не задано.\n * пустой необязательный адрес нужно передавать как `null` или пустой объект `{}`, или адрес со всеми полями равными `null`."
+          type: array
+          items:
+            $ref: '#/components/schemas/AddressForm'
+        guid:
+          nullable: true
+          type: string
+        subTypeSource:
+          nullable: true
+          type: integer
+        cashback:
+          nullable: true
+          description: '- ID Клиента-партнёра для расчёта кэшбэка'
+          type: integer
+      type: object
+    OrderBaseWithTariffForm:
+      description: 'Class OrderBaseWithTariffForm'
+      required:
+        - tariffClasses
+      allOf:
+        -
+          properties:
+            tariffClasses:
+              description: '- см. {@link Tariff::$classId}'
+              type: array
+              items:
+                type: integer
+        -
+          $ref: '#/components/schemas/OrderBaseForm'
+    OrderCalcForm:
+      description: 'Форма расчета стоимости'
+      type: object
+      allOf:
+        -
+          properties:
+            time:
+              nullable: true
+              description: '- время для предварительного заказа в формате php:Y-m-d H:i'
+              type: string
+        -
+          $ref: '#/components/schemas/OrderBaseWithTariffForm'
+    OrderCalcResult:
+      description: 'Class OrderCalcResult'
+      properties:
+        message:
+          nullable: true
+          type: string
+        success:
+          type: boolean
+        universalDialog:
+          oneOf:
+            -
+              $ref: '#/components/schemas/taxsee.client.service.UniversalDialog'
+        buttonText:
+          nullable: true
+          type: string
+        comments:
+          nullable: true
+          type: string
+        currencyCode:
+          nullable: true
+          type: string
+        feedTime:
+          nullable: true
+          type: string
+        paymentMethods:
+          nullable: true
+          type: string
+        price:
+          nullable: true
+          type: number
+        priceString:
+          type: string
+        servicesToShow:
+          nullable: true
+          type: array
+          items:
+            type: integer
+        showFrom:
+          nullable: true
+          type: boolean
+        typeId:
+          nullable: true
+          type: integer
+        errors:
+          nullable: true
+          type: object
+      type: object
+    OrderCommon:
+      description: 'Class OrderCommon'
+      properties:
+        addresses:
+          nullable: true
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
+        allowCancel:
+          nullable: true
+          type: boolean
+        allowReview:
+          nullable: true
+          type: boolean
+        callCenterNumber:
+          nullable: true
+          type: string
+        canAsk4Receipt:
+          nullable: true
+          type: boolean
+        car:
+          nullable: true
+          type: string
+        carColor:
+          nullable: true
+          type: string
+        carNumber:
+          nullable: true
+          type: string
+        closed:
+          nullable: true
+          type: boolean
+        currencyCode:
+          nullable: true
+          type: string
+        driver:
+          nullable: true
+          type: string
+        id:
+          type: integer
+        negativeReview:
+          nullable: true
+          type: string
+        payments:
+          nullable: true
+          type: array
+          items:
+            $ref: '#/components/schemas/Payment'
+        positiveReview:
+          nullable: true
+          type: string
+        price:
+          nullable: true
+          type: number
+        priceString:
+          nullable: true
+          type: string
+        services:
+          nullable: true
+          type: array
+          items:
+            $ref: '#/components/schemas/taxsee.client.service.TariffService'
+        servicesText:
+          nullable: true
+          type: string
+        status:
+          nullable: true
+          type: string
+        statusCode:
+          nullable: true
+          type: string
+        statusShort:
+          nullable: true
+          type: string
+        tariff:
+          nullable: true
+          type: string
+        tariffClass:
+          nullable: true
+          type: integer
+      type: object
+    OrderForm:
+      description: 'Class OrderForm'
+      allOf:
+        -
+          properties:
+            id:
+              nullable: true
+              type: integer
+            time:
+              nullable: true
+              description: '- время для предварительного заказа'
+              type: string
+            comment:
+              nullable: true
+              description: '- комментарий - может быть обязательным для некоторых тарифов'
+              type: string
+            phone2:
+              nullable: true
+              description: '- дополнительный номер для связи'
+              type: string
+            delivery:
+              nullable: true
+              oneOf:
+                -
+                  $ref: '#/components/schemas/DeliveryForm'
+        -
+          $ref: '#/components/schemas/OrderBaseWithTariffForm'
+    OrderResult:
+      description: 'Class OrderResult'
+      properties:
+        id:
+          nullable: true
+          type: integer
+        message:
+          nullable: true
+          type: string
+        success:
+          nullable: true
+          type: boolean
+        errors:
+          nullable: true
+          type: object
+        universalDialog:
+          nullable: true
+          type: object
+      type: object
+    OrderStatus:
+      description: 'Class OrderStatus'
+      type: object
+      allOf:
+        -
+          properties:
+            account:
+              nullable: true
+              type: integer
+            allowedOrderChanges:
+              nullable: true
+              type: object
+            arrive:
+              nullable: true
+              description: 'время до прибытия к адресу подачи в минутах, может быть отрицательным, если водитель опаздывает.'
+              type: integer
+            base:
+              nullable: true
+              type: integer
+            dateCreate:
+              nullable: true
+              type: string
+            dateEnd:
+              nullable: true
+              type: string
+            guid:
+              nullable: true
+              type: string
+            orderMinutes:
+              nullable: true
+              type: integer
+            pay2Driver:
+              nullable: true
+              description: 'оплата водителю, для типа Sberbank появляется только в процессе выполнения заказа, т.е когда пассажир находиться в автомобиле (статус заказа Исполняется)'
+              oneOf:
+                -
+                  $ref: '#/components/schemas/Pay2Driver'
+            paymentType:
+              nullable: true
+              type: string
+            phone2:
+              nullable: true
+              type: string
+            carNumberPlate:
+              nullable: true
+              type: object
+            comment:
+              nullable: true
+              type: string
+            statusIAmOut:
+              nullable: true
+              type: string
+            time:
+              nullable: true
+              type: string
+            trackUrl4Web:
+              nullable: true
+              type: string
+            waitStatus:
+              nullable: true
+              type: string
+            waitingDeadline:
+              nullable: true
+              type: integer
+            tariffClasses:
+              nullable: true
+              type: array
+              items:
+                type: integer
+            delivery:
+              nullable: true
+              oneOf:
+                -
+                  $ref: '#/components/schemas/Delivery'
+        -
+          $ref: '#/components/schemas/OrderCommon'
+    OrderTariffsCalcForm:
+      description: 'Форма расчета стоимости по нескольким тарифам'
+      allOf:
+        -
+          properties:
+            time:
+              nullable: true
+              description: '- время для предварительного заказа'
+              type: string
+        -
+          $ref: '#/components/schemas/OrderBaseForm'
+    OrderTemplate:
+      description: 'Class OrderTemplate'
+      properties:
+        id:
+          type: integer
+        base:
+          nullable: true
+          type: integer
+        account:
+          nullable: true
+          type: integer
+        name:
+          type: string
+        markerColor:
+          type: string
+        tariffClass:
+          nullable: true
+          type: integer
+        position:
+          type: integer
+        comment:
+          nullable: true
+          type: string
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/taxsee.client.service.TariffService'
+        type:
+          type: integer
+        tariffClasses:
+          type: array
+          items:
+            type: integer
+        paymentType:
+          nullable: true
+          type: string
+        delivery:
+          nullable: true
+          oneOf:
+            -
+              $ref: '#/components/schemas/Delivery'
+      type: object
+    OrderTemplateForm:
+      description: 'Class OrderTemplateForm'
+      required:
+        - name
+      allOf:
+        -
+          properties:
+            id:
+              nullable: true
+              type: integer
+            name:
+              type: string
+            markerColor:
+              nullable: true
+              type: string
+            numIvr:
+              nullable: true
+              type: integer
+            phone:
+              nullable: true
+              type: string
+        -
+          $ref: '#/components/schemas/OrderBaseWithTariffForm'
+    Pay2Driver:
+      description: 'Class Pay2Driver'
+      properties:
+        buttonName:
+          nullable: true
+          type: string
+        description:
+          nullable: true
+          type: string
+        payCommands:
+          nullable: true
+          type: array
+          items:
+            $ref: '#/components/schemas/PayCommand'
+      type: object
+    PayCommand:
+      description: 'Class PayCommand'
+      properties:
+        bankPhone:
+          nullable: true
+          type: string
+        command:
+          nullable: true
+          type: string
+        type:
+          nullable: true
+          type: string
+        text:
+          nullable: true
+          type: string
+      type: object
+    Payment:
+      description: 'Class Payment'
+      properties:
+        description:
+          nullable: true
+          type: string
+        price:
+          nullable: true
+          type: number
+        priceString:
+          nullable: true
+          type: string
+      type: object
+    PhoneFormat:
+      description: 'Class PhoneFormat'
+      properties:
+        code:
+          type: string
+        prefix:
+          type: string
+        type:
+          nullable: true
+          type: string
+        masks:
+          nullable: true
+          type: array
+          items:
+            type: string
+      type: object
+    Profile:
+      description: 'Class Profile'
+      properties:
+        surname:
+          nullable: true
+          type: string
+        name:
+          nullable: true
+          type: string
+        patronymic:
+          nullable: true
+          type: string
+        email:
+          nullable: true
+          type: string
+        emailSubscription:
+          nullable: true
+          type: integer
+        promoCode:
+          nullable: true
+          type: object
+        sex:
+          nullable: true
+          type: integer
+        sexName:
+          nullable: true
+          type: string
+      type: object
+    ProfileForm:
+      description: 'Class ProfileForm'
+      properties:
+        surname:
+          type: string
+        name:
+          type: string
+        patronymic:
+          nullable: true
+          type: string
+        birth:
+          nullable: true
+          type: string
+        email:
+          nullable: true
+          type: string
+        sex:
+          nullable: true
+          type: integer
+        emailSubscription:
+          nullable: true
+          type: integer
+      type: object
+    PushSubscribeForm:
+      description: 'Class PushSubscribeForm'
+      properties:
+        token:
+          description: 'required, max length: 2000'
+          type: string
+        app:
+          nullable: true
+          description: 'optional, ''UNKNOWN'' by default'
+          type: string
+          enum:
+            - ORDER
+            - UNKNOWN
+        version:
+          nullable: true
+          description: 'optional, ''1.0.0'' by default, pattern `/^(\d+\.){0,2}(\d+)+/`'
+          type: string
+          example: 1.9.11
+        platform:
+          nullable: true
+          description: 'optional, ''other'' by default'
+          type: string
+          enum:
+            - browser
+            - pwa
+            - webview
+            - other
+      type: object
+    ReceiptForm:
+      description: 'Class ReceiptForm'
+      required:
+        - email
+      properties:
+        email:
+          type: string
+      type: object
+    ReviewForm:
+      description: 'Class ReviewForm'
+      required:
+        - like
+      properties:
+        like:
+          description: '- 1:позитивный отзыв, иначе негативный'
+          type: integer
+        keys:
+          nullable: true
+          type: string
+        comment:
+          nullable: true
+          type: string
+      type: object
+    SimpleResult:
+      description: 'Class SimpleResult'
+      properties:
+        success:
+          nullable: true
+          type: boolean
+        message:
+          nullable: true
+          type: string
+        errors:
+          nullable: true
+          type: object
+      type: object
+    Tariff:
+      description: 'Class Tariff'
+      allOf:
+        -
+          $ref: '#/components/schemas/taxsee.client.service.Tariff'
+    TariffCalc:
+      description: 'Class TariffCalc'
+      properties:
+        feedTime:
+          nullable: true
+          type: string
+        classId:
+          type: integer
+        priceString:
+          type: string
+      type: object
+    TariffGroup:
+      description: 'Class TariffGroup'
+      allOf:
+        -
+          $ref: '#/components/schemas/taxsee.client.service.TariffGroup'
+    TariffServiceForm:
+      description: 'Class TariffServiceForm'
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+        value:
+          nullable: true
+          type: string
+      type: object
+    TileSource:
+      description: 'Class TileSource'
+      properties:
+        id:
+          nullable: true
+          type: integer
+        maxZoom:
+          nullable: true
+          type: integer
+        minZoom:
+          nullable: true
+          type: integer
+        sourceUriTemplate:
+          nullable: true
+          type: string
+        tileSize:
+          nullable: true
+          type: integer
+        tilesVersion:
+          nullable: true
+          type: integer
+      type: object
+    Track:
+      description: 'Class Track'
+      properties:
+        categoryCode:
+          nullable: true
+          type: string
+        date:
+          nullable: true
+          type: string
+        driverBearing:
+          nullable: true
+          type: number
+        driverLatitude:
+          nullable: true
+          type: number
+        driverLongitude:
+          nullable: true
+          type: number
+        driversPositions:
+          nullable: true
+          type: array
+          items:
+            $ref: '#/components/schemas/DriverPosition'
+        editCount:
+          nullable: true
+          type: integer
+        geoCalcRoad:
+          nullable: true
+          type: object
+        geoCalcRoadToStart:
+          nullable: true
+          type: object
+        routePoints:
+          nullable: true
+          type: array
+          items:
+            $ref: '#/components/schemas/CoordinatePoint'
+        status:
+          nullable: true
+          type: string
+        statusCode:
+          nullable: true
+          type: string
+      type: object
+    UserHelloResult:
+      description: 'Результат проверки аутентификации в сервисе'
+      allOf:
+        -
+          properties:
+            profile:
+              $ref: '#/components/schemas/Profile'
+            token:
+              nullable: true
+              description: '- JWT-токен для аутентификации'
+              type: string
+            errors:
+              nullable: true
+              type: object
+              additionalProperties:
+                type: array
+                items:
+                  type: string
+            templates:
+              description: 'extra field'
+              type: array
+              items:
+                $ref: '#/components/schemas/OrderTemplate'
+        -
+          $ref: '#/components/schemas/HelloResult'
+    UserSendCodeResult:
+      description: 'Результат отправки кода'
+      required:
+        - success
+      properties:
+        success:
+          type: boolean
+        message:
+          nullable: true
+          description: '- сообщение для пользователя, например, "Код отправлен на указанный вами номер."'
+          type: string
+        errors:
+          $ref: '#/components/schemas/ValidationErrors'
+        token:
+          nullable: true
+          description: '- JWT токен, с data.state равным false, токен пользователя с неподтвержденным номером телефона'
+          type: string
+        verifyTypes:
+          nullable: true
+          type: array
+          items:
+            $ref: '#/components/schemas/VerifyType'
+      type: object
+    VerifyType:
+      properties:
+        type:
+          type: string
+          enum:
+            - recaptchaV2
+            - recaptchaV3
+        data:
+          description: 'для recaptchaV2 будет содержать siteKey'
+          type: object
+      type: object
+    VerifyForm:
+      description: 'Форма проверки'
+      required:
+        - value
+      properties:
+        type:
+          description: '- по умолчанию recaptchaV2'
+          type: string
+          enum:
+            - recaptchaV2
+            - recaptchaV3
+        value:
+          type: string
+      type: object
+    taxsee.client.service.Address:
+      properties:
+        addressId:
+          nullable: true
+          type: integer
+        addressName:
+          nullable: true
+          type: string
+        addressTypeCode:
+          nullable: true
+          type: string
+        category:
+          nullable: true
+          type: string
+        cityId:
+          nullable: true
+          type: integer
+        comment:
+          nullable: true
+          type: string
+        firstCityId:
+          nullable: true
+          type: string
+        house:
+          nullable: true
+          type: string
+        id:
+          nullable: true
+          type: integer
+        isAddress:
+          nullable: true
+          type: integer
+        latitude:
+          nullable: true
+          type: number
+          format: float
+        longitude:
+          nullable: true
+          type: number
+          format: float
+        name:
+          nullable: true
+          type: string
+        placeDescription:
+          nullable: true
+          type: string
+        placeName:
+          nullable: true
+          type: string
+        subtitle:
+          nullable: true
+          type: string
+        title:
+          nullable: true
+          type: string
+        zoneId:
+          nullable: true
+          type: integer
+        zoneName:
+          nullable: true
+          type: string
+        isCoordinates:
+          type: boolean
+        isFull:
+          description: 'Можно ли считать адрес полным для расчета и заказа'
+          type: boolean
+        isPlace:
+          type: boolean
+        isQuick:
+          type: boolean
+        place:
+          schema: taxsee.client.service.SimpleObject
+        quick:
+          schema: taxsee.client.service.SimpleObject
+        street:
+          schema: taxsee.client.service.SimpleObject
+        zone:
+          schema: taxsee.client.service.SimpleObject
+      type: object
+    taxsee.client.service.AllowedOrderChanges:
+      properties:
+        startPoint:
+          nullable: true
+          type: boolean
+        startRem:
+          nullable: true
+          type: boolean
+        additionalPoints:
+          nullable: true
+          type: boolean
+        endPoint:
+          nullable: true
+          type: boolean
+        endRem:
+          nullable: true
+          type: boolean
+        appendPoints:
+          nullable: true
+          type: boolean
+        date:
+          nullable: true
+          type: boolean
+        paymentMethod:
+          nullable: true
+          type: boolean
+        addPrices:
+          nullable: true
+          type: boolean
+        tariffClass:
+          nullable: true
+          type: boolean
+      type: object
+    taxsee.client.service.BankCard:
+      properties:
+        bindingId:
+          type: integer
+        cardStatus:
+          nullable: true
+          type: string
+        maskedPan:
+          nullable: true
+          type: string
+        name:
+          nullable: true
+          type: string
+      type: object
+    taxsee.client.service.City:
+      properties:
+        id:
+          type: integer
+        latitude:
+          nullable: true
+          type: number
+          format: float
+        longitude:
+          nullable: true
+          type: number
+          format: float
+        name:
+          type: string
+        region:
+          nullable: true
+          type: string
+        regionId:
+          nullable: true
+          type: integer
+        default:
+          type: boolean
+      type: object
+    taxsee.client.service.Delivery:
+      properties:
+        info:
+          nullable: true
+          type: string
+        senderName:
+          nullable: true
+          type: string
+        senderPhone:
+          nullable: true
+          type: string
+        receiverName:
+          nullable: true
+          type: string
+        receiverPhone:
+          nullable: true
+          type: string
+      type: object
+    taxsee.client.service.HelloResult:
+      properties:
+        authCode:
+          nullable: true
+          type: integer
+        askMeetPoint:
+          nullable: true
+          type: boolean
+        basesWithActiveOrders:
+          nullable: true
+          type: array
+          items:
+            type: integer
+        callCenterNumber:
+          nullable: true
+          type: string
+        callCenterNumberText:
+          nullable: true
+          type: string
+        cardBindingAllowed:
+          nullable: true
+          type: boolean
+        currency:
+          nullable: true
+          type: string
+        currencyCompat:
+          nullable: true
+          type: string
+        garantUrl:
+          nullable: true
+          type: string
+        hidePatronymic:
+          nullable: true
+          type: integer
+        hideSurname:
+          nullable: true
+          type: integer
+        latitude:
+          nullable: true
+          type: number
+          format: float
+        longitude:
+          nullable: true
+          type: number
+          format: float
+        menuItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/taxsee.client.service.MenuItem'
+        message:
+          nullable: true
+          type: string
+        minPreOrderTime:
+          nullable: true
+          type: integer
+        needOpenTripsTab:
+          type: boolean
+        order4OtherPhones:
+          nullable: true
+          type: boolean
+        phoneId:
+          nullable: true
+          type: integer
+        privacyPolicyUrl:
+          nullable: true
+          type: string
+        reviewNegativeTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/taxsee.client.service.ReviewNegativeType'
+        serviceRulesUrl:
+          nullable: true
+          type: string
+        paymentMethods:
+          description: 'extra field, use expand: paymentMethods'
+          type: array
+          items:
+            $ref: '#/components/schemas/taxsee.client.service.PaymentMethod'
+        success:
+          nullable: true
+          type: boolean
+        universalDialog:
+          nullable: true
+          oneOf:
+            -
+              $ref: '#/components/schemas/taxsee.client.service.UniversalDialog'
+        timeZone:
+          nullable: true
+          type: number
+          format: float
+        tariffGroups:
+          description: 'extra field, use expand: tariffGroups'
+          type: array
+          items:
+            $ref: '#/components/schemas/taxsee.client.service.TariffGroup'
+      type: object
+    taxsee.client.service.MenuItem:
+      properties:
+        inside:
+          nullable: true
+          type: boolean
+        title:
+          nullable: true
+          type: string
+        type:
+          nullable: true
+          type: string
+        url:
+          nullable: true
+          type: string
+      type: object
+    taxsee.client.service.MetaPoint:
+      description: 'Мета информация о точке маршрута'
+      properties:
+        addressesList:
+          nullable: true
+          description: 'Нужно ли открывать список с адресами при выборе точки'
+          type: boolean
+        geoPoint:
+          nullable: true
+          description: 'Значит что эту точку нужно определять по позиции пользователя(только одна точка может быть с этим атрибутом)'
+          type: integer
+        iconType:
+          nullable: true
+          type: string
+        meetHint:
+          nullable: true
+          type: string
+        meetPoint: {  }
+        removable:
+          nullable: true
+          type: integer
+        required:
+          nullable: true
+          type: integer
+        subtitle:
+          nullable: true
+          type: string
+        title:
+          nullable: true
+          type: string
+        type:
+          nullable: true
+          type: string
+      type: object
+    taxsee.client.service.OrderCommon:
+      properties:
+        allowReview:
+          nullable: true
+          type: boolean
+        base:
+          nullable: true
+          type: integer
+        callCenterNumber:
+          nullable: true
+          type: string
+        canAsk4Receipt:
+          nullable: true
+          type: boolean
+        car:
+          nullable: true
+          type: string
+        carColor:
+          nullable: true
+          type: string
+        carNumber:
+          nullable: true
+          type: string
+        closed:
+          nullable: true
+          type: string
+        currencyCode:
+          nullable: true
+          type: string
+        dateCreate:
+          nullable: true
+          type: string
+        dateEnd:
+          nullable: true
+          type: string
+        dateStart:
+          nullable: true
+          type: string
+        driver:
+          nullable: true
+          type: string
+        id:
+          nullable: true
+          type: integer
+        payment:
+          type: array
+          items:
+            $ref: '#/components/schemas/taxsee.client.service.Payment'
+        paymentType:
+          nullable: true
+          type: string
+        plate:
+          nullable: true
+          oneOf:
+            -
+              $ref: '#/components/schemas/taxsee.client.service.Plate'
+        price:
+          nullable: true
+          type: number
+          format: float
+        priceString:
+          nullable: true
+          type: string
+        route:
+          type: array
+          items:
+            $ref: '#/components/schemas/taxsee.client.service.Address'
+        status:
+          nullable: true
+          type: string
+        statusCode:
+          nullable: true
+          type: string
+        statusShort:
+          nullable: true
+          type: string
+        tariffIds:
+          nullable: true
+          type: array
+          items:
+            type: integer
+        tariffs:
+          type: array
+          items:
+            $ref: '#/components/schemas/taxsee.client.service.Tariff'
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/taxsee.client.service.TariffService'
+      type: object
+    taxsee.client.service.OrderHistory:
+      allOf:
+        -
+          properties:
+            baseId:
+              nullable: true
+              type: integer
+            negativeReview:
+              nullable: true
+              type: string
+            positiveReview:
+              nullable: true
+              type: string
+            tariffStr:
+              nullable: true
+              type: string
+        -
+          $ref: '#/components/schemas/taxsee.client.service.OrderCommon'
+    taxsee.client.service.OrderStatus:
+      allOf:
+        -
+          properties:
+            account:
+              nullable: true
+              type: integer
+            allowCancel:
+              nullable: true
+              type: boolean
+            allowedOrderChanges:
+              nullable: true
+              type: array
+              items:
+                $ref: '#/components/schemas/taxsee.client.service.AllowedOrderChanges'
+            arrive:
+              nullable: true
+              type: integer
+            driverAccept:
+              nullable: true
+              type: integer
+            driverRequestedOrSuggested:
+              nullable: true
+              type: integer
+            orderMinutes:
+              nullable: true
+              type: integer
+            pay2Driver:
+              type: array
+              items:
+                $ref: '#/components/schemas/taxsee.client.service.Pay2Driver'
+            paymentType:
+              nullable: true
+              type: string
+            phone2:
+              nullable: true
+              type: string
+            rem:
+              nullable: true
+              type: string
+            statusIAmOut:
+              nullable: true
+              type: string
+            trackUrl4Web:
+              nullable: true
+              type: string
+            guid:
+              nullable: true
+              type: string
+            waitStatus:
+              nullable: true
+              type: string
+            waitingDeadline:
+              nullable: true
+              type: integer
+        -
+          $ref: '#/components/schemas/taxsee.client.service.OrderCommon'
+    taxsee.client.service.OrgCountry:
+      properties:
+        cities:
+          type: array
+          items:
+            $ref: '#/components/schemas/taxsee.client.service.City'
+        allowed4Cabinet:
+          nullable: true
+          type: boolean
+        allowed4OrderForm:
+          nullable: true
+          type: boolean
+        countryCode:
+          type: string
+        currency:
+          nullable: true
+          type: string
+        id:
+          nullable: true
+          type: integer
+        locale:
+          nullable: true
+          type: string
+        mcc:
+          nullable: true
+          type: integer
+        name:
+          nullable: true
+          type: string
+        symbolCurrency:
+          nullable: true
+          type: string
+      type: object
+    taxsee.client.service.PaintingPiece:
+      properties:
+        color:
+          nullable: true
+          type: string
+        fontSize:
+          nullable: true
+          type: integer
+        x:
+          nullable: true
+          type: integer
+        'y':
+          nullable: true
+          type: integer
+        symbols:
+          nullable: true
+          type: string
+      type: object
+    taxsee.client.service.Pay2Driver:
+      properties:
+        buttonName:
+          nullable: true
+          type: string
+        description:
+          nullable: true
+          type: string
+        payCommands:
+          nullable: true
+          type: array
+          items:
+            $ref: '#/components/schemas/taxsee.client.service.PayCommand'
+      type: object
+    taxsee.client.service.PayCommand:
+      properties:
+        bankPhone:
+          nullable: true
+          type: string
+        command:
+          nullable: true
+          type: string
+        type:
+          nullable: true
+          type: string
+        text:
+          nullable: true
+          type: string
+      type: object
+    taxsee.client.service.Payment:
+      properties:
+        description:
+          nullable: true
+          type: string
+        price:
+          nullable: true
+          type: number
+          format: float
+        priceString:
+          nullable: true
+          type: string
+      type: object
+    taxsee.client.service.PaymentMethod:
+      properties:
+        id:
+          type: integer
+        active:
+          type: boolean
+        balance:
+          nullable: true
+          type: number
+          format: float
+        bankCards:
+          nullable: true
+          description: 'extra field, use expand: bankCards'
+          type: array
+          items:
+            $ref: '#/components/schemas/taxsee.client.service.BankCard'
+        name:
+          type: string
+        description:
+          nullable: true
+          type: string
+        isCurrent:
+          type: boolean
+        owned:
+          type: boolean
+        balanceString:
+          nullable: true
+          type: string
+        balanceStringShort:
+          nullable: true
+          type: string
+        type:
+          nullable: true
+          description: 'Cash, Account, Card, Sberbank'
+          type: string
+        bonusPrompt:
+          nullable: true
+          type: string
+        bonusString:
+          nullable: true
+          type: string
+        bonusSum:
+          nullable: true
+          type: number
+          format: float
+        bonusesExpiredIn:
+          nullable: true
+          type: string
+        realBalanceString:
+          nullable: true
+          type: string
+      type: object
+    taxsee.client.service.Plate:
+      properties:
+        paintingPieces:
+          nullable: true
+          type: array
+          items:
+            $ref: '#/components/schemas/taxsee.client.service.PaintingPiece'
+        pictureUrl:
+          nullable: true
+          type: string
+      type: object
+    taxsee.client.service.ReviewNegativeType:
+      properties:
+        k:
+          nullable: true
+          type: string
+        v:
+          nullable: true
+          type: string
+      type: object
+    taxsee.client.service.RouteMeta:
+      properties:
+        maxPoints:
+          nullable: true
+          type: integer
+        points:
+          type: array
+          items:
+            $ref: '#/components/schemas/taxsee.client.service.MetaPoint'
+      type: object
+    taxsee.client.service.SendCodeResult:
+      properties:
+        message:
+          nullable: true
+          type: string
+        success:
+          nullable: true
+          type: boolean
+        nextTryInSeconds:
+          nullable: true
+          type: integer
+        resultCode:
+          nullable: true
+          type: integer
+        shortNumber:
+          nullable: true
+          type: string
+        suggestToCallForOrdering:
+          nullable: true
+          type: boolean
+      type: object
+    taxsee.client.service.SendCodeType:
+      properties:
+        isDefault:
+          nullable: true
+          type: boolean
+        key:
+          nullable: true
+          type: integer
+        value:
+          nullable: true
+          type: string
+      type: object
+    taxsee.client.service.SimpleObject:
+      properties:
+        id:
+          nullable: true
+          type: integer
+        name:
+          nullable: true
+          type: string
+        description:
+          nullable: true
+          type: string
+      type: object
+    taxsee.client.service.Tariff:
+      properties:
+        askMeetPoint:
+          nullable: true
+          type: boolean
+        classId:
+          type: integer
+        code:
+          type: string
+        currencyCode:
+          nullable: true
+          type: string
+        currencySymbol:
+          nullable: true
+          type: string
+        fullDescription:
+          nullable: true
+          description: 'extra field, use expand: fullDescription'
+          type: string
+        isDefault:
+          nullable: true
+          type: integer
+        minPrice:
+          nullable: true
+          type: number
+          format: float
+        minPriceString:
+          nullable: true
+          type: string
+        name:
+          type: string
+        needShowingCommentInAdditionals:
+          nullable: true
+          type: boolean
+        description:
+          nullable: true
+          type: string
+        clientHint:
+          nullable: true
+          type: string
+        routeMeta:
+          nullable: true
+          oneOf:
+            -
+              $ref: '#/components/schemas/taxsee.client.service.RouteMeta'
+        services:
+          description: 'extra field, use expand: services'
+          type: array
+          items:
+            $ref: '#/components/schemas/taxsee.client.service.TariffService'
+      type: object
+    taxsee.client.service.TariffGroup:
+      properties:
+        code:
+          type: string
+        multiTariffsEnabled:
+          nullable: true
+          type: boolean
+        name:
+          type: string
+        subTitle:
+          nullable: true
+          type: string
+        tariffs:
+          description: 'extra field, use expand: tariffs'
+          type: array
+          items:
+            $ref: '#/components/schemas/taxsee.client.service.Tariff'
+      type: object
+    taxsee.client.service.TariffService:
+      properties:
+        id:
+          type: integer
+        list: {  }
+        hint:
+          nullable: true
+          type: string
+        max:
+          nullable: true
+          type: string
+        min:
+          nullable: true
+          type: string
+        minMaxValidation:
+          nullable: true
+          type: string
+        name:
+          type: string
+        price:
+          nullable: true
+          type: number
+          format: float
+        priceText:
+          nullable: true
+          type: string
+        priceTextSelected:
+          nullable: true
+          type: string
+        rem:
+          nullable: true
+          type: string
+        required:
+          nullable: true
+          type: string
+        selectedKey:
+          nullable: true
+          type: integer
+        showCurrency:
+          nullable: true
+          type: boolean
+        showingPlace:
+          nullable: true
+          type: string
+        type:
+          nullable: true
+          type: string
+        typePrice:
+          nullable: true
+          type: integer
+        useNoRepeat:
+          nullable: true
+          type: integer
+        value: {  }
+        visible:
+          nullable: true
+          type: boolean
+        visibleParams: {  }
+      type: object
+    taxsee.client.service.UniversalDialog:
+      properties:
+        message:
+          nullable: true
+          type: string
+        messageid:
+          nullable: true
+          type: integer
+        messagetype:
+          nullable: true
+          type: string
+      type: object
+  parameters:
+    Accept:
+      name: Accept
+      in: header
+      description: 'Minor version, suffix b - for Crimea'
+      schema:
+        enum:
+          - 'application/json; version=v1.2'
+          - 'application/json; version=v1.2b'
+    udid:
+      name: udid
+      in: query
+      description: 'уникальный идентификатор устройства, обязателен для действий не требующих аутентификации, если не передан в теле запроса'
+      schema:
+        type: string
+      example: 275932435422a972367c8827a28137ac
+  securitySchemes:
+    bearerAuth:
+      type: http
+      description: 'для получения токена смотреть действия в: /auth/send-code и /auth/confirm-code'
+      scheme: bearer
+tags:
+  -
+    name: address
+    description: Адреса
+  -
+    name: auth
+    description: Аутентификация
+  -
+    name: bank-cards
+    description: 'Банковские карты'
+  -
+    name: base
+    description: Подразделения
+  -
+    name: default
+    description: 'Общая информация'
+    externalDocs:
+      url: docs/default.md
+  -
+    name: orders
+    description: Заказы
+  -
+    name: profile
+    description: Профиль
+  -
+    name: push
+    description: Push
+  -
+    name: routes
+    description: Маршруты
+  -
+    name: tariffs
+    description: Тарифы
+  -
+    name: templates
+    description: Шаблоны
