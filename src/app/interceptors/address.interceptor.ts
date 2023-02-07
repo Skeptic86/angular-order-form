@@ -1,0 +1,33 @@
+import { AppStateService } from './../services/app-state/app-state.service';
+import { Injectable } from '@angular/core';
+import {
+  HttpRequest,
+  HttpHandler,
+  HttpEvent,
+  HttpInterceptor,
+  HttpParams,
+} from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable()
+export class AddressInterceptor implements HttpInterceptor {
+  constructor(private appStateService: AppStateService) {}
+
+  intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    if (
+      this.appStateService.getStateValue().addressFrom ||
+      this.appStateService.getStateValue().addressTo
+    ) {
+      request = request.clone({
+        params: (request.params ? request.params : new HttpParams())
+          .set('udid', '275932435422a972367c8827a28137ac')
+          .set('base', 3),
+      });
+    }
+    console.log(request);
+    return next.handle(request);
+  }
+}

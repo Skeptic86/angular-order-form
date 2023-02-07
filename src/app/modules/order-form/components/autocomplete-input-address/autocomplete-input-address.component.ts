@@ -36,13 +36,8 @@ export class AutocompleteInputAddressComponent implements OnInit {
     this.sendAddressEvent.emit(value);
   }
 
-  private getAddressesApi() {
-    return this.getAddressesService.getAddressesApi().pipe(
-      tap((value) => {
-        this.data$ = value;
-        console.log(this.data$, value);
-      })
-    );
+  private getAddressesApi(queryTitle: string | null) {
+    return this.getAddressesService.getAddressesApi(queryTitle);
   }
 
   private getAddresses() {
@@ -61,42 +56,46 @@ export class AutocompleteInputAddressComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getAddressesApi().subscribe();
     this.getAddresses();
-    this.filteredAddresses = this.autocompleteInput.valueChanges.pipe(
-      debounceTime(2000),
-      tap((value) => {
-        this.getPriceService.sendClickEvent();
-        const lngLat = this.findLngLatViaTitle(value);
-        if (this.direction === AddressTypeEnum.To) {
-          this.sendAddress({
-            addressTo: {
-              title: value,
-              longitude: lngLat[0],
-              latitude: lngLat[1],
-            } as IAddress,
-          });
-        } else if (this.direction === AddressTypeEnum.From) {
-          this.sendAddress({
-            addressFrom: {
-              title: value,
-              longitude: lngLat[0],
-              latitude: lngLat[1],
-            } as IAddress,
-          });
-        }
-      }),
-      startWith(''),
-      map((value) => this._filter(value || ''))
-    );
+    this.autocompleteInput.valueChanges
+      .pipe(
+        debounceTime(1500),
+        tap((value) => {
+          this.getPriceService.sendClickEvent();
+          const lngLat = this.findLngLatViaTitle(value);
+          if (this.direction === AddressTypeEnum.To) {
+            this.sendAddress({
+              addressTo: {
+                title: value,
+                longitude: lngLat[0],
+                latitude: lngLat[1],
+              } as IAddress,
+            });
+          } else if (this.direction === AddressTypeEnum.From) {
+            this.sendAddress({
+              addressFrom: {
+                title: value,
+                longitude: lngLat[0],
+                latitude: lngLat[1],
+              } as IAddress,
+            });
+          }
+        }),
+        startWith('')
+      )
+      .subscribe((value) => {
+        this.filteredAddresses = this.getAddressesApi(value) as Observable<
+          IAddress[]
+        >;
+      });
   }
 
-  private _filter(value: string): IAddress[] {
-    const filterValue = value.toLowerCase();
-    return this.addresses.filter((address) =>
-      address.title!.toLowerCase().includes(filterValue)
-    );
-  }
+  // private _filter(value: string): IAddress[] {
+  // const filterValue = value.toLowerCase();
+  // return this.addresses.filter((address) =>
+  // address.title!.toLowerCase().includes(filterValue)
+  // );
+  // }
 
   constructor(
     private getAddressesService: GetAddressesService,

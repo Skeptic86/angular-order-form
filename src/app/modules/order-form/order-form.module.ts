@@ -9,7 +9,6 @@ import { CommonModule } from '@angular/common';
 import { TariffCodeToIconNamePipe } from './pipes/tarrif-code-to-icon-name/tariffCodeToIconName.pipe';
 import { ChoseActiveCardPipe } from './pipes/chose-active-card/chose-active-card.pipe';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
@@ -42,7 +41,6 @@ import { OrderFormRoutingModule } from './order-form-routing.module';
     MatSelectModule,
     MatIconModule,
     MatMenuModule,
-    HttpClientModule,
     DragDropModule,
     OrderFormRoutingModule,
     MapModule,

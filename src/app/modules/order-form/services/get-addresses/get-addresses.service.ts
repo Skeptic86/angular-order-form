@@ -1,6 +1,10 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpParams,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, throwError } from 'rxjs';
+import { catchError, throwError, Observable } from 'rxjs';
 import { IAddress } from 'src/app/interfaces/address.interface';
 
 @Injectable({
@@ -16,7 +20,7 @@ export class GetAddressesService {
   private readonly jsonURL = 'http://localhost:3000/addresses';
 
   private readonly jsonURLApi =
-    'https://dev-api.taxsee.com/client/v1/addresses?base=3';
+    'https://dev-api.taxsee.com/client/v1/addresses';
 
   getAddresses() {
     return this.http
@@ -24,8 +28,15 @@ export class GetAddressesService {
       .pipe(catchError(this.handleError));
   }
 
-  getAddressesApi() {
-    return this.http.get(this.jsonURLApi).pipe(catchError(this.handleError));
+  getAddressesApi(queryTitle?: string | null) {
+    if (queryTitle) {
+      const params = new HttpParams().set('q', queryTitle);
+      return this.http
+        .get<IAddress[]>(this.jsonURLApi, { params: params })
+        .pipe(catchError(this.handleError));
+    } else {
+      return this.http.get(this.jsonURLApi).pipe(catchError(this.handleError));
+    }
   }
 
   private handleError(error: HttpErrorResponse) {
