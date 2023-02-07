@@ -1,10 +1,11 @@
+import { AddressTypeEnum } from './../../../../enums/address-type.enum';
 import { IAddress } from './../../../../interfaces/address.interface';
 import { FormService } from './../../services/form/form.service';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import { IAppState } from 'src/app/interfaces/app-state.interface';
 import { AppStateService } from 'src/app/services/app-state/app-state.service';
-import { first, tap } from 'rxjs';
+import { distinctUntilChanged, first, Subscription, tap } from 'rxjs';
 
 @Component({
   selector: 'app-main',
@@ -12,29 +13,49 @@ import { first, tap } from 'rxjs';
   styleUrls: ['./main.component.scss'],
 })
 export class MainComponent implements OnInit {
+  clickEventSubscription?: Subscription;
+  addressFrom?: IAddress;
+  addressTo?: IAddress;
+
   ngOnInit(): void {
     this.formService.formInit();
+    this.subscribeToState();
   }
 
-  setAddress(address: Partial<IAppState>) {
-    if (address.addressFrom?.title || address.addressFrom?.title === '') {
-      const addressFromAppState: Partial<IAppState> = {
-        addressFrom: {
-          title: address.addressFrom.title,
-          longitude: address.addressFrom.longitude,
-          latitude: address.addressFrom.latitude,
-        } as IAddress,
-      };
-      this.appStateService.setAppState(addressFromAppState);
-    } else if (address.addressTo?.title || address.addressTo?.title === '') {
-      const addressToAppState: Partial<IAppState> = {
-        addressTo: {
-          title: address.addressTo.title,
-          longitude: address.addressTo.longitude,
-          latitude: address.addressTo.latitude,
-        } as IAddress,
-      };
-      this.appStateService.setAppState(addressToAppState);
+  private subscribeToState() {
+    this.clickEventSubscription = this.appStateService
+      .getState()
+      .pipe(
+        distinctUntilChanged((prev, curr) => {
+          return (
+            prev?.addressFrom === curr?.addressFrom &&
+            prev?.addressTo === curr?.addressTo
+          );
+        })
+      )
+      .subscribe((value: IAppState) => {
+        console.log('set value in main component', value);
+        if (value?.addressFrom?.title) {
+          this.addressFrom = value.addressFrom;
+        } else if (value?.addressTo?.title) {
+          this.addressTo = value.addressTo;
+        }
+      });
+  }
+
+  addressesEnum = AddressTypeEnum;
+
+  setAddress(address: IAddress, direction: AddressTypeEnum) {
+    if (
+      (address?.title || address?.title === '') &&
+      direction === AddressTypeEnum.From
+    ) {
+      this.appStateService.setAppState({ addressFrom: address });
+    } else if (
+      (address?.title || address?.title === '') &&
+      direction === AddressTypeEnum.To
+    ) {
+      this.appStateService.setAppState({ addressTo: address });
     }
   }
 
@@ -50,20 +71,14 @@ export class MainComponent implements OnInit {
         .pipe(
           first(),
           tap((value) => {
-            const addresses: Partial<IAppState> = {
-              addressTo: {
-                title: value.addressFrom?.title!,
-                longitude: value.addressFrom?.longitude!,
-                latitude: value.addressFrom?.latitude!,
-              },
-              addressFrom: {
-                title: value.addressTo?.title!,
-                longitude: value.addressTo?.longitude!,
-                latitude: value.addressTo?.latitude!,
-              },
-            };
-            this.appStateService.setAppState(addresses);
-            console.log(1);
+            if (value.addressFrom?.title && value.addressTo?.title) {
+              const addresses: Partial<IAppState> = {
+                addressTo: value.addressFrom,
+                addressFrom: value.addressTo,
+              };
+              this.appStateService.setAppState(addresses);
+              console.log(1);
+            }
           })
         )
         .subscribe();

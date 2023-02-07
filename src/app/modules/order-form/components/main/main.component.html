@@ -4,12 +4,12 @@
       <div class="inputs" cdkDropList (cdkDropListDropped)="drop($event)">
         <div class="from" cdkDrag cdkDragBoundary=".inputs">
           <img class="from-img" src="../../../../../assets/from.svg" alt="from">
-          <app-autocomplete-input-address  direction="from" (sendAddressEvent)="setAddress($event)" class="mat-typography" placeholderText="Откуда?"></app-autocomplete-input-address>
+          <app-autocomplete-input-address [addressInput]="addressFrom" (sendAddressEvent)="setAddress($event, addressesEnum.From)" class="mat-typography" placeholderText="Откуда?"></app-autocomplete-input-address>
           <mat-icon cdkDragHandle class="from-icon">format_line_spacing</mat-icon>
         </div>
         <div class="to" cdkDrag cdkDragBoundary=".inputs">
           <img class="to-img" src="../../../../../assets/to.svg" alt="to">
-          <app-autocomplete-input-address direction="to" (sendAddressEvent)="setAddress($event)" class="mat-typography" placeholderText="Куда?"></app-autocomplete-input-address>
+          <app-autocomplete-input-address [addressInput]="addressTo"  (sendAddressEvent)="setAddress($event, addressesEnum.To)" class="mat-typography" placeholderText="Куда?"></app-autocomplete-input-address>
           <mat-icon cdkDragHandle class="to-icon">format_line_spacing</mat-icon>
         </div>
       </div>

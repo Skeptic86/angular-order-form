@@ -3,12 +3,21 @@ import { AddressTypeEnum } from './../../../../enums/address-type.enum';
 import { IAppState } from './../../../../interfaces/app-state.interface';
 import { IAddress } from '../../../../interfaces/address.interface';
 import { GetAddressesService } from '../../services/get-addresses/get-addresses.service';
-import { Component, EventEmitter, OnInit, Output, Input } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  Input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, Subscription, tap } from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
+  filter,
   map,
   startWith,
 } from 'rxjs/operators';
@@ -20,19 +29,26 @@ import { AppStateService } from 'src/app/services/app-state/app-state.service';
   templateUrl: './autocomplete-input-address.component.html',
   styleUrls: ['./autocomplete-input-address.component.scss'],
 })
-export class AutocompleteInputAddressComponent implements OnInit {
+export class AutocompleteInputAddressComponent implements OnInit, OnChanges {
   @Input() placeholderText?: string;
-  @Input() direction?: string;
-  @Output() sendAddressEvent = new EventEmitter<Partial<IAppState>>();
+  @Input() addressInput?: IAddress;
+  @Output() sendAddressEvent = new EventEmitter<IAddress>();
   autocompleteInput = new FormControl('');
   private addresses: IAddress[] = [];
   filteredAddresses!: Observable<IAddress[]>;
-  clickEventSubscription: Subscription;
-  data$?: any;
+
+  addressSelected(address: IAddress) {
+    this.sendAddress(address);
+  }
+
+  clearInput() {
+    this.inputValue = '';
+    this.addressSelected({ title: '' } as IAddress);
+  }
 
   inputValue = '';
 
-  sendAddress(value: Partial<IAppState>) {
+  sendAddress(value: IAddress) {
     this.sendAddressEvent.emit(value);
   }
 
@@ -47,11 +63,19 @@ export class AutocompleteInputAddressComponent implements OnInit {
   }
 
   private findLngLatViaTitle(title: string | null) {
-    const address = this.addresses.find((address) => address.title === title);
-    if (address && title) {
+    const address = this.appStateService.getStateValue().addressFrom;
+    if (address?.title) {
       return [address?.longitude, address?.latitude];
     } else {
       return [65.53553704887027, 57.15114882108171];
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('value changes');
+    const address = changes['addressInput'].currentValue as IAddress;
+    if (address?.title) {
+      this.inputValue = address.title;
     }
   }
 
@@ -60,26 +84,9 @@ export class AutocompleteInputAddressComponent implements OnInit {
     this.autocompleteInput.valueChanges
       .pipe(
         debounceTime(1500),
+        filter((value) => value!.length >= 3),
         tap((value) => {
           this.getPriceService.sendClickEvent();
-          const lngLat = this.findLngLatViaTitle(value);
-          if (this.direction === AddressTypeEnum.To) {
-            this.sendAddress({
-              addressTo: {
-                title: value,
-                longitude: lngLat[0],
-                latitude: lngLat[1],
-              } as IAddress,
-            });
-          } else if (this.direction === AddressTypeEnum.From) {
-            this.sendAddress({
-              addressFrom: {
-                title: value,
-                longitude: lngLat[0],
-                latitude: lngLat[1],
-              } as IAddress,
-            });
-          }
         }),
         startWith('')
       )
@@ -101,26 +108,5 @@ export class AutocompleteInputAddressComponent implements OnInit {
     private getAddressesService: GetAddressesService,
     private getPriceService: GetPriceService,
     private appStateService: AppStateService
-  ) {
-    this.clickEventSubscription = this.appStateService
-      .getState()
-      .pipe(
-        distinctUntilChanged((prev, curr) => {
-          if (this.direction === AddressTypeEnum.To) {
-            return prev?.addressTo?.title === curr?.addressTo?.title;
-          } else {
-            return prev?.addressFrom?.title === curr?.addressFrom?.title;
-          }
-        })
-      )
-      .subscribe((value: IAppState) => {
-        if (value?.addressFrom?.title || value?.addressTo?.title) {
-          if (this.direction === AddressTypeEnum.To) {
-            this.inputValue = value!.addressTo!.title!;
-          } else {
-            this.inputValue = value!.addressFrom!.title!;
-          }
-        }
-      });
-  }
+  ) {}
 }

@@ -1,13 +1,13 @@
 <form class="order-form">
     <mat-form-field class="example-full-width" appearance="outline">
       <mat-label>{{placeholderText}}</mat-label>
-      <input type="text" placeholder="Адрес" aria-label="Number" matInput [formControl]="autocompleteInput"[matAutocomplete]="auto" [(ngModel)]="inputValue"> 
+      <input type="text" placeholder="Адрес" aria-label="Number"  matInput [formControl]="autocompleteInput"[matAutocomplete]="auto" [(ngModel)]="inputValue"> 
       <mat-autocomplete #auto="matAutocomplete">
-        <mat-option *ngFor="let option of filteredAddresses | async" [value]="option.title">
-          {{option.title}}
+        <mat-option (onSelectionChange)="addressSelected(address)" *ngFor="let address of filteredAddresses | async" [value]="address.title">
+          {{address.title}}
         </mat-option>
       </mat-autocomplete>
-      <button type="button" *ngIf="inputValue" matSuffix mat-icon-button aria-label="Clear" (click)="inputValue =''">
+      <button type="button" *ngIf="inputValue" matSuffix mat-icon-button aria-label="Clear" (click)="clearInput()">
         <mat-icon>close</mat-icon>
       </button>    
     </mat-form-field>
