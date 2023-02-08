@@ -18,6 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { OrderFormRoutingModule } from './order-form-routing.module';
+import { TariffIconPipe } from './pipes/tariff-icon/tariff-icon.pipe';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { OrderFormRoutingModule } from './order-form-routing.module';
     PaymentChooseComponent,
     AutocompleteInputAddressComponent,
     TariffComponent,
+    TariffIconPipe,
   ],
   exports: [MainComponent],
   imports: [

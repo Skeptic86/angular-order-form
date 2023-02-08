@@ -28,7 +28,7 @@ export class AppStateService {
         paymentType: this.subject$.getValue().payment?.paymentMethods[0].type,
         tariffId: this.subject$.getValue().tariff?.classId,
       },
-      relativeTo: this.route,
+      // relativeTo: this.route,
     });
   }
 

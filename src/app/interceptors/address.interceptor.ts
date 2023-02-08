@@ -27,7 +27,6 @@ export class AddressInterceptor implements HttpInterceptor {
           .set('base', 3),
       });
     }
-    console.log(request);
     return next.handle(request);
   }
 }

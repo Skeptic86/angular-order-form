@@ -72,9 +72,9 @@ export class AutocompleteInputAddressComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('value changes');
     const address = changes['addressInput'].currentValue as IAddress;
     if (address?.title) {
+      console.log('value changes, addressInput: ', address);
       this.inputValue = address.title;
     }
   }

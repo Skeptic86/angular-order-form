@@ -1,3 +1,6 @@
+import { IDefault } from 'src/app/interfaces/default.interface';
+import { ITariff } from 'src/app/interfaces/tariff.interface';
+import { ActivatedRoute } from '@angular/router';
 import { AddressTypeEnum } from './../../../../enums/address-type.enum';
 import { IAddress } from './../../../../interfaces/address.interface';
 import { FormService } from './../../services/form/form.service';
@@ -5,7 +8,17 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import { IAppState } from 'src/app/interfaces/app-state.interface';
 import { AppStateService } from 'src/app/services/app-state/app-state.service';
-import { distinctUntilChanged, first, Subscription, tap } from 'rxjs';
+import {
+  distinctUntilChanged,
+  filter,
+  first,
+  map,
+  Observable,
+  skip,
+  Subscription,
+  tap,
+} from 'rxjs';
+import { TariffService } from '../../services/tariff/tariff.service';
 
 @Component({
   selector: 'app-main',
@@ -16,20 +29,40 @@ export class MainComponent implements OnInit {
   clickEventSubscription?: Subscription;
   addressFrom?: IAddress;
   addressTo?: IAddress;
+  readonly tariff$ = this.tariffChanged();
+  readonly defaults$ = this.getDefaults();
+
+  private tariffChanged(): Observable<ITariff | undefined> {
+    return this.appStateService.getState().pipe(
+      map((value) => {
+        return value.tariff;
+      }),
+      filter((value) => !!value),
+      distinctUntilChanged((prev, curr) => {
+        return prev!.classId === curr!.classId;
+      })
+    );
+  }
+
+  private getDefaults(): Observable<IDefault> {
+    return this.tariffService.getDefaults();
+  }
 
   ngOnInit(): void {
     this.formService.formInit();
     this.subscribeToState();
+    this.route.queryParamMap.subscribe((value) => console.log(value));
   }
 
   private subscribeToState() {
     this.clickEventSubscription = this.appStateService
       .getState()
       .pipe(
+        // skip(3),
         distinctUntilChanged((prev, curr) => {
           return (
-            prev?.addressFrom === curr?.addressFrom &&
-            prev?.addressTo === curr?.addressTo
+            prev?.addressFrom?.title === curr?.addressFrom?.title &&
+            prev?.addressTo?.title === curr?.addressTo?.title
           );
         })
       )
@@ -37,7 +70,8 @@ export class MainComponent implements OnInit {
         console.log('set value in main component', value);
         if (value?.addressFrom?.title) {
           this.addressFrom = value.addressFrom;
-        } else if (value?.addressTo?.title) {
+        }
+        if (value?.addressTo?.title) {
           this.addressTo = value.addressTo;
         }
       });
@@ -61,7 +95,9 @@ export class MainComponent implements OnInit {
 
   constructor(
     private appStateService: AppStateService,
-    private formService: FormService
+    private formService: FormService,
+    private route: ActivatedRoute,
+    private tariffService: TariffService
   ) {}
 
   drop(event: CdkDragDrop<string[]>) {

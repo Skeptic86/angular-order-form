@@ -27,18 +27,24 @@ import { ITariff } from 'src/app/interfaces/tariff.interface';
 export class FormService {
   private payment$$ = new BehaviorSubject<IPayment | null>(null);
   private tariffInfo$$ = new BehaviorSubject<IDefault | null>(null);
-  private addresses$$ = new BehaviorSubject<IAddress[] | null>(null);
+  // private addresses$$ = new BehaviorSubject<IAddress[] | null>(null);
+  private addressesFrom$$ = new BehaviorSubject<IAddress[] | null>(null);
+  private addressesTo$$ = new BehaviorSubject<IAddress[] | null>(null);
 
   private getPayment(): Observable<IPayment> {
     return this.paymentChooseService.getPayment();
   }
 
   private getDefault(): Observable<IDefault> {
-    return this.tariffService.getTariffGroupsInfo();
+    return this.tariffService.getDefaults();
   }
 
-  private getAddresses(): Observable<IAddress[]> {
-    return this.getAddressesService.getAddresses();
+  // private getAddresses(): Observable<IAddress[]> {
+  //   return this.getAddressesService.getAddresses();
+  // }
+
+  private getAddressesApi(queryAddress: string | null) {
+    return this.getAddressesService.getAddressesApi(queryAddress);
   }
 
   private ConvertStringToNumber(input: string | null) {
@@ -54,6 +60,7 @@ export class FormService {
   }
 
   private findAddressByTitle(addresses: IAddress[], title: string | null) {
+    console.log('title', title);
     if (title !== null) {
       return addresses.find((address) => address.title === title);
     }
@@ -75,15 +82,26 @@ export class FormService {
     return {} as ITariff;
   }
 
-  private getAppStateFromURL() {
+  private getAppStateFromURL(
+    tariffId: string | null,
+    paymentType: string | null,
+    addressFrom: string | null,
+    addressTo: string | null
+  ) {
     const tariffIdURLParam = this.route.snapshot.queryParamMap.get('tariffId');
-    const numberTarrifIdURL = this.ConvertStringToNumber(tariffIdURLParam);
+    const numberTarrifIdURL = this.ConvertStringToNumber(tariffId);
     const paymentTypeURLParam =
       this.route.snapshot.queryParamMap.get('paymentType');
     const addressFromURLParam =
       this.route.snapshot.queryParamMap.get('addressFrom');
     const addressToURLParam =
       this.route.snapshot.queryParamMap.get('addressTo');
+    console.log(
+      numberTarrifIdURL,
+      paymentTypeURLParam,
+      addressFromURLParam,
+      addressToURLParam
+    );
 
     const paramState: IAppState = {
       tariff: this.findTarrifNameById(
@@ -94,35 +112,59 @@ export class FormService {
         paymentMethods: [
           this.findPaymentMethodByType(
             this.payment$$.getValue()!,
-            paymentTypeURLParam
+            paymentType
           )!,
         ],
       },
       addressFrom: this.findAddressByTitle(
-        this.addresses$$.getValue()!,
-        addressFromURLParam
+        this.addressesFrom$$.getValue()!,
+        addressFrom
       ),
       addressTo: this.findAddressByTitle(
-        this.addresses$$.getValue()!,
-        addressToURLParam
+        this.addressesTo$$.getValue()!,
+        addressTo
       ),
     };
+
     return paramState;
   }
 
   formInit() {
+    const tariffIdURLParam = this.route.snapshot.queryParamMap.get('tariffId');
+    const paymentTypeURLParam =
+      this.route.snapshot.queryParamMap.get('paymentType');
+    const addressFromURLParam =
+      this.route.snapshot.queryParamMap.get('addressFrom');
+    const addressToURLParam =
+      this.route.snapshot.queryParamMap.get('addressTo');
+    console.log(
+      tariffIdURLParam,
+      paymentTypeURLParam,
+      addressFromURLParam,
+      addressToURLParam
+    );
     forkJoin({
       tariffs: this.getDefault(),
       payments: this.getPayment(),
-      addresses: this.getAddresses(),
+      addressesFrom: this.getAddressesApi(addressFromURLParam),
+      addressesTo: this.getAddressesApi(addressToURLParam),
     })
       .pipe(
         catchError((error) => of(error)),
-        tap(({ tariffs, payments, addresses }) => {
+        tap(({ tariffs, payments, addressesFrom, addressesTo }) => {
           this.tariffInfo$$.next(tariffs);
           this.payment$$.next(payments);
-          this.addresses$$.next(addresses);
-          this.appStateService.setAppState(this.getAppStateFromURL());
+          this.addressesFrom$$.next(addressesFrom);
+          this.addressesTo$$.next(addressesTo);
+          console.log(this.addressesFrom$$);
+          this.appStateService.setAppState(
+            this.getAppStateFromURL(
+              tariffIdURLParam,
+              paymentTypeURLParam,
+              addressFromURLParam,
+              addressToURLParam
+            )
+          );
         })
       )
       .subscribe();

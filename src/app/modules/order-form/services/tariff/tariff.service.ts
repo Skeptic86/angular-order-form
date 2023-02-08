@@ -13,7 +13,7 @@ import { catchError, tap, Observable, of, throwError } from 'rxjs';
 export class TariffService {
   private readonly jsonURL = 'http://localhost:3000/defaults';
 
-  getTariffGroupsInfo() {
+  getDefaults(): Observable<IDefault> {
     return this.http
       .get<IDefault>(this.jsonURL)
       .pipe(catchError(this.handleError));

@@ -1,18 +1,18 @@
 <button mat-icon-button [matMenuTriggerFor]="tariffGroupsMenu">
-    <mat-icon>{{icon}}</mat-icon>
+    <mat-icon>{{tariff?.classId| tariffIcon:tariffGroups}}</mat-icon>
 </button>
 
 
 
 <mat-menu #tariffGroupsMenu="matMenu" >
-    <ng-container *ngIf="data?.info">
-        <ng-container *ngFor="let tariffGroup of data.info.tariffGroups; let i = index;">
+    <ng-container *ngIf="tariffGroups">
+        <ng-container *ngFor="let tariffGroup of tariffGroups; let i = index;">
             <button mat-menu-item [matMenuTriggerFor]="tariffsMenu">
                 <mat-icon>{{ tariffGroup.code | TariffCodeToIconName:this.codeIcons}}</mat-icon>
                 <span>{{tariffGroup.name}}</span>
             </button>
             <mat-menu #tariffsMenu="matMenu">
-                <button (click)="changeTarrif(tariffGroup.code, tariff.name, tariff.classId)" mat-menu-item *ngFor="let tariff of tariffGroup.tariffs" >{{tariff.name}} ({{tariff.minPriceString}})</button>
+                <button (click)="changeTarrif(tariff)" mat-menu-item *ngFor="let tariff of tariffGroup.tariffs" >{{tariff.name}} ({{tariff.minPriceString}})</button>
             </mat-menu>
         </ng-container>
     </ng-container>

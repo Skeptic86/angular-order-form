@@ -16,7 +16,7 @@
       <div class="buttons">
         <app-payment-choose></app-payment-choose>
         <app-order-button></app-order-button>
-        <app-tariff></app-tariff>
+        <app-tariff [tariffGroups]="(defaults$ | async)?.info?.tariffGroups" [tariff]="(tariff$ | async)!"></app-tariff>
       </div>
     </div>
     <app-map-button class="map-button"></app-map-button>    
