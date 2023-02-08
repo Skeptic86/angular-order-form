@@ -1,10 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'TariffCodeToIconName'
+  name: 'TariffCodeToIconName',
 })
 export class TariffCodeToIconNamePipe implements PipeTransform {
-
   // codeIcons = {
   //   CAR: 'directions_car',
   //   DELIVERY: 'shopping_bag',
@@ -13,9 +12,8 @@ export class TariffCodeToIconNamePipe implements PipeTransform {
   //   SERVICE: 'face'
   // }
 
-  transform(code:string, codeIconsDict:{}): string {
-    const keyTyped = code as keyof typeof codeIconsDict
-    return codeIconsDict[keyTyped]
+  transform(code: string | null, codeIconsDict: {}): string {
+    const keyTyped = code as keyof typeof codeIconsDict;
+    return codeIconsDict[keyTyped];
   }
-
 }

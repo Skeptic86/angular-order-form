@@ -1,14 +1,9 @@
-import { IAddress } from 'src/app/interfaces/address.interface';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, tap, distinctUntilChanged, concat, skip } from 'rxjs';
 import { ITariff } from './../../../../interfaces/tariff.interface';
-import { IAppState } from './../../../../interfaces/app-state.interface';
 import { AppStateService } from './../../../../services/app-state/app-state.service';
 import { GetPriceService } from '../../services/get-price/get-price.service';
-import { IDefaultInfo } from '../../../../interfaces/default-info.interface';
 import { TariffService } from './../../services/tariff/tariff.service';
 import { Component, Input, OnInit } from '@angular/core';
-import { IDefault } from 'src/app/interfaces/default.interface';
 import { CodeIconsEnum } from '../../../../enums/tariff-code-to-icons-enum';
 import { ITariffGroup } from 'src/app/interfaces/tariff-group.interface';
 
@@ -58,11 +53,6 @@ export class TariffComponent implements OnInit {
   //   return res;
   // }
 
-  private ConvertStringToNumber(input: string | null) {
-    if (!input || input.trim().length == 0) return NaN;
-    return Number(input);
-  }
-
   ngOnInit() {}
 
   // private setTariffInit(tarrifIdUrl: number | null) {
@@ -91,10 +81,5 @@ export class TariffComponent implements OnInit {
     this.setAppStateTariff(tariff);
   }
 
-  constructor(
-    private tariffService: TariffService,
-    private getPriceService: GetPriceService,
-    private appStateService: AppStateService,
-    private route: ActivatedRoute
-  ) {}
+  constructor(private appStateService: AppStateService) {}
 }

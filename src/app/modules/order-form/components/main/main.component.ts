@@ -14,11 +14,12 @@ import {
   first,
   map,
   Observable,
-  skip,
   Subscription,
   tap,
 } from 'rxjs';
 import { TariffService } from '../../services/tariff/tariff.service';
+import { IPayment, IPaymentMethod } from 'src/app/interfaces/payment.interface';
+import { PaymentChooseService } from './../../services/payment-choose/payment-choose.service';
 
 @Component({
   selector: 'app-main',
@@ -29,8 +30,26 @@ export class MainComponent implements OnInit {
   clickEventSubscription?: Subscription;
   addressFrom?: IAddress;
   addressTo?: IAddress;
+  readonly paymentMethod$ = this.paymentChanged();
+  readonly paymentMethods$ = this.getPayment();
   readonly tariff$ = this.tariffChanged();
   readonly defaults$ = this.getDefaults();
+
+  private getPayment(): Observable<IPayment> {
+    return this.paymentChooseService.getPayment();
+  }
+
+  private paymentChanged(): Observable<IPaymentMethod> {
+    return this.appStateService.getState().pipe(
+      map((value) => {
+        return value.payment!.paymentMethods[0];
+      }),
+      filter((value) => !!value),
+      distinctUntilChanged((prev, curr) => {
+        return prev!.type === curr!.type;
+      })
+    );
+  }
 
   private tariffChanged(): Observable<ITariff | undefined> {
     return this.appStateService.getState().pipe(
@@ -58,7 +77,6 @@ export class MainComponent implements OnInit {
     this.clickEventSubscription = this.appStateService
       .getState()
       .pipe(
-        // skip(3),
         distinctUntilChanged((prev, curr) => {
           return (
             prev?.addressFrom?.title === curr?.addressFrom?.title &&
@@ -97,7 +115,8 @@ export class MainComponent implements OnInit {
     private appStateService: AppStateService,
     private formService: FormService,
     private route: ActivatedRoute,
-    private tariffService: TariffService
+    private tariffService: TariffService,
+    private paymentChooseService: PaymentChooseService
   ) {}
 
   drop(event: CdkDragDrop<string[]>) {
