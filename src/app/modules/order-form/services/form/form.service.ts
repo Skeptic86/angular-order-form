@@ -35,8 +35,8 @@ export class FormService {
     return this.paymentChooseService.getPayment();
   }
 
-  private getDefault(): Observable<IDefault> {
-    return this.tariffService.getDefaults();
+  private getDefaultsApi(): Observable<IDefault> {
+    return this.tariffService.getDefaultsApi();
   }
 
   // private getAddresses(): Observable<IAddress[]> {
@@ -108,14 +108,10 @@ export class FormService {
         this.tariffInfo$$.getValue()!,
         numberTarrifIdURL
       ),
-      payment: {
-        paymentMethods: [
-          this.findPaymentMethodByType(
-            this.payment$$.getValue()!,
-            paymentType
-          )!,
-        ],
-      },
+      payment: this.findPaymentMethodByType(
+        this.payment$$.getValue()!,
+        paymentType
+      )!,
       addressFrom: this.findAddressByTitle(
         this.addressesFrom$$.getValue()!,
         addressFrom
@@ -144,7 +140,7 @@ export class FormService {
       addressToURLParam
     );
     forkJoin({
-      tariffs: this.getDefault(),
+      tariffs: this.getDefaultsApi(),
       payments: this.getPayment(),
       addressesFrom: this.getAddressesApi(addressFromURLParam),
       addressesTo: this.getAddressesApi(addressToURLParam),

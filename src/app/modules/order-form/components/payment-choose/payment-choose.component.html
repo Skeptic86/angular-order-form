@@ -2,12 +2,12 @@
     <mat-icon>{{ paymentMethod?.type | paymentIcon }}</mat-icon>
 </button>
 <mat-menu #menu="matMenu">
-    <ng-container *ngFor="let value of paymentMethods?.paymentMethods">
-        <button *ngIf="!value.bankCards.length" mat-menu-item (click)="changePayment(paymentMethods!)">
+    <ng-container *ngFor="let value of payment?.paymentMethods">
+        <button *ngIf="!value.bankCards.length" mat-menu-item (click)="changePayment(value!)">
             <mat-icon>{{value.type | TariffCodeToIconName:this.codeIcons}}</mat-icon>
             <span>{{value.name}}</span>
         </button>
-        <button *ngIf="value.bankCards.length" mat-menu-item (click)="changePayment(paymentMethods!)">
+        <button *ngIf="value.bankCards.length" mat-menu-item (click)="changePayment(value!)">
             <mat-icon>{{value.type | TariffCodeToIconName:this.codeIcons}}</mat-icon>
             <span>{{value.bankCards | choseActiveCard}}</span>
         </button>

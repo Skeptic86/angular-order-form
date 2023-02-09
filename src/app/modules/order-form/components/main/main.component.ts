@@ -31,7 +31,7 @@ export class MainComponent implements OnInit {
   addressFrom?: IAddress;
   addressTo?: IAddress;
   readonly paymentMethod$ = this.paymentChanged();
-  readonly paymentMethods$ = this.getPayment();
+  readonly payment$ = this.getPayment();
   readonly tariff$ = this.tariffChanged();
   readonly defaults$ = this.getDefaults();
 
@@ -39,12 +39,13 @@ export class MainComponent implements OnInit {
     return this.paymentChooseService.getPayment();
   }
 
-  private paymentChanged(): Observable<IPaymentMethod> {
+  private paymentChanged(): Observable<IPaymentMethod | undefined> {
     return this.appStateService.getState().pipe(
+      filter((value) => !!value.payment),
       map((value) => {
-        return value.payment!.paymentMethods[0];
+        console.log('value payment: ', value);
+        return value.payment;
       }),
-      filter((value) => !!value),
       distinctUntilChanged((prev, curr) => {
         return prev!.type === curr!.type;
       })
@@ -54,6 +55,7 @@ export class MainComponent implements OnInit {
   private tariffChanged(): Observable<ITariff | undefined> {
     return this.appStateService.getState().pipe(
       map((value) => {
+        console.log('value tariff: ', value);
         return value.tariff;
       }),
       filter((value) => !!value),
@@ -132,7 +134,6 @@ export class MainComponent implements OnInit {
                 addressFrom: value.addressTo,
               };
               this.appStateService.setAppState(addresses);
-              console.log(1);
             }
           })
         )

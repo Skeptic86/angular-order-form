@@ -13,17 +13,17 @@ import { tap, Observable } from 'rxjs';
   styleUrls: ['./payment-choose.component.scss'],
 })
 export class PaymentChooseComponent implements OnInit {
-  @Input() paymentMethods?: IPayment;
+  @Input() payment?: IPayment;
   @Input() paymentMethod?: IPaymentMethod;
   icon = '';
 
   readonly codeIcons = PaymentTypeIconsEnum;
 
-  changePayment(paymentMethod: IPayment) {
+  changePayment(paymentMethod: IPaymentMethod) {
     this.setAppStatePayment(paymentMethod);
   }
 
-  private setAppStatePayment(paymentObj: IPayment) {
+  private setAppStatePayment(paymentObj: IPaymentMethod) {
     this.appStateService.setAppState({ payment: paymentObj });
   }
 

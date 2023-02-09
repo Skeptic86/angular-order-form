@@ -17,16 +17,12 @@ export class AddressInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    if (
-      this.appStateService.getStateValue().addressFrom ||
-      this.appStateService.getStateValue().addressTo
-    ) {
-      request = request.clone({
-        params: (request.params ? request.params : new HttpParams())
-          .set('udid', '275932435422a972367c8827a28137ac')
-          .set('base', 3),
-      });
-    }
+    request = request.clone({
+      params: (request.params ? request.params : new HttpParams())
+        .set('udid', '275932435422a972367c8827a28137ac')
+        .set('base', 3)
+        .set('country', 'RU'),
+    });
     return next.handle(request);
   }
 }
