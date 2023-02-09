@@ -1,1 +1,1 @@
-<button (click)="onButtonClick()" class ="order-button" mat-flat-button color="success" style="background-color: #ffdb4d;">{{calcPrice?.priceString ?? ''}}<hr class="line">Заказать</button>
+<button (click)="onButtonClick()" class ="order-button" mat-flat-button [disabled]="disabled" color="success" style="background-color: #ffdb4d;">{{calcPrice?.priceString ?? ''}}<hr class="line">Заказать</button>

@@ -1,3 +1,4 @@
+import { AppStateService } from 'src/app/services/app-state/app-state.service';
 import { GetPriceService } from '../../services/get-price/get-price.service';
 import { ICalcPrice } from './../../../../interfaces/calc-price.interface';
 import { OrderButtonService } from './../../services/order-button/order-button.service';
@@ -11,6 +12,7 @@ import { Subscription } from 'rxjs';
 })
 export class OrderButtonComponent implements OnInit {
   calcPrice?: ICalcPrice;
+  disabled: boolean = false;
 
   clickEventSubscription: Subscription;
 
@@ -32,12 +34,23 @@ export class OrderButtonComponent implements OnInit {
 
   constructor(
     private orderButtonService: OrderButtonService,
-    private getPriceService: GetPriceService
+    private getPriceService: GetPriceService,
+    private appStateService: AppStateService
   ) {
     this.clickEventSubscription = this.getPriceService
       .getClickEvent()
       .subscribe(() => {
         this.getPriceString();
+        // if (
+        //   this.appStateService.getStateValue().addressFrom?.title &&
+        //   this.appStateService.getStateValue().addressTo?.title &&
+        //   this.appStateService.getStateValue().payment?.name &&
+        //   this.appStateService.getStateValue().tariff?.name
+        // ) {
+        //   this.disabled = false;
+        // } else {
+        //   this.disabled = true;
+        // }
       });
   }
 }

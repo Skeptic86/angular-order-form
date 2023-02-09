@@ -37,19 +37,18 @@ export class MainComponent implements OnInit {
   readonly defaults$ = this.getDefaults();
 
   private getPayment(): Observable<IPayment> {
-    return this.paymentChooseService.getPayment();
+    return this.paymentChooseService.getPayment().pipe(
+      tap((value) => {
+        if (!this.appStateService.getStateValue().payment?.name) {
+          this.appStateService.setAppState({
+            payment: value.paymentMethods[0],
+          });
+        }
+      })
+    );
   }
 
   private paymentChanged(): Observable<IPaymentMethod | undefined> {
-    if (!this.route.snapshot.queryParamMap.get('paymentType')) {
-      this.appStateService.setAppState({
-        payment: {
-          name: 'Наличные',
-          bankCards: [],
-          type: 'Cash',
-        } as IPaymentMethod,
-      });
-    }
     return this.appStateService.getState().pipe(
       filter((value) => !!value.payment),
       map((value) => {
@@ -63,16 +62,6 @@ export class MainComponent implements OnInit {
   }
 
   private tariffChanged(): Observable<ITariff | undefined> {
-    if (!this.route.snapshot.queryParamMap.get('tariffId')) {
-      console.log(1);
-      this.appStateService.setAppState({
-        tariff: {
-          classId: 1,
-          name: 'Эконом',
-          minPriceString: '(от 110 ₽)',
-        } as ITariff,
-      });
-    }
     return this.appStateService.getState().pipe(
       map((value) => {
         console.log('value tariff: ', value);
@@ -86,7 +75,15 @@ export class MainComponent implements OnInit {
   }
 
   private getDefaults(): Observable<IDefault> {
-    return this.tariffService.getDefaultsApi();
+    return this.tariffService.getDefaultsApi().pipe(
+      tap((value) => {
+        if (!this.appStateService.getStateValue().tariff?.classId) {
+          this.appStateService.setAppState({
+            tariff: value.info.tariffGroups[0].tariffs[0],
+          });
+        }
+      })
+    );
   }
 
   ngOnInit(): void {

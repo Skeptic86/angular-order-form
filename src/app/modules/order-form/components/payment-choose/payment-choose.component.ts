@@ -43,9 +43,5 @@ export class PaymentChooseComponent implements OnInit {
 
   ngOnInit() {}
 
-  constructor(
-    private paymentChooseService: PaymentChooseService,
-    private appStateService: AppStateService,
-    private route: ActivatedRoute
-  ) {}
+  constructor(private appStateService: AppStateService) {}
 }

@@ -56,15 +56,14 @@ export class FormService {
     if (type !== null) {
       return payment?.paymentMethods.find((elem) => elem.type === type);
     }
-    return {} as IPaymentMethod;
+    return undefined;
   }
 
   private findAddressByTitle(addresses: IAddress[], title: string | null) {
-    console.log('title', title);
     if (title !== null) {
       return addresses.find((address) => address.title === title);
     }
-    return {} as IAddress;
+    return undefined;
   }
 
   private findTarrifNameById(tariffInfo: IDefault, id: number) {
@@ -79,51 +78,68 @@ export class FormService {
       });
       return res;
     }
-    return {} as ITariff;
+    return undefined;
   }
 
-  private getAppStateFromURL(
-    tariffId: string | null,
-    paymentType: string | null,
-    addressFrom: string | null,
-    addressTo: string | null
-  ) {
-    const tariffIdURLParam = this.route.snapshot.queryParamMap.get('tariffId');
-    const numberTarrifIdURL = this.ConvertStringToNumber(tariffId);
-    const paymentTypeURLParam =
-      this.route.snapshot.queryParamMap.get('paymentType');
-    const addressFromURLParam =
-      this.route.snapshot.queryParamMap.get('addressFrom');
-    const addressToURLParam =
-      this.route.snapshot.queryParamMap.get('addressTo');
-    console.log(
-      numberTarrifIdURL,
-      paymentTypeURLParam,
-      addressFromURLParam,
-      addressToURLParam
+  private getTariffFromURL(state: IAppState, url: string): IAppState {
+    const numberTarrifIdURL = this.ConvertStringToNumber(url);
+    let tariff = this.findTarrifNameById(
+      this.tariffInfo$$.getValue()!,
+      numberTarrifIdURL
     );
-
-    const paramState: IAppState = {
-      tariff: this.findTarrifNameById(
-        this.tariffInfo$$.getValue()!,
-        numberTarrifIdURL
-      ),
-      payment: this.findPaymentMethodByType(
-        this.payment$$.getValue()!,
-        paymentType
-      )!,
-      addressFrom: this.findAddressByTitle(
-        this.addressesFrom$$.getValue()!,
-        addressFrom
-      ),
-      addressTo: this.findAddressByTitle(
-        this.addressesTo$$.getValue()!,
-        addressTo
-      ),
-    };
-
-    return paramState;
+    return { ...state, tariff };
   }
+
+  private getPaymentFromURL(state: IAppState, url: string): IAppState {
+    let payment = this.findPaymentMethodByType(this.payment$$.getValue()!, url);
+    return { ...state, payment };
+  }
+
+  private getAddressFromURL(state: IAppState, url: string): IAppState {
+    let addressFrom = this.findAddressByTitle(
+      this.addressesFrom$$.getValue()!,
+      url
+    );
+    return { ...state, addressFrom };
+  }
+
+  private getAddressToURL(state: IAppState, url: string): IAppState {
+    let addressTo = this.findAddressByTitle(
+      this.addressesTo$$.getValue()!,
+      url
+    );
+    return { ...state, addressTo };
+  }
+
+  // private getAppStateFromURL(
+  //   tariffId: string | null,
+  //   paymentType: string | null,
+  //   addressFrom: string | null,
+  //   addressTo: string | null
+  // ) {
+  //   const numberTarrifIdURL = this.ConvertStringToNumber(tariffId);
+
+  //   let paramState: IAppState = {
+  //     tariff: this.findTarrifNameById(
+  //       this.tariffInfo$$.getValue()!,
+  //       numberTarrifIdURL
+  //     ),
+  //     payment: this.findPaymentMethodByType(
+  //       this.payment$$.getValue()!,
+  //       paymentType
+  //     )!,
+  //     addressFrom: this.findAddressByTitle(
+  //       this.addressesFrom$$.getValue()!,
+  //       addressFrom
+  //     ),
+  //     addressTo: this.findAddressByTitle(
+  //       this.addressesTo$$.getValue()!,
+  //       addressTo
+  //     ),
+  //   };
+
+  //   return paramState;
+  // }
 
   formInit() {
     const tariffIdURLParam = this.route.snapshot.queryParamMap.get('tariffId');
@@ -152,15 +168,38 @@ export class FormService {
           this.payment$$.next(payments);
           this.addressesFrom$$.next(addressesFrom);
           this.addressesTo$$.next(addressesTo);
-          console.log(this.addressesFrom$$);
-          this.appStateService.setAppState(
-            this.getAppStateFromURL(
-              tariffIdURLParam,
-              paymentTypeURLParam,
-              addressFromURLParam,
-              addressToURLParam
-            )
-          );
+          if (tariffIdURLParam) {
+            this.appStateService.setAppState(
+              this.getTariffFromURL(
+                this.appStateService.getStateValue(),
+                tariffIdURLParam
+              )
+            );
+          }
+          if (paymentTypeURLParam) {
+            this.appStateService.setAppState(
+              this.getPaymentFromURL(
+                this.appStateService.getStateValue(),
+                paymentTypeURLParam
+              )
+            );
+          }
+          if (addressFromURLParam) {
+            this.appStateService.setAppState(
+              this.getAddressFromURL(
+                this.appStateService.getStateValue(),
+                addressFromURLParam
+              )
+            );
+          }
+          if (addressToURLParam) {
+            this.appStateService.setAppState(
+              this.getAddressToURL(
+                this.appStateService.getStateValue(),
+                addressToURLParam
+              )
+            );
+          }
         })
       )
       .subscribe();
