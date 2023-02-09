@@ -19,8 +19,7 @@ export class GetAddressesService {
 
   private readonly jsonURL = 'http://localhost:3000/addresses';
 
-  private readonly jsonURLApi =
-    'https://dev-api.taxsee.com/client/v1/addresses';
+  private readonly apiURL = 'https://dev-api.taxsee.com/client/v1/addresses';
 
   getAddresses() {
     return this.http
@@ -32,10 +31,10 @@ export class GetAddressesService {
     if (queryTitle) {
       const params = new HttpParams().set('q', queryTitle);
       return this.http
-        .get<IAddress[]>(this.jsonURLApi, { params: params })
+        .get<IAddress[]>(this.apiURL, { params: params })
         .pipe(catchError(this.handleError));
     } else {
-      return this.http.get(this.jsonURLApi).pipe(catchError(this.handleError));
+      return this.http.get(this.apiURL).pipe(catchError(this.handleError));
     }
   }
 

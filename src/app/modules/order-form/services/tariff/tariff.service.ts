@@ -13,12 +13,12 @@ import { catchError, tap, Observable, of, throwError } from 'rxjs';
 })
 export class TariffService {
   private readonly jsonURL = 'http://localhost:3000/defaults';
-  private readonly jsonURLApi = 'https://dev-api.taxsee.com/client/v1/defaults';
+  private readonly apiURL = 'https://dev-api.taxsee.com/client/v1/defaults';
 
   getDefaultsApi(): Observable<IDefault> {
     const params = new HttpParams().set('expand', 'info.tariffGroups.tariffs');
     return this.http
-      .get<IDefault>(this.jsonURLApi, { params: params })
+      .get<IDefault>(this.apiURL, { params: params })
       .pipe(catchError(this.handleError));
   }
 

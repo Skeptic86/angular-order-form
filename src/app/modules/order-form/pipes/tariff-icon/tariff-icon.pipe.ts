@@ -13,7 +13,7 @@ export class TariffIconPipe implements PipeTransform {
     tariffClassId: number | undefined,
     tariffGroups: ITariffGroup[] = []
   ): string {
-    if (tariffClassId) {
+    if (tariffClassId && tariffGroups) {
       const tariffGroupCode = this.findCodeById(tariffClassId, tariffGroups);
       return this.codeIcons[tariffGroupCode as keyof typeof this.codeIcons];
     } else {

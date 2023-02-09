@@ -14,6 +14,7 @@ import {
   first,
   map,
   Observable,
+  of,
   Subscription,
   tap,
 } from 'rxjs';
@@ -40,6 +41,15 @@ export class MainComponent implements OnInit {
   }
 
   private paymentChanged(): Observable<IPaymentMethod | undefined> {
+    if (!this.route.snapshot.queryParamMap.get('paymentType')) {
+      this.appStateService.setAppState({
+        payment: {
+          name: 'Наличные',
+          bankCards: [],
+          type: 'Cash',
+        } as IPaymentMethod,
+      });
+    }
     return this.appStateService.getState().pipe(
       filter((value) => !!value.payment),
       map((value) => {
@@ -53,6 +63,16 @@ export class MainComponent implements OnInit {
   }
 
   private tariffChanged(): Observable<ITariff | undefined> {
+    if (!this.route.snapshot.queryParamMap.get('tariffId')) {
+      console.log(1);
+      this.appStateService.setAppState({
+        tariff: {
+          classId: 1,
+          name: 'Эконом',
+          minPriceString: '(от 110 ₽)',
+        } as ITariff,
+      });
+    }
     return this.appStateService.getState().pipe(
       map((value) => {
         console.log('value tariff: ', value);
@@ -66,7 +86,7 @@ export class MainComponent implements OnInit {
   }
 
   private getDefaults(): Observable<IDefault> {
-    return this.tariffService.getDefaults();
+    return this.tariffService.getDefaultsApi();
   }
 
   ngOnInit(): void {
