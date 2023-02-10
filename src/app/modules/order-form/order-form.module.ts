@@ -1,3 +1,4 @@
+import { AuthorizationModule } from './../authorization/authorization.module';
 import { MapModule } from './../map/map.module';
 import { AutocompleteInputAddressComponent } from './components/autocomplete-input-address/autocomplete-input-address.component';
 import { TariffComponent } from './components/tariff/tariff.component';
@@ -20,6 +21,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { OrderFormRoutingModule } from './order-form-routing.module';
 import { TariffIconPipe } from './pipes/tariff-icon/tariff-icon.pipe';
 import { PaymentIconPipe } from './pipes/payment-icon/payment-icon.pipe';
+import { ErrorAuthorizationComponent } from './components/error-authorization/error-authorization.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,7 @@ import { PaymentIconPipe } from './pipes/payment-icon/payment-icon.pipe';
     TariffComponent,
     TariffIconPipe,
     PaymentIconPipe,
+    ErrorAuthorizationComponent,
   ],
   exports: [MainComponent],
   imports: [
@@ -48,6 +51,7 @@ import { PaymentIconPipe } from './pipes/payment-icon/payment-icon.pipe';
     DragDropModule,
     OrderFormRoutingModule,
     MapModule,
+    AuthorizationModule,
   ],
 })
 export class OrderFormModule {}

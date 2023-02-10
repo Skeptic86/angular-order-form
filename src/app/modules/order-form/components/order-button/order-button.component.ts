@@ -1,3 +1,7 @@
+import { ErrorAuthorizationComponent } from '../error-authorization/error-authorization.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthorizationDialogComponent } from './../../../authorization/authorization-dialog/authorization-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 import { AppStateService } from 'src/app/services/app-state/app-state.service';
 import { GetPriceService } from '../../services/get-price/get-price.service';
 import { ICalcPrice } from './../../../../interfaces/calc-price.interface';
@@ -13,7 +17,6 @@ import { Subscription } from 'rxjs';
 export class OrderButtonComponent implements OnInit {
   calcPrice?: ICalcPrice;
   disabled: boolean = false;
-
   clickEventSubscription: Subscription;
 
   private getPriceString() {
@@ -24,8 +27,28 @@ export class OrderButtonComponent implements OnInit {
       });
   }
 
+  private openDialog() {
+    const dialogRef = this.dialog.open(AuthorizationDialogComponent, {
+      height: '350px',
+      width: '400xpx',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
   onButtonClick(): void {
-    alert('Вызов такси');
+    if (
+      this.appStateService.getStateValue().addressFrom?.title &&
+      this.appStateService.getStateValue().addressTo?.title
+    ) {
+      this.openDialog();
+    } else {
+      this.errorSnackBar.openFromComponent(ErrorAuthorizationComponent, {
+        duration: 3000,
+      });
+    }
   }
 
   ngOnInit(): void {
@@ -35,22 +58,14 @@ export class OrderButtonComponent implements OnInit {
   constructor(
     private orderButtonService: OrderButtonService,
     private getPriceService: GetPriceService,
-    private appStateService: AppStateService
+    private appStateService: AppStateService,
+    private dialog: MatDialog,
+    private errorSnackBar: MatSnackBar
   ) {
     this.clickEventSubscription = this.getPriceService
       .getClickEvent()
       .subscribe(() => {
         this.getPriceString();
-        // if (
-        //   this.appStateService.getStateValue().addressFrom?.title &&
-        //   this.appStateService.getStateValue().addressTo?.title &&
-        //   this.appStateService.getStateValue().payment?.name &&
-        //   this.appStateService.getStateValue().tariff?.name
-        // ) {
-        //   this.disabled = false;
-        // } else {
-        //   this.disabled = true;
-        // }
       });
   }
 }

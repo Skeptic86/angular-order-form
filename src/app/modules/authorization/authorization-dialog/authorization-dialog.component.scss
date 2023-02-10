@@ -1,0 +1,31 @@
+.logo {
+    width: 180px;
+    height: 120px;
+    position: absolute;
+    top: 0px;
+    left: 110px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 100px;
+    width: 400px;
+    height: 250px;
+}
+
+.close-cross {
+    float: right;
+    margin-top: 5px;
+    margin-right: 5px;
+}
+
+p {
+    font-size: 13px;
+    color: grey;
+    margin-left: 10px;
+    max-width: 300px;
+
+}

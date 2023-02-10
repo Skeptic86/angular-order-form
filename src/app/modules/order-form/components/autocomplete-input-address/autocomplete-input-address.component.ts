@@ -83,7 +83,7 @@ export class AutocompleteInputAddressComponent implements OnInit, OnChanges {
     this.getAddresses();
     this.autocompleteInput.valueChanges
       .pipe(
-        debounceTime(1500),
+        debounceTime(1000),
         filter((value) => value!.length >= 3),
         tap((value) => {
           this.getPriceService.sendClickEvent();

@@ -1,0 +1,19 @@
+.authorization-button {
+    width: 300px;
+    height: 50px;
+    backface-visibility: hidden;
+    border-radius: 5px;
+    border-width: 0;
+    color: #000;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1.15;
+    outline: none;
+    overflow: hidden;
+    text-align: center;
+    text-transform: none;
+    transform: translateZ(0);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
