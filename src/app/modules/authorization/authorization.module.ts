@@ -9,12 +9,14 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { PhoneInputComponent } from './phone-input/phone-input.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthorizationButtonComponent } from './authorization-button/authorization-button.component';
+import { EnterPhoneNumberComponent } from './enter-phone-number-form/enter-phone-number-form.component';
 
 @NgModule({
   declarations: [
     AuthorizationDialogComponent,
     PhoneInputComponent,
     AuthorizationButtonComponent,
+    EnterPhoneNumberComponent,
   ],
   exports: [AuthorizationDialogComponent],
   imports: [

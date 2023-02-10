@@ -149,12 +149,6 @@ export class FormService {
       this.route.snapshot.queryParamMap.get('addressFrom');
     const addressToURLParam =
       this.route.snapshot.queryParamMap.get('addressTo');
-    console.log(
-      tariffIdURLParam,
-      paymentTypeURLParam,
-      addressFromURLParam,
-      addressToURLParam
-    );
     forkJoin({
       tariffs: this.getDefaultsApi(),
       payments: this.getPayment(),

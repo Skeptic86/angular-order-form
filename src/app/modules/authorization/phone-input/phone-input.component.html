@@ -2,8 +2,8 @@
     <mat-form-field class="example-full-width" appearance="outline">
       <mat-label>Подтвердите номер телефона</mat-label>
       <span class="prefix" matPrefix>+7</span>
-      <input name="phone" [formControl]="phoneFormControl" [errorStateMatcher]="matcher" matInput maxlength="10" autocomplete="off" placeholder="999-123-4567" [(ngModel)]="phoneNumber">
-      <mat-error *ngIf="phoneFormControl.hasError('pattern') && phoneFormControl.hasError('required')">
+      <input  (input)="numberChanged()" name="phone" [formControl]="phoneFormControl" [errorStateMatcher]="matcher" matInput maxlength="10" autocomplete="off" placeholder="999-123-4567" [(ngModel)]="phoneNumber">
+      <mat-error *ngIf="phoneFormControl.hasError('pattern') || phoneFormControl.hasError('required')">
         Введите верный номер телефона.
       </mat-error>
       <button *ngIf="phoneNumber" matSuffix mat-icon-button aria-label="Clear" (click)="phoneNumber=''">

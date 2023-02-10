@@ -6,9 +6,9 @@ import { Component, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./authorization-button.component.scss'],
 })
 export class AuthorizationButtonComponent {
-  @Output() sendPhoneNumberEvent = new EventEmitter<string>();
+  @Output() confirmPhoneNumberEvent = new EventEmitter<boolean>();
 
-  sendPhoneNumber(phoneNumber: string) {
-    this.sendPhoneNumberEvent.emit(phoneNumber);
+  confirmPhoneNumber() {
+    this.confirmPhoneNumberEvent.emit(true);
   }
 }

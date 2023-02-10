@@ -52,7 +52,6 @@ export class MainComponent implements OnInit {
     return this.appStateService.getState().pipe(
       filter((value) => !!value.payment),
       map((value) => {
-        console.log('value payment: ', value);
         return value.payment;
       }),
       distinctUntilChanged((prev, curr) => {
@@ -64,7 +63,6 @@ export class MainComponent implements OnInit {
   private tariffChanged(): Observable<ITariff | undefined> {
     return this.appStateService.getState().pipe(
       map((value) => {
-        console.log('value tariff: ', value);
         return value.tariff;
       }),
       filter((value) => !!value),
@@ -89,7 +87,7 @@ export class MainComponent implements OnInit {
   ngOnInit(): void {
     this.formService.formInit();
     this.subscribeToState();
-    this.route.queryParamMap.subscribe((value) => console.log(value));
+    this.route.queryParamMap.subscribe();
   }
 
   private subscribeToState() {
@@ -104,7 +102,6 @@ export class MainComponent implements OnInit {
         })
       )
       .subscribe((value: IAppState) => {
-        console.log('set value in main component', value);
         if (value?.addressFrom?.title) {
           this.addressFrom = value.addressFrom;
         }

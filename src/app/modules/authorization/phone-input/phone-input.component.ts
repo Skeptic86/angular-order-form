@@ -29,7 +29,15 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class PhoneInputComponent {
   @Input() phoneNumber: string = '';
-  @Output() phoneNumberEvent = new EventEmitter<string>();
+  @Output() phoneNumberEvent = new EventEmitter<string | null>();
+
+  numberChanged() {
+    if (this.phoneFormControl.invalid) {
+      this.phoneNumberEvent.emit(null);
+    } else {
+      this.phoneNumberEvent.emit(this.phoneNumber);
+    }
+  }
 
   phoneFormControl = new FormControl('', [
     Validators.required,
