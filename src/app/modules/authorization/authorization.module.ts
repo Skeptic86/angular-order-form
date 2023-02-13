@@ -10,6 +10,10 @@ import { PhoneInputComponent } from './phone-input/phone-input.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthorizationButtonComponent } from './authorization-button/authorization-button.component';
 import { EnterPhoneNumberComponent } from './enter-phone-number-form/enter-phone-number-form.component';
+import { CodeChooseFormComponent } from './code-choose-form/code-choose-form.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { CodeSendButtonComponent } from './code-send-button/code-send-button.component';
+import { ChangeNumberButtonComponent } from './change-number-button/change-number-button.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +21,9 @@ import { EnterPhoneNumberComponent } from './enter-phone-number-form/enter-phone
     PhoneInputComponent,
     AuthorizationButtonComponent,
     EnterPhoneNumberComponent,
+    CodeChooseFormComponent,
+    CodeSendButtonComponent,
+    ChangeNumberButtonComponent,
   ],
   exports: [AuthorizationDialogComponent],
   imports: [
@@ -28,6 +35,7 @@ import { EnterPhoneNumberComponent } from './enter-phone-number-form/enter-phone
     MatIconModule,
     FormsModule,
     ReactiveFormsModule,
+    MatDividerModule,
   ],
 })
 export class AuthorizationModule {}

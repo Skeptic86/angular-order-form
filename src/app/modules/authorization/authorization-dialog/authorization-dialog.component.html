@@ -1,1 +1,2 @@
-<app-enter-phone-number-form (showFirstFormEvent)="togglShowFirstForm()" *ngIf="showFirstForm" ></app-enter-phone-number-form>
+<app-enter-phone-number-form (showFirstFormEvent)="toggleShowFirstForm($event)" *ngIf="showFirstForm" ></app-enter-phone-number-form>
+<app-code-choose-form (toggleFirstFormEvent)="toggleShowFirstForm()" *ngIf="showSecondForm"></app-code-choose-form>

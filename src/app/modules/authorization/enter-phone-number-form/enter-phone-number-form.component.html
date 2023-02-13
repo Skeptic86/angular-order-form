@@ -1,7 +1,7 @@
 <button class="close-cross" type="button" mat-icon-button mat-dialog-close>
     <mat-icon>close</mat-icon>
-  </button>  
-  <img src="../../../../assets/logo.jpg" alt="logo" class="logo">
+</button>  
+<img src="../../../../assets/logo.jpg" alt="logo" class="logo">
   <div class="container">
     <app-phone-input (phoneNumberEvent)="getPhoneInput($event)" ></app-phone-input>
     <app-authorization-button (confirmPhoneNumberEvent)="confirmPhoneInput()"></app-authorization-button>

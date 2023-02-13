@@ -1,5 +1,5 @@
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
-import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
 import { ErrorStateMatcher } from '@angular/material/core';
 import {
   FormControl,
@@ -27,9 +27,16 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   templateUrl: './phone-input.component.html',
   styleUrls: ['./phone-input.component.scss'],
 })
-export class PhoneInputComponent {
+export class PhoneInputComponent implements OnInit {
   @Input() phoneNumber: string = '';
   @Output() phoneNumberEvent = new EventEmitter<string | null>();
+
+  ngOnInit() {}
+
+  clearPhoneNumber() {
+    this.phoneNumber = '';
+    this.numberChanged();
+  }
 
   numberChanged() {
     if (this.phoneFormControl.invalid) {

@@ -28,10 +28,7 @@ export class OrderButtonComponent implements OnInit {
   }
 
   private openDialog() {
-    const dialogRef = this.dialog.open(AuthorizationDialogComponent, {
-      height: '350px',
-      width: '400xpx',
-    });
+    const dialogRef = this.dialog.open(AuthorizationDialogComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);

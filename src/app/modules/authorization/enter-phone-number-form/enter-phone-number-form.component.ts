@@ -24,7 +24,6 @@ export class EnterPhoneNumberComponent {
 
   confirmPhoneInput() {
     if (this.phoneInput.length > 0) {
-      alert(1);
       this.sendFisrtFormFlag();
     }
   }
