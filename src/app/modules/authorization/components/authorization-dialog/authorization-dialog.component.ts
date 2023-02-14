@@ -9,13 +9,27 @@ export class AuthorizationDialogComponent {
   showFirstForm = true;
   showSecondForm = false;
   showThirdForm = false;
-  private phoneNumber?: string;
+  phoneNumber?: string;
+  private codeChoice?: string;
 
   toggleShowFirstForm(phoneNumber?: string) {
+    this.setPhoneNumber(phoneNumber);
+
+    this.showFirstForm = !this.showFirstForm;
+    this.toggleShowSecondForm();
+  }
+
+  setPhoneNumber(phoneNumber: string | undefined) {
     if (phoneNumber) {
       this.phoneNumber = phoneNumber;
     }
-    this.showFirstForm = !this.showFirstForm;
+  }
+
+  toggleShowThirdForm(codeChoice?: string) {
+    if (this.codeChoice) {
+      this.codeChoice = codeChoice;
+    }
+    this.showThirdForm = !this.showThirdForm;
     this.toggleShowSecondForm();
   }
 

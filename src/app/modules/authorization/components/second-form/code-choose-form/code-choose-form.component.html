@@ -5,9 +5,9 @@
 <div class="container">
     <p class="code-choose-title">Выберите способ отправки кода подтверждения</p>
     <div class="code-choose-buttons">
-        <app-code-send-button buttonText="Позвоните мне" icon="call" ></app-code-send-button>
+        <app-code-send-button (showThirdFormEvent)="toggleThirdForm($event)" buttonText="Позвоните мне" icon="call" ></app-code-send-button>
         <mat-divider></mat-divider>
-        <app-code-send-button buttonText="Отправьте СМС" icon="message" ></app-code-send-button>
+        <app-code-send-button (showThirdFormEvent)="toggleThirdForm($event)" buttonText="Отправьте СМС" icon="message" ></app-code-send-button>
     </div>
    <app-change-number-button (changeNumberEvent)="toggleFirstForm()"></app-change-number-button>
     <p class="code-choose-warn">Нажав кнопку «Получить код», я даю согласие на обработку моих персональных данных и получение рекламы.</p>

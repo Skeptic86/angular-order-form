@@ -7,6 +7,11 @@ import { Component, Output, EventEmitter } from '@angular/core';
 })
 export class CodeChooseFormComponent {
   @Output() toggleFirstFormEvent = new EventEmitter();
+  @Output() toggleThirdFormEvent = new EventEmitter<string>();
+
+  toggleThirdForm(codeChoice: string) {
+    this.toggleThirdFormEvent.emit(codeChoice);
+  }
 
   toggleFirstForm() {
     this.toggleFirstFormEvent.emit();

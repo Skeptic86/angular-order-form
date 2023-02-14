@@ -1,0 +1,9 @@
+<form class="example-form">
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Код</mat-label>
+      <input name="phone" required="true" [formControl]="codeFormControl" matInput autocomplete="off" [(ngModel)]="code">
+      <button *ngIf="code" matSuffix mat-icon-button aria-label="Clear" (click)="code=''">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+</form>

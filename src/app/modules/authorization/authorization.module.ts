@@ -3,17 +3,20 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthorizationDialogComponent } from './authorization-dialog/authorization-dialog.component';
+import { AuthorizationDialogComponent } from './components/authorization-dialog/authorization-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { PhoneInputComponent } from './phone-input/phone-input.component';
+import { PhoneInputComponent } from './components/first-form/phone-input/phone-input.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AuthorizationButtonComponent } from './authorization-button/authorization-button.component';
-import { EnterPhoneNumberComponent } from './enter-phone-number-form/enter-phone-number-form.component';
-import { CodeChooseFormComponent } from './code-choose-form/code-choose-form.component';
+import { AuthorizationButtonComponent } from './components/first-form/authorization-button/authorization-button.component';
+import { EnterPhoneNumberComponent } from './components/first-form/enter-phone-number-form/enter-phone-number-form.component';
+import { CodeChooseFormComponent } from './components/second-form/code-choose-form/code-choose-form.component';
 import { MatDividerModule } from '@angular/material/divider';
-import { CodeSendButtonComponent } from './code-send-button/code-send-button.component';
-import { ChangeNumberButtonComponent } from './change-number-button/change-number-button.component';
+import { CodeSendButtonComponent } from './components/second-form/code-send-button/code-send-button.component';
+import { ChangeNumberButtonComponent } from './components/second-form/change-number-button/change-number-button.component';
+import { ConfirmCodeFormComponent } from './components/third-form/confirm-code-form/confirm-code-form.component';
+import { CodeInputComponent } from './components/third-form/code-input/code-input.component';
+import { RequestCodeButtonComponent } from './components/third-form/request-code-button/request-code-button.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +27,9 @@ import { ChangeNumberButtonComponent } from './change-number-button/change-numbe
     CodeChooseFormComponent,
     CodeSendButtonComponent,
     ChangeNumberButtonComponent,
+    ConfirmCodeFormComponent,
+    CodeInputComponent,
+    RequestCodeButtonComponent,
   ],
   exports: [AuthorizationDialogComponent],
   imports: [

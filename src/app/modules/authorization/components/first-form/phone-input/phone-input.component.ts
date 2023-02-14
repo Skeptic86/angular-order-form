@@ -28,10 +28,15 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./phone-input.component.scss'],
 })
 export class PhoneInputComponent implements OnInit {
-  @Input() phoneNumber: string = '';
+  @Input() phoneNumber?: string = '';
+  @Input() isDisabled: boolean = false;
   @Output() phoneNumberEvent = new EventEmitter<string | null>();
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.isDisabled) {
+      this.phoneFormControl.disable();
+    }
+  }
 
   clearPhoneNumber() {
     this.phoneNumber = '';

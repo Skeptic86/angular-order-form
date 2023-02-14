@@ -1,6 +1,6 @@
 import { ErrorAuthorizationComponent } from '../error-authorization/error-authorization.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AuthorizationDialogComponent } from './../../../authorization/authorization-dialog/authorization-dialog.component';
+import { AuthorizationDialogComponent } from '../../../authorization/components/authorization-dialog/authorization-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AppStateService } from 'src/app/services/app-state/app-state.service';
 import { GetPriceService } from '../../services/get-price/get-price.service';
