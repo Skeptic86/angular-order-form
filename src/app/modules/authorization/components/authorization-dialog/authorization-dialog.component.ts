@@ -1,3 +1,6 @@
+import { tap } from 'rxjs';
+import { ICode } from './../../../../interfaces/code.interface';
+import { AuthorizationService } from './../../services/authorization.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -10,7 +13,28 @@ export class AuthorizationDialogComponent {
   showSecondForm = false;
   showThirdForm = false;
   phoneNumber?: string;
-  private codeChoice?: string;
+  private codeSendData?: ICode;
+  codeIcon?: string;
+
+  private convertCodeIconToType(codeIcon: string): number {
+    let codeType = 0;
+    if (codeIcon === 'call') {
+      codeType = 1;
+    }
+    return codeType;
+  }
+
+  codeSend(phoneNumber: string, codeIcon: string) {
+    console.log('code sended');
+    return this.authorizationService.sendCode(
+      phoneNumber,
+      this.convertCodeIconToType(codeIcon)
+    );
+  }
+
+  private codeConfirm(code: string) {
+    return this.authorizationService.confirmCode(code);
+  }
 
   toggleShowFirstForm(phoneNumber?: string) {
     this.setPhoneNumber(phoneNumber);
@@ -25,10 +49,22 @@ export class AuthorizationDialogComponent {
     }
   }
 
-  toggleShowThirdForm(codeChoice?: string) {
-    if (this.codeChoice) {
-      this.codeChoice = codeChoice;
+  sendRequestCode() {
+    this.authorizationService.sendCode(
+      this.phoneNumber!,
+      this.convertCodeIconToType(this.codeIcon!)
+    );
+  }
+
+  toggleShowThirdForm(codeIcon?: string) {
+    if (this.codeIcon) {
+      this.codeIcon = codeIcon;
     }
+    this.codeSend(this.phoneNumber!, this.codeIcon!)
+      .pipe(tap((value) => console.log(value)))
+      .subscribe((value) => {
+        this.codeSendData = value;
+      });
     this.showThirdForm = !this.showThirdForm;
     this.toggleShowSecondForm();
   }
@@ -36,4 +72,6 @@ export class AuthorizationDialogComponent {
   toggleShowSecondForm() {
     this.showSecondForm = !this.showSecondForm;
   }
+
+  constructor(private authorizationService: AuthorizationService) {}
 }

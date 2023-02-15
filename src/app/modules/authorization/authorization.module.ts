@@ -23,6 +23,7 @@ import {
   NgxMaskDirective,
   NgxMaskPipe,
 } from 'ngx-mask';
+import { CdTimerModule } from 'angular-cd-timer';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import {
     MatDividerModule,
     NgxMaskDirective,
     NgxMaskPipe,
+    CdTimerModule,
   ],
   providers: [provideNgxMask()],
 })

@@ -10,6 +10,7 @@ export class CodeChooseFormComponent {
   @Output() toggleThirdFormEvent = new EventEmitter<string>();
 
   toggleThirdForm(codeChoice: string) {
+    console.log(codeChoice);
     this.toggleThirdFormEvent.emit(codeChoice);
   }
 

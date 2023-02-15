@@ -8,7 +8,12 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 export class ConfirmCodeFormComponent {
   @Input() phoneNumber?: string;
   @Output() sendPhoneNumberEvent = new EventEmitter<string>();
+  @Output() sendRequestCodeEvent = new EventEmitter();
   iconToggle = true;
+
+  sendRequestCode() {
+    this.sendRequestCodeEvent.emit();
+  }
 
   sendPhoneNumber(phoneNumber: string | null) {
     if (phoneNumber) {

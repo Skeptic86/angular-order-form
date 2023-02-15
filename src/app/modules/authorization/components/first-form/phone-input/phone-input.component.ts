@@ -37,9 +37,7 @@ export class PhoneInputComponent implements OnInit {
   }
 
   numberChanged() {
-    if (this.phoneFormControl.invalid) {
-      this.phoneNumberEvent.emit(null);
-    } else {
+    if (!this.phoneFormControl.invalid) {
       this.phoneNumberEvent.emit(this.phoneNumber);
     }
   }
