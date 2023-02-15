@@ -18,16 +18,16 @@ export class AuthorizationService {
     'https://dev-api.taxsee.com/client/v1/auth/confirm-code';
 
   sendCode(phone: string, type: number) {
-    const params = new HttpParams().set('phone', phone).set('type', type);
+    // const params = new HttpParams().set('phone', phone).set('type', type);
     return this.http
-      .get<ICode>(this.apiSendCodeURL, { params: params })
+      .post<ICode>(this.apiSendCodeURL, { phone: phone, type: type })
       .pipe(catchError(this.handleError));
   }
 
   confirmCode(code: string) {
     const params = new HttpParams().set('code', code);
     return this.http
-      .get<ICode>(this.apiConfirmCodeURL, { params: params })
+      .post<ICode>(this.apiConfirmCodeURL, { params: params })
       .pipe(catchError(this.handleError));
   }
 

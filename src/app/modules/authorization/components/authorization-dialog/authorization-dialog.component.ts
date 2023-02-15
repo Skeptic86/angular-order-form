@@ -1,4 +1,4 @@
-import { tap } from 'rxjs';
+import { tap, Observable } from 'rxjs';
 import { ICode } from './../../../../interfaces/code.interface';
 import { AuthorizationService } from './../../services/authorization.service';
 import { Component } from '@angular/core';
@@ -16,6 +16,8 @@ export class AuthorizationDialogComponent {
   private codeSendData?: ICode;
   codeIcon?: string;
 
+  //
+
   private convertCodeIconToType(codeIcon: string): number {
     let codeType = 0;
     if (codeIcon === 'call') {
@@ -24,12 +26,21 @@ export class AuthorizationDialogComponent {
     return codeType;
   }
 
-  codeSend(phoneNumber: string, codeIcon: string) {
+  private codeSend(phoneNumber: string, codeIcon: string): Observable<ICode> {
     console.log('code sended');
+    const fullPhoneNUmber = '7' + phoneNumber;
     return this.authorizationService.sendCode(
-      phoneNumber,
+      fullPhoneNUmber,
       this.convertCodeIconToType(codeIcon)
     );
+  }
+
+  codeSendAgain(phoneNumber: string, codeIcon: string) {
+    this.codeSend(phoneNumber, codeIcon)
+      .pipe(tap((value) => console.log(value)))
+      .subscribe((value) => {
+        this.codeSendData = value;
+      });
   }
 
   private codeConfirm(code: string) {
