@@ -39,3 +39,14 @@
     translate: (2.5%);
     max-width: 300px;
 }
+
+.input-with-icon {
+    position: relative;
+}
+
+.change-number-icon {
+    position: absolute;
+    top: 12px;
+    right: 10px;
+    
+}

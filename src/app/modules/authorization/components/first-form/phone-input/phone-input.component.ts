@@ -8,20 +8,6 @@ import {
   Validators,
 } from '@angular/forms';
 
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(
-    control: FormControl | null,
-    form: FormGroupDirective | NgForm | null
-  ): boolean {
-    const isSubmitted = form && form.submitted;
-    return !!(
-      control &&
-      control.invalid &&
-      (control.dirty || control.touched || isSubmitted)
-    );
-  }
-}
-
 @Component({
   selector: 'app-phone-input',
   templateUrl: './phone-input.component.html',
@@ -35,6 +21,13 @@ export class PhoneInputComponent implements OnInit {
   ngOnInit() {
     if (this.isDisabled) {
       this.phoneFormControl.disable();
+    }
+  }
+
+  enableInput() {
+    if (this.isDisabled) {
+      this.isDisabled = false;
+      this.phoneFormControl.enable();
     }
   }
 
@@ -55,6 +48,4 @@ export class PhoneInputComponent implements OnInit {
     Validators.required,
     Validators.pattern(new RegExp(/^9\d{9}$/)),
   ]);
-
-  matcher = new MyErrorStateMatcher();
 }

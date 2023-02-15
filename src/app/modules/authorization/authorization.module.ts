@@ -17,6 +17,12 @@ import { ChangeNumberButtonComponent } from './components/second-form/change-num
 import { ConfirmCodeFormComponent } from './components/third-form/confirm-code-form/confirm-code-form.component';
 import { CodeInputComponent } from './components/third-form/code-input/code-input.component';
 import { RequestCodeButtonComponent } from './components/third-form/request-code-button/request-code-button.component';
+import {
+  provideEnvironmentNgxMask,
+  provideNgxMask,
+  NgxMaskDirective,
+  NgxMaskPipe,
+} from 'ngx-mask';
 
 @NgModule({
   declarations: [
@@ -42,6 +48,9 @@ import { RequestCodeButtonComponent } from './components/third-form/request-code
     FormsModule,
     ReactiveFormsModule,
     MatDividerModule,
+    NgxMaskDirective,
+    NgxMaskPipe,
   ],
+  providers: [provideNgxMask()],
 })
 export class AuthorizationModule {}
