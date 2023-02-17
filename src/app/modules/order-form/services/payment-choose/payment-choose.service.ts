@@ -1,7 +1,7 @@
 import { IPayment } from './../../../../interfaces/payment.interface';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { throwError, catchError } from 'rxjs';
+import { throwError, catchError, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -11,13 +11,13 @@ export class PaymentChooseService {
 
   private readonly jsonURL = 'http://localhost:3000/authInfo';
 
-  getPayment() {
+  getPayment(): Observable<IPayment> {
     return this.http
       .get<IPayment>(this.jsonURL)
       .pipe(catchError(this.handleError));
   }
 
-  private handleError(error: HttpErrorResponse) {
+  private handleError(error: HttpErrorResponse): Observable<never> {
     if (error.status === 0) {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error);

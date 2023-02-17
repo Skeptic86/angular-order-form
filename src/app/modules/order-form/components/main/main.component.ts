@@ -90,7 +90,7 @@ export class MainComponent implements OnInit {
     this.route.queryParamMap.subscribe();
   }
 
-  private subscribeToState() {
+  private subscribeToState(): void {
     this.clickEventSubscription = this.appStateService
       .getState()
       .pipe(
@@ -113,7 +113,7 @@ export class MainComponent implements OnInit {
 
   addressesEnum = AddressTypeEnum;
 
-  setAddress(address: IAddress, direction: AddressTypeEnum) {
+  setAddress(address: IAddress, direction: AddressTypeEnum): void {
     if (
       (address?.title || address?.title === '') &&
       direction === AddressTypeEnum.From
@@ -135,7 +135,7 @@ export class MainComponent implements OnInit {
     private paymentChooseService: PaymentChooseService
   ) {}
 
-  drop(event: CdkDragDrop<string[]>) {
+  drop(event: CdkDragDrop<string[]>): void {
     if (event.currentIndex !== event.previousIndex) {
       this.appStateService
         .getState()

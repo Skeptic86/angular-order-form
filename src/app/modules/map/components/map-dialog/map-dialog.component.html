@@ -1,7 +1,7 @@
 <h2 *ngIf="!this.address" class="title" mat-dialog-title>Выберите адрес</h2>
 <h2 class="address" *ngIf="this.address" mat-dialog-title>{{this.address.title}}; {{this.address.subtitle}}</h2>
- <div id='map' style='width: 800px; height: 800px;'></div>
+ <div id='map'></div>
 <mat-dialog-actions align="center">
-    <button class="close-button" style="background-color: #ffdb4d;" color mat-button mat-dialog-close>Закрыть</button>
-    <button class="done-button" (click)="onClickDoneButton()" style="background-color: #ffbb40;" [mat-dialog-close]="true" cdkFocusInitial color mat-button mat-dialog-close>Готово</button>
+    <button class="close-button"color mat-button mat-dialog-close>Закрыть</button>
+    <button class="done-button" (click)="onClickDoneButton()" [mat-dialog-close]="true" cdkFocusInitial color mat-button mat-dialog-close>Готово</button>
 </mat-dialog-actions>

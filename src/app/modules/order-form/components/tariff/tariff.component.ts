@@ -25,7 +25,7 @@ export class TariffComponent implements OnInit {
   //     .pipe(tap((value) => (this.data = value)));
   // }
 
-  private setAppStateTariff(tariffObj: ITariff) {
+  private setAppStateTariff(tariffObj: ITariff): void {
     this.appStateService.setAppState({ tariff: tariffObj });
   }
 
@@ -53,7 +53,7 @@ export class TariffComponent implements OnInit {
   //   return res;
   // }
 
-  ngOnInit() {}
+  ngOnInit(): void {}
 
   // private setTariffInit(tarrifIdUrl: number | null) {
   //   if (tarrifIdUrl) {
@@ -71,7 +71,7 @@ export class TariffComponent implements OnInit {
   //   }
   // }
 
-  changeTarrif(tariff: ITariff) {
+  changeTarrif(tariff: ITariff): void {
     // const keyTypedTarrifCode = groupCode as keyof typeof this.codeIcons;
     // if (this.codeIcons[keyTypedTarrifCode] !== this.icon && this.icon !== '') {
     //   this.getPriceService.sendClickEvent();

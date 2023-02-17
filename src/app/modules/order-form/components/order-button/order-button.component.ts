@@ -7,7 +7,7 @@ import { GetPriceService } from '../../services/get-price/get-price.service';
 import { ICalcPrice } from './../../../../interfaces/calc-price.interface';
 import { OrderButtonService } from './../../services/order-button/order-button.service';
 import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-order-button',
@@ -16,18 +16,13 @@ import { Subscription } from 'rxjs';
 })
 export class OrderButtonComponent implements OnInit {
   calcPrice?: ICalcPrice;
-  disabled: boolean = false;
   clickEventSubscription: Subscription;
 
-  private getPriceString() {
-    return this.orderButtonService
-      .getPriceString()
-      .subscribe((data: ICalcPrice) => {
-        this.calcPrice = data;
-      });
+  private getPriceString(): Observable<ICalcPrice> {
+    return this.orderButtonService.getPriceString();
   }
 
-  private openDialog() {
+  private openDialog(): void {
     const dialogRef = this.dialog.open(AuthorizationDialogComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -49,7 +44,9 @@ export class OrderButtonComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getPriceString();
+    this.getPriceString().subscribe((data: ICalcPrice) => {
+      this.calcPrice = data;
+    });
   }
 
   constructor(

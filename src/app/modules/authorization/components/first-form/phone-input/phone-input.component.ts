@@ -8,6 +8,20 @@ import {
   Validators,
 } from '@angular/forms';
 
+// export class MyErrorStateMatcher implements ErrorStateMatcher {
+//   isErrorState(
+//     control: FormControl | null,
+//     form: FormGroupDirective | NgForm | null
+//   ): boolean {
+//     const isSubmitted = form && form.submitted;
+//     return !!(
+//       control &&
+//       control.invalid &&
+//       (control.dirty || control.touched || isSubmitted)
+//     );
+//   }
+// }
+
 @Component({
   selector: 'app-phone-input',
   templateUrl: './phone-input.component.html',
@@ -17,33 +31,34 @@ export class PhoneInputComponent implements OnInit {
   @Input() phoneNumber?: string = '';
   @Input() isDisabled: boolean = false;
   @Output() phoneNumberEvent = new EventEmitter<string | null>();
+  phoneFormControl = new FormControl('', [
+    Validators.required,
+    Validators.pattern(new RegExp(/^9\d+/)),
+  ]);
+  // matcher = new MyErrorStateMatcher();
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (this.isDisabled) {
       this.phoneFormControl.disable();
     }
   }
 
-  enableInput() {
+  enableInput(): void {
     if (this.isDisabled) {
       this.isDisabled = false;
       this.phoneFormControl.enable();
     }
   }
 
-  clearPhoneNumber() {
+  clearPhoneNumber(): void {
     this.phoneNumber = '';
     this.numberChanged();
   }
 
-  numberChanged() {
-    if (!this.phoneFormControl.invalid) {
+  numberChanged(): void {
+    console.log(this.phoneFormControl.value);
+    if (this.phoneFormControl.valid) {
       this.phoneNumberEvent.emit(this.phoneNumber);
     }
   }
-
-  phoneFormControl = new FormControl('', [
-    Validators.required,
-    Validators.pattern(new RegExp(/^9\d{9}$/)),
-  ]);
 }

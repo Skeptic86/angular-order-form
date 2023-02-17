@@ -21,13 +21,13 @@ export class GetAddressesService {
 
   private readonly apiURL = 'https://dev-api.taxsee.com/client/v1/addresses';
 
-  getAddresses() {
+  getAddresses(): Observable<IAddress[]> {
     return this.http
       .get<IAddress[]>(this.jsonURL)
       .pipe(catchError(this.handleError));
   }
 
-  getAddressesApi(queryTitle?: string | null) {
+  getAddressesApi(queryTitle?: string | null): Observable<Object | IAddress[]> {
     if (queryTitle) {
       const params = new HttpParams().set('q', queryTitle);
       return this.http
@@ -38,7 +38,7 @@ export class GetAddressesService {
     }
   }
 
-  private handleError(error: HttpErrorResponse) {
+  private handleError(error: HttpErrorResponse): Observable<never> {
     if (error.status === 0) {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error);

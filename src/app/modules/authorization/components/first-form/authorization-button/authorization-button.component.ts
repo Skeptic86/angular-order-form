@@ -8,7 +8,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 export class AuthorizationButtonComponent {
   @Output() confirmPhoneNumberEvent = new EventEmitter();
 
-  confirmPhoneNumber() {
+  confirmPhoneNumber(): void {
     this.confirmPhoneNumberEvent.emit();
   }
 }

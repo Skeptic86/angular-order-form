@@ -21,7 +21,10 @@ export class TariffIconPipe implements PipeTransform {
     }
   }
 
-  private findCodeById(tariffClassId: number, tariffGroups: ITariffGroup[]) {
+  private findCodeById(
+    tariffClassId: number,
+    tariffGroups: ITariffGroup[]
+  ): string | undefined {
     let temp: ITariff | undefined;
     let res: string | undefined;
     tariffGroups.forEach((elem) => {

@@ -1,4 +1,11 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
+import {
+  Component,
+  Output,
+  EventEmitter,
+  Input,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 
 @Component({
   selector: 'app-enter-phone-number-form',
@@ -6,14 +13,15 @@ import { Component, Output, EventEmitter, Input } from '@angular/core';
   styleUrls: ['./enter-phone-number-form.component.scss'],
 })
 export class EnterPhoneNumberComponent {
+  @ViewChild('input') input?: ElementRef;
   @Output() showFirstFormEvent = new EventEmitter<string>();
   @Input() phoneInput?: string = '';
 
-  private sendFisrtFormFlag(phoneNumber: string) {
+  private sendFisrtFormFlag(phoneNumber: string): void {
     this.showFirstFormEvent.emit(phoneNumber);
   }
 
-  getPhoneInput(input: string | null) {
+  getPhoneInput(input: string | null): string {
     if (input) {
       this.phoneInput = input;
     } else {
@@ -22,11 +30,9 @@ export class EnterPhoneNumberComponent {
     return this.phoneInput;
   }
 
-  confirmPhoneInput() {
-    if (this.phoneInput?.length) {
-      if (this.phoneInput.length > 0) {
-        this.sendFisrtFormFlag(this.phoneInput);
-      }
+  confirmPhoneInput(): void {
+    if (this.phoneInput?.length! >= 10) {
+      this.sendFisrtFormFlag(this.phoneInput!);
     }
   }
 }

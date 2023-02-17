@@ -2,6 +2,6 @@ import { IDefault } from './default.interface';
 import { ITariffGroup } from './tariff-group.interface';
 
 export interface IDefaultInfo {
-  callCenterNumber?: string;
+  callCenterNumber: string;
   tariffGroups: ITariffGroup[];
 }

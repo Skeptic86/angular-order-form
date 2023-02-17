@@ -1,7 +1,7 @@
 import { ICalcPrice } from 'src/app/interfaces/calc-price.interface';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError, throwError } from 'rxjs';
+import { catchError, throwError, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,13 +9,13 @@ import { catchError, throwError } from 'rxjs';
 export class OrderButtonService {
   private readonly jsonURL = 'http://localhost:3000/ordersCalc';
 
-  getPriceString() {
+  getPriceString(): Observable<ICalcPrice> {
     return this.http
       .get<ICalcPrice>(this.jsonURL)
       .pipe(catchError(this.handleError));
   }
 
-  private handleError(error: HttpErrorResponse) {
+  private handleError(error: HttpErrorResponse): Observable<never> {
     if (error.status === 0) {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error);

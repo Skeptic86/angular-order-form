@@ -19,11 +19,11 @@ export class PaymentChooseComponent implements OnInit {
 
   readonly codeIcons = PaymentTypeIconsEnum;
 
-  changePayment(paymentMethod: IPaymentMethod) {
+  changePayment(paymentMethod: IPaymentMethod): void {
     this.setAppStatePayment(paymentMethod);
   }
 
-  private setAppStatePayment(paymentObj: IPaymentMethod) {
+  private setAppStatePayment(paymentObj: IPaymentMethod): void {
     this.appStateService.setAppState({ payment: paymentObj });
   }
 
@@ -41,7 +41,7 @@ export class PaymentChooseComponent implements OnInit {
   //   }
   // }
 
-  ngOnInit() {}
+  ngOnInit(): void {}
 
   constructor(private appStateService: AppStateService) {}
 }

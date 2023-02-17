@@ -1,7 +1,4 @@
-import { ActivatedRoute } from '@angular/router';
-import { AddressTypeEnum } from './../../../../enums/address-type.enum';
-import { IAppState } from './../../../../interfaces/app-state.interface';
-import { IAddress } from '../../../../interfaces/address.interface';
+import { IAddress } from 'src/app/interfaces/address.interface';
 import { GetAddressesService } from '../../services/get-addresses/get-addresses.service';
 import {
   Component,
@@ -13,14 +10,8 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable, Subscription, tap } from 'rxjs';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  map,
-  startWith,
-} from 'rxjs/operators';
+import { Observable, tap } from 'rxjs';
+import { debounceTime, filter, startWith } from 'rxjs/operators';
 import { GetPriceService } from 'src/app/modules/order-form/services/get-price/get-price.service';
 import { AppStateService } from 'src/app/services/app-state/app-state.service';
 
@@ -37,39 +28,39 @@ export class AutocompleteInputAddressComponent implements OnInit, OnChanges {
   private addresses: IAddress[] = [];
   filteredAddresses!: Observable<IAddress[]>;
 
-  addressSelected(address: IAddress) {
+  addressSelected(address: IAddress): void {
     this.sendAddress(address);
   }
 
-  clearInput() {
+  clearInput(): void {
     this.inputValue = '';
     this.addressSelected({ title: '' } as IAddress);
   }
 
   inputValue = '';
 
-  sendAddress(value: IAddress) {
+  sendAddress(value: IAddress): void {
     this.sendAddressEvent.emit(value);
   }
 
-  private getAddressesApi(queryTitle: string | null) {
+  private getAddressesApi(
+    queryTitle: string | null
+  ): Observable<Object | IAddress[]> {
     return this.getAddressesService.getAddressesApi(queryTitle);
   }
 
-  private getAddresses() {
-    return this.getAddressesService.getAddresses().subscribe((data) => {
-      this.addresses = data as IAddress[];
-    });
+  private getAddresses(): Observable<IAddress[]> {
+    return this.getAddressesService.getAddresses();
   }
 
-  private findLngLatViaTitle(title: string | null) {
-    const address = this.appStateService.getStateValue().addressFrom;
-    if (address?.title) {
-      return [address?.longitude, address?.latitude];
-    } else {
-      return [65.53553704887027, 57.15114882108171];
-    }
-  }
+  // private findLngLatViaTitle(title: string | null) {
+  //   const address = this.appStateService.getStateValue().addressFrom;
+  //   if (address?.title) {
+  //     return [address?.longitude, address?.latitude];
+  //   } else {
+  //     return [65.53553704887027, 57.15114882108171];
+  //   }
+  // }
 
   ngOnChanges(changes: SimpleChanges): void {
     const address = changes['addressInput'].currentValue as IAddress;
@@ -79,8 +70,10 @@ export class AutocompleteInputAddressComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnInit() {
-    this.getAddresses();
+  ngOnInit(): void {
+    this.getAddresses().subscribe((data) => {
+      this.addresses = data as IAddress[];
+    });
     this.autocompleteInput.valueChanges
       .pipe(
         debounceTime(1000),

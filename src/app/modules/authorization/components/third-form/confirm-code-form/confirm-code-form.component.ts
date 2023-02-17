@@ -11,11 +11,11 @@ export class ConfirmCodeFormComponent {
   @Output() sendRequestCodeEvent = new EventEmitter();
   iconToggle = true;
 
-  sendRequestCode() {
+  sendRequestCode(): void {
     this.sendRequestCodeEvent.emit();
   }
 
-  sendPhoneNumber(phoneNumber: string | null) {
+  sendPhoneNumber(phoneNumber: string | null): void {
     if (phoneNumber) {
       this.sendPhoneNumberEvent.emit(phoneNumber);
     }

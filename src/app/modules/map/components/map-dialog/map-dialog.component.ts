@@ -1,3 +1,4 @@
+import { Observable, Subscription } from 'rxjs';
 import { GetAddressesService } from './../../../order-form/services/get-addresses/get-addresses.service';
 import { AppStateService } from 'src/app/services/app-state/app-state.service';
 import { IAddress } from './../../../../interfaces/address.interface';
@@ -15,7 +16,7 @@ export class MapDialogComponent implements OnInit {
   address?: IAddress;
   private markerLocation?: LngLat;
   private map?: Map;
-  private markerDrag(event: any) {
+  private markerDrag(event: any): void {
     const curLngLat = event.target.getLngLat();
 
     if (
@@ -29,13 +30,11 @@ export class MapDialogComponent implements OnInit {
     }
   }
 
-  private getAddresses() {
-    return this.getAddressesService.getAddresses().subscribe((data) => {
-      this.addresses = data as IAddress[];
-    });
+  private getAddresses(): Observable<IAddress[]> {
+    return this.getAddressesService.getAddresses();
   }
 
-  onClickDoneButton() {
+  onClickDoneButton(): void {
     this.appStateService.setAppState({
       addressFrom: this.address,
     });
@@ -84,7 +83,9 @@ export class MapDialogComponent implements OnInit {
       this.marker.on('dragend', this.markerDrag.bind(this));
     }
 
-    this.getAddresses();
+    this.getAddresses().subscribe((data) => {
+      this.addresses = data as IAddress[];
+    });
   }
 
   constructor(

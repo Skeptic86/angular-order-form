@@ -43,30 +43,41 @@ export class FormService {
   //   return this.getAddressesService.getAddresses();
   // }
 
-  private getAddressesApi(queryAddress: string | null) {
+  private getAddressesApi(
+    queryAddress: string | null
+  ): Observable<Object | IAddress[]> {
     return this.getAddressesService.getAddressesApi(queryAddress);
   }
 
-  private ConvertStringToNumber(input: string | null) {
+  private ConvertStringToNumber(input: string | null): number {
     if (!input || input.trim().length == 0) return NaN;
     return Number(input);
   }
 
-  private findPaymentMethodByType(payment: IPayment, type: string | null) {
+  private findPaymentMethodByType(
+    payment: IPayment,
+    type: string | null
+  ): IPaymentMethod | undefined {
     if (type !== null) {
       return payment?.paymentMethods.find((elem) => elem.type === type);
     }
     return undefined;
   }
 
-  private findAddressByTitle(addresses: IAddress[], title: string | null) {
+  private findAddressByTitle(
+    addresses: IAddress[],
+    title: string | null
+  ): IAddress | undefined {
     if (title !== null) {
       return addresses.find((address) => address.title === title);
     }
     return undefined;
   }
 
-  private findTarrifNameById(tariffInfo: IDefault, id: number) {
+  private findTarrifNameById(
+    tariffInfo: IDefault,
+    id: number
+  ): ITariff | undefined {
     if (!isNaN(id)) {
       let temp: ITariff | undefined;
       let res: ITariff | undefined;
@@ -141,7 +152,7 @@ export class FormService {
   //   return paramState;
   // }
 
-  formInit() {
+  formInit(): void {
     const tariffIdURLParam = this.route.snapshot.queryParamMap.get('tariffId');
     const paymentTypeURLParam =
       this.route.snapshot.queryParamMap.get('paymentType');

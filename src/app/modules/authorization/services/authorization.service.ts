@@ -1,4 +1,4 @@
-import { throwError, catchError } from 'rxjs';
+import { throwError, catchError, Observable } from 'rxjs';
 import { ICode } from './../../../interfaces/code.interface';
 import {
   HttpClient,
@@ -17,21 +17,21 @@ export class AuthorizationService {
   private apiConfirmCodeURL =
     'https://dev-api.taxsee.com/client/v1/auth/confirm-code';
 
-  sendCode(phone: string, type: number) {
+  sendCode(phone: string, type: number): Observable<ICode> {
     // const params = new HttpParams().set('phone', phone).set('type', type);
+    console.log(phone, type);
     return this.http
       .post<ICode>(this.apiSendCodeURL, { phone: phone, type: type })
       .pipe(catchError(this.handleError));
   }
 
-  confirmCode(code: string) {
-    const params = new HttpParams().set('code', code);
+  confirmCode(code: string): Observable<any> {
     return this.http
-      .post<ICode>(this.apiConfirmCodeURL, { params: params })
+      .post<ICode>(this.apiConfirmCodeURL, { code: code })
       .pipe(catchError(this.handleError));
   }
 
-  private handleError(error: HttpErrorResponse) {
+  private handleError(error: HttpErrorResponse): Observable<never> {
     if (error.status === 0) {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error);

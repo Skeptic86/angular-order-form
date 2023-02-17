@@ -18,9 +18,7 @@ export class AppStateService {
     addressTo: {} as IAddress,
   });
 
-  sendClickEvent() {}
-
-  private updateRoute() {
+  private updateRoute(): void {
     this.router.navigate(['/order'], {
       queryParams: {
         addressFrom: this.subject$.getValue().addressFrom?.title,
@@ -32,7 +30,7 @@ export class AppStateService {
     });
   }
 
-  setAppState(fieldsToUpdate: Partial<IAppState>) {
+  setAppState(fieldsToUpdate: Partial<IAppState>): void {
     const newSubject = { ...this.subject$.getValue(), ...fieldsToUpdate };
     this.subject$.next(newSubject);
     this.updateRoute();

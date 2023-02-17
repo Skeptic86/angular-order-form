@@ -1,11 +1,11 @@
 export interface IAddress {
-  street?: {
+  street: {
     id: number;
     name: string;
-  };
+  } | null;
   title: string | null;
-  house?: string;
-  subtitle?: string;
+  house: string | null;
+  subtitle: string | null;
   latitude: number;
   longitude: number;
 }

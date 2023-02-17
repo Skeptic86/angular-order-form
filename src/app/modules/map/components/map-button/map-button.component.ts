@@ -10,11 +10,11 @@ import { MapDialogComponent } from '../map-dialog/map-dialog.component';
 export class MapButtonComponent {
   constructor(public dialog: MatDialog) {}
 
-  openMapDialog() {
+  openMapDialog(): void {
     const dialogRef = this.dialog.open(MapDialogComponent);
 
-    dialogRef.afterClosed().subscribe((result) => {
-      // console.log(`Dialog result: ${result}`);
-    });
+    // dialogRef.afterClosed().subscribe((result) => {
+    //   console.log(`Dialog result: ${result}`);
+    // });
   }
 }

@@ -7,7 +7,7 @@ import { Observable, Subject } from 'rxjs';
 export class GetPriceService {
   subject$ = new Subject<string | number | null>();
 
-  sendClickEvent() {
+  sendClickEvent(): void {
     this.subject$.next(null);
   }
 

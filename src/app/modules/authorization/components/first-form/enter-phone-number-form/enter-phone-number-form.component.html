@@ -3,7 +3,7 @@
 </button>  
 <img src="../../../../assets/logo.jpg" alt="logo" class="logo">
   <div class="container">
-    <app-phone-input [phoneNumber]="phoneInput" (phoneNumberEvent)="getPhoneInput($event)" ></app-phone-input>
+    <app-phone-input #input [phoneNumber]="phoneInput" (phoneNumberEvent)="getPhoneInput($event)" ></app-phone-input>
     <app-authorization-button (confirmPhoneNumberEvent)="confirmPhoneInput()"></app-authorization-button>
     <p class="code-choose-warn">Нажав кнопку «Получить код», я даю согласие на обработку моих персональных данных и получение рекламы.</p>
 </div>

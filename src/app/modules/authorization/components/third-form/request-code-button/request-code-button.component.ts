@@ -4,6 +4,7 @@ import {
   EventEmitter,
   Output,
   ViewChild,
+  ElementRef,
 } from '@angular/core';
 import { CdTimerComponent } from 'angular-cd-timer';
 import { timer } from 'rxjs';
@@ -18,11 +19,11 @@ export class RequestCodeButtonComponent implements OnInit {
   @Output() requestCodeAgainEvent = new EventEmitter();
   isDisabled = true;
 
-  timeEnd() {
+  timeEnd(): void {
     this.isDisabled = false;
   }
 
-  requestCodeAgain() {
+  requestCodeAgain(): void {
     this.isDisabled = true;
     this.timer.reset();
     this.timer.start();

@@ -9,12 +9,11 @@ export class CodeChooseFormComponent {
   @Output() toggleFirstFormEvent = new EventEmitter();
   @Output() toggleThirdFormEvent = new EventEmitter<string>();
 
-  toggleThirdForm(codeChoice: string) {
-    console.log(codeChoice);
+  toggleThirdForm(codeChoice: string): void {
     this.toggleThirdFormEvent.emit(codeChoice);
   }
 
-  toggleFirstForm() {
+  toggleFirstForm(): void {
     this.toggleFirstFormEvent.emit();
   }
 }

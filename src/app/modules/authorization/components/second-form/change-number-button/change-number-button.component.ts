@@ -8,7 +8,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 export class ChangeNumberButtonComponent {
   @Output() changeNumberEvent = new EventEmitter();
 
-  changeNumber() {
+  changeNumber(): void {
     this.changeNumberEvent.emit();
   }
 }

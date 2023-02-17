@@ -17,8 +17,13 @@
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
+    background-color: #ffdb4d;
 }
 
+#map {
+    width: 750px; 
+    height: 750px;
+}
 
 .title {
     text-align: center;

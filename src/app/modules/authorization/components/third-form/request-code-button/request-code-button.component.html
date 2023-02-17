@@ -1,4 +1,4 @@
-<button (click)="requestCodeAgain()" [disabled]="isDisabled" class="request-code-button" mat-flat-button style="background-color: #ffdb4d;">
+<button [ngStyle]="{'background-color': isDisabled ? '#c0c0c0' : '#ffdb4d'}" (click)="requestCodeAgain()" [disabled]="isDisabled" class="request-code-button" mat-flat-button>
     Запросить код заново
-    <cd-timer #timer (onComplete)="timeEnd()" format="ms" [countdown]="true" [startTime]="5"></cd-timer>
+    <cd-timer #timer *ngIf="isDisabled" (onComplete)="timeEnd()" format="ms" [countdown]="true" [startTime]="5"></cd-timer>
 </button>

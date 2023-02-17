@@ -10,7 +10,7 @@ export class CodeSendButtonComponent {
   @Input() icon?: string;
   @Output() showThirdFormEvent = new EventEmitter<string>();
 
-  showThirdForm(codeChoice: string | undefined) {
+  showThirdForm(codeChoice: string | undefined): void {
     if (codeChoice) {
       this.showThirdFormEvent.emit(codeChoice);
     }
