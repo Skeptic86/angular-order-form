@@ -25,7 +25,6 @@ export class AutocompleteInputAddressComponent implements OnInit, OnChanges {
   @Input() addressInput?: IAddress;
   @Output() sendAddressEvent = new EventEmitter<IAddress>();
   autocompleteInput = new FormControl('');
-  private addresses: IAddress[] = [];
   filteredAddresses!: Observable<IAddress[]>;
 
   addressSelected(address: IAddress): void {
@@ -33,11 +32,9 @@ export class AutocompleteInputAddressComponent implements OnInit, OnChanges {
   }
 
   clearInput(): void {
-    this.inputValue = '';
+    this.autocompleteInput.setValue('');
     this.addressSelected({ title: '' } as IAddress);
   }
-
-  inputValue = '';
 
   sendAddress(value: IAddress): void {
     this.sendAddressEvent.emit(value);
@@ -66,19 +63,16 @@ export class AutocompleteInputAddressComponent implements OnInit, OnChanges {
     const address = changes['addressInput'].currentValue as IAddress;
     if (address?.title) {
       console.log('value changes, addressInput: ', address);
-      this.inputValue = address.title;
+      this.autocompleteInput.setValue(address.title);
     }
   }
 
   ngOnInit(): void {
-    this.getAddresses().subscribe((data) => {
-      this.addresses = data as IAddress[];
-    });
     this.autocompleteInput.valueChanges
       .pipe(
         debounceTime(1000),
         filter((value) => value!.length >= 3),
-        tap((value) => {
+        tap((_) => {
           this.getPriceService.sendClickEvent();
         }),
         startWith('')

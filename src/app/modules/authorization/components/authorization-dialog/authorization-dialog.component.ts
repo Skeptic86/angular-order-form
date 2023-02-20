@@ -1,5 +1,5 @@
 import { tap, Observable } from 'rxjs';
-import { ICode } from './../../../../interfaces/code.interface';
+import { ICode } from 'src/app/interfaces/code.interface';
 import { AuthorizationService } from './../../services/authorization.service';
 import { Component } from '@angular/core';
 import { IconToCodeType } from 'src/app/enums/icon-to-code-type.enum';
@@ -10,51 +10,47 @@ import { IconToCodeType } from 'src/app/enums/icon-to-code-type.enum';
   styleUrls: ['./authorization-dialog.component.scss'],
 })
 export class AuthorizationDialogComponent {
-  showFirstForm = true;
-  showSecondForm = false;
-  showThirdForm = false;
+  formState = 'firstForm';
   phoneNumber?: string;
-  private codeSendData?: ICode;
   codeIcon?: string;
   private readonly iconToCodeType = IconToCodeType;
 
-  //
-
   private convertCodeIconToType(codeIcon: string): number {
     const codeIconEnumKey = codeIcon as keyof typeof this.iconToCodeType;
-    console.log('codeIconEnumKey', codeIconEnumKey);
-    console.log(this.iconToCodeType[codeIconEnumKey]);
     return this.iconToCodeType[codeIconEnumKey];
   }
 
-  private codeSend(phoneNumber: string, codeIcon: string): Observable<ICode> {
-    console.log('code sended, codeIcon: ', codeIcon);
+  codeSend(phoneNumber: string, codeIcon: string): Observable<ICode> {
     const fullPhoneNumber = '7' + phoneNumber;
     console.log(fullPhoneNumber);
-    return this.authorizationService.sendCode(
-      fullPhoneNumber,
-      this.convertCodeIconToType(codeIcon)
+    return this.authorizationService
+      .sendCode(fullPhoneNumber, this.convertCodeIconToType(codeIcon))
+      .pipe(tap((value) => console.log(value)));
+  }
+
+  // codeSendAgain(phoneNumber: string, codeIcon: string): void {
+  //   this.codeSend(phoneNumber, codeIcon)
+  //     .pipe(tap((value) => console.log(value)))
+  //     .subscribe((value) => {
+  //       this.codeSendData = value;
+  //     });
+  // }
+
+  codeConfirm(code: string): Observable<any> {
+    return this.authorizationService.confirmCode(code).pipe(
+      tap((value) => {
+        console.log(value);
+      })
     );
-  }
-
-  codeSendAgain(phoneNumber: string, codeIcon: string): void {
-    console.log('codeSendAgain', codeIcon, this.codeIcon);
-    this.codeSend(phoneNumber, codeIcon)
-      .pipe(tap((value) => console.log(value)))
-      .subscribe((value) => {
-        this.codeSendData = value;
-      });
-  }
-
-  private codeConfirm(code: string): Observable<any> {
-    return this.authorizationService.confirmCode(code);
   }
 
   toggleShowFirstForm(phoneNumber?: string): void {
     this.setPhoneNumber(phoneNumber);
-
-    this.showFirstForm = !this.showFirstForm;
-    this.toggleShowSecondForm();
+    if (this.formState === 'firstForm') {
+      this.toggleShowSecondForm();
+    } else {
+      this.formState = 'firstForm';
+    }
   }
 
   setPhoneNumber(phoneNumber: string | undefined): void {
@@ -68,17 +64,12 @@ export class AuthorizationDialogComponent {
       this.codeIcon = codeIcon;
     }
 
-    this.codeSend(this.phoneNumber!, this.codeIcon!)
-      .pipe(tap((value) => console.log(value)))
-      .subscribe((value) => {
-        this.codeSendData = value;
-      });
-    this.showThirdForm = !this.showThirdForm;
-    this.toggleShowSecondForm();
+    this.codeSend(this.phoneNumber!, this.codeIcon!).subscribe();
+    this.formState = 'thirdForm';
   }
 
   toggleShowSecondForm(): void {
-    this.showSecondForm = !this.showSecondForm;
+    this.formState = 'secondForm';
   }
 
   constructor(private authorizationService: AuthorizationService) {}

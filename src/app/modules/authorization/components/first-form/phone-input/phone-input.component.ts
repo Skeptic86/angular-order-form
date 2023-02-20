@@ -7,6 +7,7 @@ import {
   NgForm,
   Validators,
 } from '@angular/forms';
+import { TitleStrategy } from '@angular/router';
 
 // export class MyErrorStateMatcher implements ErrorStateMatcher {
 //   isErrorState(
@@ -28,16 +29,17 @@ import {
   styleUrls: ['./phone-input.component.scss'],
 })
 export class PhoneInputComponent implements OnInit {
-  @Input() phoneNumber?: string = '';
-  @Input() isDisabled: boolean = false;
+  @Input() phoneNumber? = '';
+  @Input() isDisabled = false;
   @Output() phoneNumberEvent = new EventEmitter<string | null>();
   phoneFormControl = new FormControl('', [
     Validators.required,
-    Validators.pattern(new RegExp(/^9\d+/)),
+    // Validators.pattern(new RegExp(/^9\d+/)),
   ]);
   // matcher = new MyErrorStateMatcher();
 
   ngOnInit(): void {
+    this.phoneFormControl.setValue(this.phoneNumber ?? '');
     if (this.isDisabled) {
       this.phoneFormControl.disable();
     }
@@ -51,14 +53,14 @@ export class PhoneInputComponent implements OnInit {
   }
 
   clearPhoneNumber(): void {
-    this.phoneNumber = '';
+    this.phoneFormControl.setValue('');
     this.numberChanged();
   }
 
   numberChanged(): void {
-    console.log(this.phoneFormControl.value);
     if (this.phoneFormControl.valid) {
-      this.phoneNumberEvent.emit(this.phoneNumber);
+      console.log(this.phoneFormControl.value);
+      this.phoneNumberEvent.emit(this.phoneFormControl.value);
     }
   }
 }

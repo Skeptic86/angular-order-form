@@ -1,5 +1,4 @@
-import { IBankCards } from './../../../../interfaces/bank-cards.interface';
-import { IPayment } from './../../../../interfaces/payment.interface';
+import { IBankCards } from 'src/app/interfaces/bank-cards.interface';
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({

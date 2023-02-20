@@ -1,9 +1,9 @@
-import { IAddress } from './../../interfaces/address.interface';
-import { ITariff } from './../../interfaces/tariff.interface';
-import { IDefault } from './../../interfaces/default.interface';
-import { IPayment, IPaymentMethod } from './../../interfaces/payment.interface';
+import { IAddress } from 'src/app/interfaces/address.interface';
+import { ITariff } from 'src/app/interfaces/tariff.interface';
+import { IDefault } from 'src/app/interfaces/default.interface';
+import { IPayment, IPaymentMethod } from 'src/app/interfaces/payment.interface';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IAppState } from './../../interfaces/app-state.interface';
+import { IAppState } from 'src/app/interfaces/app-state.interface';
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 

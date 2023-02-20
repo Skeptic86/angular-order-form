@@ -1,7 +1,7 @@
 import { Observable, Subscription } from 'rxjs';
 import { GetAddressesService } from './../../../order-form/services/get-addresses/get-addresses.service';
 import { AppStateService } from 'src/app/services/app-state/app-state.service';
-import { IAddress } from './../../../../interfaces/address.interface';
+import { IAddress } from 'src/app/interfaces/address.interface';
 import { Component, OnInit } from '@angular/core';
 import maplibregl, { LngLat, LngLatLike, Map } from 'maplibre-gl'; // or "const maplibregl = require('maplibre-gl');"
 

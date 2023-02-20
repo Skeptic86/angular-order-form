@@ -1,10 +1,8 @@
 import { ActivatedRoute } from '@angular/router';
-import { ITariff } from './../../../../interfaces/tariff.interface';
-import { AppStateService } from './../../../../services/app-state/app-state.service';
-import { GetPriceService } from '../../services/get-price/get-price.service';
-import { TariffService } from './../../services/tariff/tariff.service';
+import { ITariff } from 'src/app/interfaces/tariff.interface';
+import { AppStateService } from 'src/app/services/app-state/app-state.service';
 import { Component, Input, OnInit } from '@angular/core';
-import { CodeIconsEnum } from '../../../../enums/tariff-code-to-icons-enum';
+import { CodeIconsEnum } from 'src/app/enums/tariff-code-to-icons-enum';
 import { ITariffGroup } from 'src/app/interfaces/tariff-group.interface';
 
 @Component({

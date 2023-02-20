@@ -1,4 +1,4 @@
-import { IPayment } from './../../../../interfaces/payment.interface';
+import { IPayment } from 'src/app/interfaces/payment.interface';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { throwError, catchError, Observable } from 'rxjs';

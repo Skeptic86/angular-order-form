@@ -15,7 +15,7 @@ import { timer } from 'rxjs';
   styleUrls: ['./request-code-button.component.scss'],
 })
 export class RequestCodeButtonComponent implements OnInit {
-  @ViewChild('timer') timer!: CdTimerComponent;
+  @ViewChild('timer') timer?: ElementRef;
   @Output() requestCodeAgainEvent = new EventEmitter();
   isDisabled = true;
 
@@ -25,8 +25,8 @@ export class RequestCodeButtonComponent implements OnInit {
 
   requestCodeAgain(): void {
     this.isDisabled = true;
-    this.timer.reset();
-    this.timer.start();
+    this.timer?.nativeElement.reset();
+    this.timer?.nativeElement.start();
     this.requestCodeAgainEvent.emit();
   }
 

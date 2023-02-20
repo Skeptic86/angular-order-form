@@ -12,7 +12,15 @@ import {
   styleUrls: ['./code-input.component.scss'],
 })
 export class CodeInputComponent {
-  @Input() code?: string = '';
+  @Output() confirmCodeEvent = new EventEmitter<string>();
+
+  codeChanged() {
+    console.log('codeChanged', this.codeFormControl.value);
+    if (this.codeFormControl.value?.length === 4) {
+      console.log('value emmited');
+      this.confirmCodeEvent.emit(this.codeFormControl.value);
+    }
+  }
 
   codeFormControl = new FormControl('');
 }

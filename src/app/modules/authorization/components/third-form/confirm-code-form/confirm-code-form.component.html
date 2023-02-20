@@ -1,10 +1,7 @@
-<button class="close-cross" type="button" mat-icon-button mat-dialog-close>
-    <mat-icon>close</mat-icon>
-</button>  
-<img src="../../../../assets/logo.jpg" alt="logo" class="logo">
+<app-form-header></app-form-header>
 <div class="container">
     <app-phone-input [isDisabled]="true" (phoneNumberEvent)="sendPhoneNumber($event)" [phoneNumber]="phoneNumber"></app-phone-input>
-    <app-code-input></app-code-input>
+    <app-code-input (confirmCodeEvent)="confirmCode($event)" ></app-code-input>
     <p class="code-info-text">Сообщение с кодом отправлено на указанный номер.</p>
     <app-request-code-button (requestCodeAgainEvent)="sendRequestCode()"></app-request-code-button>
     <p class="code-confirm-warn">Нажав кнопку «Получить код», я даю согласие на обработку моих персональных данных и получение рекламы.</p>

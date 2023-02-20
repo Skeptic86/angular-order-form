@@ -1,4 +1,4 @@
-import { IDefault } from '../../../../interfaces/default.interface';
+import { IDefault } from 'src/app/interfaces/default.interface';
 import { Injectable } from '@angular/core';
 import {
   HttpClient,

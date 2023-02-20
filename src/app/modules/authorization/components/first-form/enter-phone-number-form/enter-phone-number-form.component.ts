@@ -15,10 +15,15 @@ import {
 export class EnterPhoneNumberComponent {
   @ViewChild('input') input?: ElementRef;
   @Output() showFirstFormEvent = new EventEmitter<string>();
-  @Input() phoneInput?: string = '';
+  @Input() phoneInput? = '';
 
   private sendFisrtFormFlag(phoneNumber: string): void {
     this.showFirstFormEvent.emit(phoneNumber);
+  }
+
+  onEnter($event: any) {
+    console.log($event);
+    this.confirmPhoneInput();
   }
 
   getPhoneInput(input: string | null): string {

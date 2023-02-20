@@ -4,7 +4,7 @@ import { AuthorizationDialogComponent } from '../../../authorization/components/
 import { MatDialog } from '@angular/material/dialog';
 import { AppStateService } from 'src/app/services/app-state/app-state.service';
 import { GetPriceService } from '../../services/get-price/get-price.service';
-import { ICalcPrice } from './../../../../interfaces/calc-price.interface';
+import { ICalcPrice } from 'src/app/interfaces/calc-price.interface';
 import { OrderButtonService } from './../../services/order-button/order-button.service';
 import { Component, OnInit } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';

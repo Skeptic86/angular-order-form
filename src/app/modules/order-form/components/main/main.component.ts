@@ -1,8 +1,8 @@
 import { IDefault } from 'src/app/interfaces/default.interface';
 import { ITariff } from 'src/app/interfaces/tariff.interface';
 import { ActivatedRoute } from '@angular/router';
-import { AddressTypeEnum } from './../../../../enums/address-type.enum';
-import { IAddress } from './../../../../interfaces/address.interface';
+import { AddressTypeEnum } from 'src/app/enums/address-type.enum';
+import { IAddress } from 'src/app/interfaces/address.interface';
 import { FormService } from './../../services/form/form.service';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';

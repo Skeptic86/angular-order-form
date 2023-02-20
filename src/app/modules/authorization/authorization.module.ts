@@ -24,6 +24,7 @@ import {
   NgxMaskPipe,
 } from 'ngx-mask';
 import { CdTimerModule } from 'angular-cd-timer';
+import { FormHeaderComponent } from './components/form-header/form-header.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { CdTimerModule } from 'angular-cd-timer';
     ConfirmCodeFormComponent,
     CodeInputComponent,
     RequestCodeButtonComponent,
+    FormHeaderComponent,
   ],
   exports: [AuthorizationDialogComponent],
   imports: [

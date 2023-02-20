@@ -9,10 +9,15 @@ export class ConfirmCodeFormComponent {
   @Input() phoneNumber?: string;
   @Output() sendPhoneNumberEvent = new EventEmitter<string>();
   @Output() sendRequestCodeEvent = new EventEmitter();
+  @Output() confirmCodeEvent = new EventEmitter<string>();
   iconToggle = true;
 
   sendRequestCode(): void {
     this.sendRequestCodeEvent.emit();
+  }
+
+  confirmCode(code: string) {
+    this.confirmCodeEvent.emit(code);
   }
 
   sendPhoneNumber(phoneNumber: string | null): void {

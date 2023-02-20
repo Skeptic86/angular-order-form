@@ -1,5 +1,5 @@
 import { throwError, catchError, Observable } from 'rxjs';
-import { ICode } from './../../../interfaces/code.interface';
+import { ICode } from 'src/app/interfaces/code.interface';
 import {
   HttpClient,
   HttpErrorResponse,
@@ -18,8 +18,6 @@ export class AuthorizationService {
     'https://dev-api.taxsee.com/client/v1/auth/confirm-code';
 
   sendCode(phone: string, type: number): Observable<ICode> {
-    // const params = new HttpParams().set('phone', phone).set('type', type);
-    console.log(phone, type);
     return this.http
       .post<ICode>(this.apiSendCodeURL, { phone: phone, type: type })
       .pipe(catchError(this.handleError));
