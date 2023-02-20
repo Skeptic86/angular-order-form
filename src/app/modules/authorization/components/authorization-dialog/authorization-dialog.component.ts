@@ -1,8 +1,9 @@
-import { tap, Observable } from 'rxjs';
+import { tap, Observable, Subscription } from 'rxjs';
 import { ICode } from 'src/app/interfaces/code.interface';
 import { AuthorizationService } from './../../services/authorization.service';
 import { Component } from '@angular/core';
 import { IconToCodeType } from 'src/app/enums/icon-to-code-type.enum';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-authorization-dialog',
@@ -13,6 +14,8 @@ export class AuthorizationDialogComponent {
   formState = 'firstForm';
   phoneNumber?: string;
   codeIcon?: string;
+  codeSendInfo?: ICode;
+  codeConfirmInfo?: ICode;
   private readonly iconToCodeType = IconToCodeType;
 
   private convertCodeIconToType(codeIcon: string): number {
@@ -36,12 +39,30 @@ export class AuthorizationDialogComponent {
   //     });
   // }
 
-  codeConfirm(code: string): Observable<any> {
-    return this.authorizationService.confirmCode(code).pipe(
-      tap((value) => {
-        console.log(value);
-      })
-    );
+  subscribeToCodeSend(phoneNumber: string, codeIcon: string): Subscription {
+    return this.codeSend(phoneNumber, codeIcon).subscribe((value) => {
+      this.codeSendInfo = value;
+    });
+  }
+
+  private closeDialogIfCodeSuccses(confirmCodeData: ICode) {
+    if (confirmCodeData.success) {
+      this.dialogRef.close();
+    }
+  }
+
+  codeConfirm(code: string, token: string): Subscription {
+    return this.authorizationService
+      .confirmCode(code, token)
+      .pipe(
+        tap((value) => {
+          console.log(value);
+        })
+      )
+      .subscribe((value) => {
+        this.codeConfirmInfo = value;
+        this.closeDialogIfCodeSuccses(value);
+      });
   }
 
   toggleShowFirstForm(phoneNumber?: string): void {
@@ -64,7 +85,7 @@ export class AuthorizationDialogComponent {
       this.codeIcon = codeIcon;
     }
 
-    this.codeSend(this.phoneNumber!, this.codeIcon!).subscribe();
+    this.subscribeToCodeSend(this.phoneNumber!, this.codeIcon!);
     this.formState = 'thirdForm';
   }
 
@@ -72,5 +93,8 @@ export class AuthorizationDialogComponent {
     this.formState = 'secondForm';
   }
 
-  constructor(private authorizationService: AuthorizationService) {}
+  constructor(
+    private authorizationService: AuthorizationService,
+    public dialogRef: MatDialogRef<AuthorizationDialogComponent>
+  ) {}
 }

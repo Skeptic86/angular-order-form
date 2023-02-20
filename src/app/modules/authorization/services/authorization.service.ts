@@ -23,9 +23,13 @@ export class AuthorizationService {
       .pipe(catchError(this.handleError));
   }
 
-  confirmCode(code: string): Observable<any> {
+  confirmCode(code: string, token: string): Observable<any> {
     return this.http
-      .post<ICode>(this.apiConfirmCodeURL, { code: code })
+      .post<ICode>(
+        this.apiConfirmCodeURL,
+        { code: code },
+        { params: new HttpParams().set('access-token', token) }
+      )
       .pipe(catchError(this.handleError));
   }
 

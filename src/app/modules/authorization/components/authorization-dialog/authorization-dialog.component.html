@@ -1,3 +1,3 @@
 <app-enter-phone-number-form [phoneInput]="phoneNumber" (showFirstFormEvent)="toggleShowFirstForm($event)" *ngIf="formState === 'firstForm'" ></app-enter-phone-number-form>
 <app-code-choose-form (toggleThirdFormEvent)="toggleShowThirdForm($event)" (toggleFirstFormEvent)="toggleShowFirstForm()" *ngIf="formState === 'secondForm'"></app-code-choose-form>
-<app-confirm-code-form [phoneNumber]="phoneNumber" (confirmCodeEvent)="codeConfirm($event).subscribe()" (sendRequestCodeEvent)="codeSend(phoneNumber!, codeIcon!).subscribe()" (sendPhoneNumberEvent)="setPhoneNumber($event)" *ngIf="formState === 'thirdForm'"></app-confirm-code-form>
+<app-confirm-code-form [phoneNumber]="phoneNumber" (confirmCodeEvent)="codeConfirm($event, codeSendInfo?.token!)" (sendRequestCodeEvent)="subscribeToCodeSend(phoneNumber!, codeIcon!)" (sendPhoneNumberEvent)="setPhoneNumber($event)" *ngIf="formState === 'thirdForm'"></app-confirm-code-form>

@@ -20,7 +20,8 @@ export class AddressInterceptor implements HttpInterceptor {
     request = request.clone({
       params: (request.params ? request.params : new HttpParams())
         .set('udid', '275932435422a972367c8827a28137ac')
-        .set('base', 1),
+        .set('base', 1)
+        .set('type', 0),
     });
     return next.handle(request);
   }
