@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PaymentChooseComponent } from './payment-choose.component';
+import { BaseSelectComponent } from './base-select.component';
 
-describe('PaymentChooseComponent', () => {
-  let component: PaymentChooseComponent;
-  let fixture: ComponentFixture<PaymentChooseComponent>;
+describe('BaseSelectComponent', () => {
+  let component: BaseSelectComponent;
+  let fixture: ComponentFixture<BaseSelectComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PaymentChooseComponent ]
+      declarations: [ BaseSelectComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PaymentChooseComponent);
+    fixture = TestBed.createComponent(BaseSelectComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

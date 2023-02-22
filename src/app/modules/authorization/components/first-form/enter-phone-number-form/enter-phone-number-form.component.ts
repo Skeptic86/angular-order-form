@@ -1,3 +1,4 @@
+import { FormControl, Validators } from '@angular/forms';
 import {
   Component,
   Output,
@@ -26,9 +27,14 @@ export class EnterPhoneNumberComponent {
     this.confirmPhoneInput();
   }
 
-  getPhoneInput(input: string | null): string {
-    if (input) {
-      this.phoneInput = input;
+  phoneFormControl = new FormControl('', [
+    Validators.required,
+    // Validators.pattern(new RegExp(/^9\d+/)),
+  ]);
+
+  getPhoneInput(): string {
+    if (this.phoneFormControl.valid && this.phoneFormControl.value) {
+      this.phoneInput = this.phoneFormControl.value;
     } else {
       this.phoneInput = '';
     }
@@ -37,6 +43,7 @@ export class EnterPhoneNumberComponent {
 
   confirmPhoneInput(): void {
     if (this.phoneInput?.length! >= 10) {
+      console.log('flag sended');
       this.sendFisrtFormFlag(this.phoneInput!);
     }
   }

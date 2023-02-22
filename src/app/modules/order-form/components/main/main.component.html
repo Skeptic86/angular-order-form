@@ -1,6 +1,14 @@
 <div class="picture">
   <div class="container">
-    <div class="form mat-typography">
+
+    <div *ngIf="showCountries" class="form mat-typography">
+      <div class="selects">
+        <app-country-select [countries]="(countries$ | async)!" (selectedCountryEvent)="selectCountry($event)"></app-country-select>
+        <app-base-select></app-base-select>
+      </div>
+    </div>
+    
+    <div *ngIf="!showCountries" class="form mat-typography">
       <div class="inputs" cdkDropList (cdkDropListDropped)="drop($event)">
         <div class="from" cdkDrag cdkDragBoundary=".inputs">
           <img class="from-img" src="../../../../assets/from.svg" alt="from">
@@ -14,7 +22,7 @@
         </div>
       </div>
       <div class="buttons">
-        <app-payment-choose [paymentMethod]="(paymentMethod$ | async)!" [payment]="(payment$ | async)!"></app-payment-choose>
+        <app-option-choose (toggleShowCountriesEvent)="toggleShowCountries()" [paymentMethod]="(paymentMethod$ | async)!" [payment]="(payment$ | async)!"></app-option-choose>
         <app-order-button></app-order-button>
         <app-tariff [tariffGroups]="(defaults$ | async)?.info?.tariffGroups" [tariff]="(tariff$ | async)!"></app-tariff>
       </div>

@@ -1,3 +1,4 @@
+import { FormControl, Validators } from '@angular/forms';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
@@ -16,13 +17,18 @@ export class ConfirmCodeFormComponent {
     this.sendRequestCodeEvent.emit();
   }
 
+  phoneFormControl = new FormControl('', [
+    Validators.required,
+    // Validators.pattern(new RegExp(/^9\d+/)),
+  ]);
+
   confirmCode(code: string) {
     this.confirmCodeEvent.emit(code);
   }
 
-  sendPhoneNumber(phoneNumber: string | null): void {
-    if (phoneNumber) {
-      this.sendPhoneNumberEvent.emit(phoneNumber);
+  sendPhoneNumber(): void {
+    if (this.phoneFormControl.valid && this.phoneFormControl.value) {
+      this.sendPhoneNumberEvent.emit(this.phoneFormControl.value);
     }
   }
 

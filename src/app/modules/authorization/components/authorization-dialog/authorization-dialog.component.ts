@@ -1,3 +1,4 @@
+import { LocalService } from './../../../../services/local/local.service';
 import { tap, Observable, Subscription } from 'rxjs';
 import { ICode } from 'src/app/interfaces/code.interface';
 import { AuthorizationService } from './../../services/authorization.service';
@@ -45,10 +46,19 @@ export class AuthorizationDialogComponent {
     });
   }
 
-  private closeDialogIfCodeSuccses(confirmCodeData: ICode) {
+  private closeDialogIfCodeSuccses(confirmCodeData: ICode): void {
     if (confirmCodeData.success) {
       this.dialogRef.close();
     }
+  }
+
+  private putTokenInLocalStorage(token: string): void {
+    this.local.saveData('token', token);
+    console.log(this.local.getData('token'));
+  }
+
+  private removeTokenFromLocalStorage(): void {
+    this.local.removeData('token');
   }
 
   codeConfirm(code: string, token: string): Subscription {
@@ -61,6 +71,8 @@ export class AuthorizationDialogComponent {
       )
       .subscribe((value) => {
         this.codeConfirmInfo = value;
+        this.putTokenInLocalStorage(this.codeConfirmInfo?.token!);
+        this.removeTokenFromLocalStorage();
         this.closeDialogIfCodeSuccses(value);
       });
   }
@@ -95,6 +107,7 @@ export class AuthorizationDialogComponent {
 
   constructor(
     private authorizationService: AuthorizationService,
-    public dialogRef: MatDialogRef<AuthorizationDialogComponent>
+    private dialogRef: MatDialogRef<AuthorizationDialogComponent>,
+    private local: LocalService
   ) {}
 }

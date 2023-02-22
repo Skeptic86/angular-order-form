@@ -119,36 +119,6 @@ export class FormService {
     return { ...state, addressTo };
   }
 
-  // private getAppStateFromURL(
-  //   tariffId: string | null,
-  //   paymentType: string | null,
-  //   addressFrom: string | null,
-  //   addressTo: string | null
-  // ) {
-  //   const numberTarrifIdURL = this.ConvertStringToNumber(tariffId);
-
-  //   let paramState: IAppState = {
-  //     tariff: this.findTarrifNameById(
-  //       this.tariffInfo$$.getValue()!,
-  //       numberTarrifIdURL
-  //     ),
-  //     payment: this.findPaymentMethodByType(
-  //       this.payment$$.getValue()!,
-  //       paymentType
-  //     )!,
-  //     addressFrom: this.findAddressByTitle(
-  //       this.addressesFrom$$.getValue()!,
-  //       addressFrom
-  //     ),
-  //     addressTo: this.findAddressByTitle(
-  //       this.addressesTo$$.getValue()!,
-  //       addressTo
-  //     ),
-  //   };
-
-  //   return paramState;
-  // }
-
   formInit(): void {
     const tariffIdURLParam = this.route.snapshot.queryParamMap.get('tariffId');
     const paymentTypeURLParam =
@@ -205,15 +175,6 @@ export class FormService {
         })
       )
       .subscribe();
-    // this.getAddresses().subscribe((value: IAddress[]) => {
-    //   this.addresses$$?.next(value);
-    // });
-    // this.getDefault().subscribe((value: IDefault) => {
-    //   this.tariffInfo$$?.next(value);
-    // });
-    // this.getPayment().subscribe((value: IPayment) => {
-    //   this.payment$$?.next(value);
-    // });
   }
 
   constructor(

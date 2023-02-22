@@ -2,7 +2,6 @@ import { AuthorizationModule } from './../authorization/authorization.module';
 import { MapModule } from './../map/map.module';
 import { AutocompleteInputAddressComponent } from './components/autocomplete-input-address/autocomplete-input-address.component';
 import { TariffComponent } from './components/tariff/tariff.component';
-import { PaymentChooseComponent } from './components/payment-choose/payment-choose.component';
 import { OrderButtonComponent } from './components/order-button/order-button.component';
 import { MainComponent } from './components/main/main.component';
 import { NgModule } from '@angular/core';
@@ -22,6 +21,9 @@ import { OrderFormRoutingModule } from './order-form-routing.module';
 import { TariffIconPipe } from './pipes/tariff-icon/tariff-icon.pipe';
 import { PaymentIconPipe } from './pipes/payment-icon/payment-icon.pipe';
 import { ErrorAuthorizationComponent } from './components/error-authorization/error-authorization.component';
+import { OptionChooseComponent } from './components/option-choose/option-choose.component';
+import { CountrySelectComponent } from './components/country-select/country-select.component';
+import { BaseSelectComponent } from './components/base-select/base-select.component';
 
 @NgModule({
   declarations: [
@@ -29,12 +31,14 @@ import { ErrorAuthorizationComponent } from './components/error-authorization/er
     TariffCodeToIconNamePipe,
     ChoseActiveCardPipe,
     OrderButtonComponent,
-    PaymentChooseComponent,
     AutocompleteInputAddressComponent,
     TariffComponent,
     TariffIconPipe,
     PaymentIconPipe,
     ErrorAuthorizationComponent,
+    OptionChooseComponent,
+    CountrySelectComponent,
+    BaseSelectComponent,
   ],
   exports: [MainComponent],
   imports: [

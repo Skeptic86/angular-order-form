@@ -1,7 +1,15 @@
-<button mat-icon-button [matMenuTriggerFor]="menu">
-    <mat-icon>{{ paymentMethod?.type | paymentIcon }}</mat-icon>
+<button mat-icon-button [matMenuTriggerFor]="options">
+    <mat-icon>settings</mat-icon>
 </button>
-<mat-menu #menu="matMenu">
+<mat-menu #options="matMenu">
+  <button mat-menu-item (click)="toggleShowCountries()">Страны</button>
+  <button mat-menu-item [matMenuTriggerFor]="payments">
+    <mat-icon>{{ paymentMethod?.type | paymentIcon }}</mat-icon>
+    <span>Способ оплаты</span> 
+  </button>
+</mat-menu>
+
+<mat-menu #payments="matMenu">
     <ng-container *ngFor="let value of payment?.paymentMethods">
         <button *ngIf="!value.bankCards.length" mat-menu-item (click)="changePayment(value!)">
             <mat-icon>{{value.type | TariffCodeToIconName:this.codeIcons}}</mat-icon>

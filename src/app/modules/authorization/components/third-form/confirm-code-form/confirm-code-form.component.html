@@ -1,6 +1,6 @@
 <app-form-header></app-form-header>
 <div class="container">
-    <app-phone-input [isDisabled]="true" (phoneNumberEvent)="sendPhoneNumber($event)" [phoneNumber]="phoneNumber"></app-phone-input>
+    <app-phone-input [phoneFormControl]="phoneFormControl" [isDisabled]="true" (phoneNumberEvent)="sendPhoneNumber()" [phoneNumber]="phoneNumber"></app-phone-input>
     <app-code-input (confirmCodeEvent)="confirmCode($event)" ></app-code-input>
     <p class="code-info-text">Сообщение с кодом отправлено на указанный номер.</p>
     <app-request-code-button (requestCodeAgainEvent)="sendRequestCode()"></app-request-code-button>

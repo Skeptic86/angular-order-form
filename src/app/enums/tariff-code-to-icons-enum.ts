@@ -4,4 +4,5 @@ export enum CodeIconsEnum {
   TRUCK = 'local_shipping',
   BUS = 'airport_shuttle',
   SERVICE = 'face',
+  DAILY_ESSENTIAL = 'build',
 }

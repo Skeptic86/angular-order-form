@@ -2,14 +2,14 @@
     <mat-form-field class="example-full-width" appearance="outline">
       <mat-label>Подтвердите номер телефона</mat-label>
       <span class="prefix" matPrefix>+7</span>
-      <input (input)="numberChanged()" name="phone" [formControl]="phoneFormControl" mask="(000) 000-0000" matInput maxlength="17" autocomplete="off" placeholder="(999) 123-4567">
-      <mat-error *ngIf="phoneFormControl.hasError('pattern') || phoneFormControl.hasError('required')">
+      <input (input)="numberChanged()" name="phone" [formControl]="phoneFormControl!" mask="(000) 000-0000" matInput maxlength="17" autocomplete="off" placeholder="(999) 123-4567">
+      <mat-error *ngIf="phoneFormControl!.hasError('pattern') || phoneFormControl!.hasError('required')">
         Введите верный номер телефона.
       </mat-error>
       <button *ngIf="(isDisabled)" matSuffix mat-icon-button (click)="enableInput()">
         <mat-icon>create</mat-icon>
       </button>
-      <button *ngIf="(phoneFormControl.value && !isDisabled)" matSuffix mat-icon-button aria-label="Clear" (onclick)="clearPhoneNumber()">
+      <button *ngIf="(phoneFormControl!.value && !isDisabled)" matSuffix mat-icon-button aria-label="Clear" (mousedown)="clearPhoneNumber()">
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>

@@ -1,3 +1,6 @@
+import { BaseService } from './../../services/base/base.service';
+import { CountryService } from './../../services/country/country.service';
+import { ICountry } from './../../../../interfaces/country.interface';
 import { IDefault } from 'src/app/interfaces/default.interface';
 import { ITariff } from 'src/app/interfaces/tariff.interface';
 import { ActivatedRoute } from '@angular/router';
@@ -9,6 +12,7 @@ import { Component, OnInit } from '@angular/core';
 import { IAppState } from 'src/app/interfaces/app-state.interface';
 import { AppStateService } from 'src/app/services/app-state/app-state.service';
 import {
+  count,
   distinctUntilChanged,
   filter,
   first,
@@ -28,13 +32,28 @@ import { PaymentChooseService } from './../../services/payment-choose/payment-ch
   styleUrls: ['./main.component.scss'],
 })
 export class MainComponent implements OnInit {
-  clickEventSubscription?: Subscription;
+  addressesSubscription?: Subscription;
   addressFrom?: IAddress;
   addressTo?: IAddress;
   readonly paymentMethod$ = this.paymentChanged();
   readonly payment$ = this.getPayment();
   readonly tariff$ = this.tariffChanged();
   readonly defaults$ = this.getDefaults();
+  readonly countries$ = this.getCountries();
+  selectedCountry?: ICountry;
+  showCountries = false;
+
+  private getCountries(): Observable<ICountry[]> {
+    return this.countryService.getCountriesApi();
+  }
+
+  selectCountry(country: ICountry): void {
+    this.selectedCountry = country;
+  }
+
+  toggleShowCountries() {
+    this.showCountries = !this.showCountries;
+  }
 
   private getPayment(): Observable<IPayment> {
     return this.paymentChooseService.getPayment().pipe(
@@ -91,7 +110,7 @@ export class MainComponent implements OnInit {
   }
 
   private subscribeToState(): void {
-    this.clickEventSubscription = this.appStateService
+    this.addressesSubscription = this.appStateService
       .getState()
       .pipe(
         distinctUntilChanged((prev, curr) => {
@@ -132,7 +151,9 @@ export class MainComponent implements OnInit {
     private formService: FormService,
     private route: ActivatedRoute,
     private tariffService: TariffService,
-    private paymentChooseService: PaymentChooseService
+    private paymentChooseService: PaymentChooseService,
+    private countryService: CountryService,
+    private baseService: BaseService
   ) {}
 
   drop(event: CdkDragDrop<string[]>): void {
