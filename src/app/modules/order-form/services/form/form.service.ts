@@ -1,3 +1,5 @@
+import { ICountry } from './../../../../interfaces/country.interface';
+import { IBase } from 'src/app/interfaces/base.interface';
 import { AppStateService } from 'src/app/services/app-state/app-state.service';
 import { ActivatedRoute } from '@angular/router';
 import { IAddress } from 'src/app/interfaces/address.interface';
@@ -127,6 +129,7 @@ export class FormService {
       this.route.snapshot.queryParamMap.get('addressFrom');
     const addressToURLParam =
       this.route.snapshot.queryParamMap.get('addressTo');
+    const baseIdURLParam = this.route.snapshot.queryParamMap.get('baseId');
     forkJoin({
       tariffs: this.getDefaultsApi(),
       payments: this.getPayment(),
@@ -171,6 +174,11 @@ export class FormService {
                 addressToURLParam
               )
             );
+          }
+          if (baseIdURLParam) {
+            this.appStateService.setAppState({
+              baseId: this.ConvertStringToNumber(baseIdURLParam),
+            });
           }
         })
       )

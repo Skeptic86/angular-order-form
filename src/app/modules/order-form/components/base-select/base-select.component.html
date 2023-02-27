@@ -1,6 +1,6 @@
 <mat-form-field class="select" appearance="outline">
     <mat-label>Выберите город</mat-label>
-    <mat-select (openedChange)="selectedBaseEmit()" [(value)]="selectedBase">
+    <mat-select (selectionChange)="selectedBaseEmit()" [(value)]="selectedBase">
       <mat-option  [value]="base" *ngFor="let base of bases">{{ base.name }}</mat-option>
     </mat-select>
 </mat-form-field>

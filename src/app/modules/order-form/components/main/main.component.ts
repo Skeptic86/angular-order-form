@@ -43,7 +43,7 @@ export class MainComponent implements OnInit {
   readonly countries$ = this.getCountries();
   bases$?: IBase[];
   selectedBase?: IBase;
-  selectedCountryCode?: string;
+  selectedCountryCode?: string = 'ru';
   showCountries = false;
 
   private getCountries(): Observable<ICountry[]> {
@@ -55,22 +55,13 @@ export class MainComponent implements OnInit {
   }
 
   selectBase(base: IBase) {
-    this.selectedBase = {
-      id: 1872,
-      latitude: 40.37649,
-      longitude: 49.83688,
-      name: 'Баку',
-      placeId: 16640,
-      region: 'Город республиканского подчинения',
-      regionId: 158,
-    };
+    this.selectedBase = base;
+    this.appStateService.setAppState({ baseId: base.id });
   }
 
   selectCountry(countryCode: string): void {
     this.selectedCountryCode = countryCode;
-    this.baseService
-      .getBasesApi(countryCode)
-      .subscribe((value) => (this.bases$ = value));
+    this.getBases(countryCode).subscribe((value) => (this.bases$ = value));
   }
 
   private getBases(countryCode: string): Observable<IBase[]> {

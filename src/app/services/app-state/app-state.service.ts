@@ -1,8 +1,8 @@
+import { IBase } from 'src/app/interfaces/base.interface';
 import { IAddress } from 'src/app/interfaces/address.interface';
 import { ITariff } from 'src/app/interfaces/tariff.interface';
-import { IDefault } from 'src/app/interfaces/default.interface';
-import { IPayment, IPaymentMethod } from 'src/app/interfaces/payment.interface';
-import { ActivatedRoute, Router } from '@angular/router';
+import { IPaymentMethod } from 'src/app/interfaces/payment.interface';
+import { Router } from '@angular/router';
 import { IAppState } from 'src/app/interfaces/app-state.interface';
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
@@ -16,6 +16,7 @@ export class AppStateService {
     tariff: {} as ITariff,
     addressFrom: {} as IAddress,
     addressTo: {} as IAddress,
+    baseId: {} as number,
   });
 
   private updateRoute(): void {
@@ -25,6 +26,7 @@ export class AppStateService {
         addressTo: this.subject$.getValue().addressTo?.title,
         paymentType: this.subject$.getValue().payment?.type,
         tariffId: this.subject$.getValue().tariff?.classId,
+        baseId: this.subject$.getValue().baseId,
       },
       // relativeTo: this.route,
     });
@@ -44,5 +46,7 @@ export class AppStateService {
     return this.subject$.getValue();
   }
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(private router: Router) {
+    this.setAppState({ baseId: 1 });
+  }
 }

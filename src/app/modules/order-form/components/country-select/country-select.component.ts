@@ -11,7 +11,7 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 export class CountrySelectComponent implements OnInit {
   @Output() selectedCountryEvent = new EventEmitter<string>();
   @Input() countries?: ICountry[];
-  selectedCountry = 'ru';
+  @Input() selectedCountry?: string;
 
   sendSelectedCountry(): void {
     this.selectedCountryEvent.emit(this.selectedCountry);
