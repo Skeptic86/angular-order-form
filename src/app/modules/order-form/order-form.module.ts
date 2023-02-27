@@ -24,6 +24,7 @@ import { ErrorAuthorizationComponent } from './components/error-authorization/er
 import { OptionChooseComponent } from './components/option-choose/option-choose.component';
 import { CountrySelectComponent } from './components/country-select/country-select.component';
 import { BaseSelectComponent } from './components/base-select/base-select.component';
+import { DoneButtonComponent } from './components/done-button/done-button.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { BaseSelectComponent } from './components/base-select/base-select.compon
     OptionChooseComponent,
     CountrySelectComponent,
     BaseSelectComponent,
+    DoneButtonComponent,
   ],
   exports: [MainComponent],
   imports: [

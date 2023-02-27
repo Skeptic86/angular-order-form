@@ -1,5 +1,5 @@
 import { ICountry } from './../../../../interfaces/country.interface';
-import { Observable, tap } from 'rxjs';
+import { count, Observable, tap } from 'rxjs';
 import { CountryService } from './../../services/country/country.service';
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 
@@ -8,13 +8,17 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
   templateUrl: './country-select.component.html',
   styleUrls: ['./country-select.component.scss'],
 })
-export class CountrySelectComponent {
-  @Output() selectedCountryEvent = new EventEmitter<ICountry>();
+export class CountrySelectComponent implements OnInit {
+  @Output() selectedCountryEvent = new EventEmitter<string>();
   @Input() countries?: ICountry[];
-  selectedCountry?: ICountry;
+  selectedCountry = 'ru';
 
   sendSelectedCountry(): void {
     this.selectedCountryEvent.emit(this.selectedCountry);
+  }
+
+  ngOnInit(): void {
+    this.sendSelectedCountry();
   }
 
   constructor(private countryService: CountryService) {}

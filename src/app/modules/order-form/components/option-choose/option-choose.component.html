@@ -2,7 +2,7 @@
     <mat-icon>settings</mat-icon>
 </button>
 <mat-menu #options="matMenu">
-  <button mat-menu-item (click)="toggleShowCountries()">Страны</button>
+  <button mat-menu-item (click)="toggleShowCountries()">Местоположение</button>
   <button mat-menu-item [matMenuTriggerFor]="payments">
     <mat-icon>{{ paymentMethod?.type | paymentIcon }}</mat-icon>
     <span>Способ оплаты</span> 

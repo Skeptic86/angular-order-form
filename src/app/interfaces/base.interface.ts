@@ -1,7 +1,7 @@
 export interface IBase {
   id: number;
   latitude: number;
-  longtitude: number;
+  longitude: number;
   name: string;
   placeId: number;
   region: string;

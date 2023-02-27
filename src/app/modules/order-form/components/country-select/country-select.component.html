@@ -1,6 +1,6 @@
 <mat-form-field class="select" appearance="outline">
     <mat-label>Выберите страну</mat-label>
     <mat-select (openedChange)="sendSelectedCountry()" [(value)]="selectedCountry">
-      <mat-option  [value]="country" *ngFor="let country of countries">{{ country.name }}</mat-option>
+      <mat-option  [value]="country.code" *ngFor="let country of countries">{{ country.name }}</mat-option>
     </mat-select>
 </mat-form-field>

@@ -25,6 +25,7 @@ import {
 import { TariffService } from '../../services/tariff/tariff.service';
 import { IPayment, IPaymentMethod } from 'src/app/interfaces/payment.interface';
 import { PaymentChooseService } from './../../services/payment-choose/payment-choose.service';
+import { IBase } from 'src/app/interfaces/base.interface';
 
 @Component({
   selector: 'app-main',
@@ -40,15 +41,40 @@ export class MainComponent implements OnInit {
   readonly tariff$ = this.tariffChanged();
   readonly defaults$ = this.getDefaults();
   readonly countries$ = this.getCountries();
-  selectedCountry?: ICountry;
+  bases$?: IBase[];
+  selectedBase?: IBase;
+  selectedCountryCode?: string;
   showCountries = false;
 
   private getCountries(): Observable<ICountry[]> {
     return this.countryService.getCountriesApi();
   }
 
-  selectCountry(country: ICountry): void {
-    this.selectedCountry = country;
+  doneButtonClick() {
+    this.showCountries = false;
+  }
+
+  selectBase(base: IBase) {
+    this.selectedBase = {
+      id: 1872,
+      latitude: 40.37649,
+      longitude: 49.83688,
+      name: 'Баку',
+      placeId: 16640,
+      region: 'Город республиканского подчинения',
+      regionId: 158,
+    };
+  }
+
+  selectCountry(countryCode: string): void {
+    this.selectedCountryCode = countryCode;
+    this.baseService
+      .getBasesApi(countryCode)
+      .subscribe((value) => (this.bases$ = value));
+  }
+
+  private getBases(countryCode: string): Observable<IBase[]> {
+    return this.baseService.getBasesApi(countryCode);
   }
 
   toggleShowCountries() {
