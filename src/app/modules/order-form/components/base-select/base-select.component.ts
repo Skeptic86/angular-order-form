@@ -1,3 +1,5 @@
+import { IAddress } from './../../../../interfaces/address.interface';
+import { AppStateService } from 'src/app/services/app-state/app-state.service';
 import { IBase } from './../../../../interfaces/base.interface';
 import { BaseService } from './../../services/base/base.service';
 import { HttpClient } from '@angular/common/http';
@@ -13,13 +15,35 @@ export class BaseSelectComponent implements OnInit {
   @Input() bases?: IBase[];
   @Input() selectedBaseId?: number;
 
-  selectedBaseEmit() {
+  selectedBaseEmit(): void {
     this.selectedBaseEvent.emit(this.selectedBaseId);
+    this.appStateService.setAppState({
+      addressFrom: {
+        street: null,
+        title: '',
+        house: null,
+        subtitle: null,
+        latitude: 57.15114882108171,
+        longitude: 65.53553704887027,
+        comment: '',
+      },
+    });
+    this.appStateService.setAppState({
+      addressTo: {
+        street: null,
+        title: '',
+        house: null,
+        subtitle: null,
+        latitude: 57.15114882108171,
+        longitude: 65.53553704887027,
+        comment: '',
+      },
+    });
   }
 
   ngOnInit(): void {
-    this.selectedBaseEmit();
+    this.selectedBaseEvent.emit(this.selectedBaseId);
   }
 
-  constructor() {}
+  constructor(private appStateService: AppStateService) {}
 }

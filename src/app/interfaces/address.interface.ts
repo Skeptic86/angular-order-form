@@ -8,4 +8,5 @@ export interface IAddress {
   subtitle: string | null;
   latitude: number;
   longitude: number;
+  comment: string;
 }

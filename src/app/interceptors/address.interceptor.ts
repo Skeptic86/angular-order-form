@@ -21,7 +21,7 @@ export class AddressInterceptor implements HttpInterceptor {
     request = request.clone({
       params: (request.params ? request.params : new HttpParams())
         .set('udid', '275932435422a972367c8827a28137ac')
-        .set('base', this.appStateService.getStateValue().baseId!)
+        .set('base', this.appStateService.getStateValue().baseId || 1)
         .set('type', 0),
     });
     console.log(this.appStateService.getStateValue());

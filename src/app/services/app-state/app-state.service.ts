@@ -16,7 +16,9 @@ export class AppStateService {
     tariff: {} as ITariff,
     addressFrom: {} as IAddress,
     addressTo: {} as IAddress,
-    baseId: {} as number,
+    baseId: this.ConvertStringToNumber(
+      this.route.snapshot.queryParamMap.get('baseId')
+    ),
   });
 
   private updateRoute(): void {
@@ -28,8 +30,12 @@ export class AppStateService {
         tariffId: this.subject$.getValue().tariff?.classId,
         baseId: this.subject$.getValue().baseId,
       },
-      // relativeTo: this.route,
     });
+  }
+
+  private ConvertStringToNumber(input: string | null): number {
+    if (!input || input.trim().length == 0) return NaN;
+    return Number(input);
   }
 
   setAppState(fieldsToUpdate: Partial<IAppState>): void {
@@ -46,16 +52,5 @@ export class AppStateService {
     return this.subject$.getValue();
   }
 
-  private ConvertStringToNumber(input: string | null): number {
-    if (!input || input.trim().length == 0) return 1;
-    return Number(input);
-  }
-
-  constructor(private router: Router, private route: ActivatedRoute) {
-    const baseIdURLParam = this.route.snapshot.queryParamMap.get('baseId');
-    this.ConvertStringToNumber(baseIdURLParam);
-    this.setAppState({
-      baseId: this.ConvertStringToNumber(baseIdURLParam),
-    });
-  }
+  constructor(private router: Router, private route: ActivatedRoute) {}
 }

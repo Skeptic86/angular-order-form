@@ -6,7 +6,7 @@ import { AppStateService } from 'src/app/services/app-state/app-state.service';
 import { GetPriceService } from '../../services/get-price/get-price.service';
 import { ICalcPrice } from 'src/app/interfaces/calc-price.interface';
 import { OrderButtonService } from './../../services/order-button/order-button.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
 
 @Component({
@@ -14,13 +14,8 @@ import { Subscription, Observable } from 'rxjs';
   templateUrl: './order-button.component.html',
   styleUrls: ['./order-button.component.scss'],
 })
-export class OrderButtonComponent implements OnInit {
-  calcPrice?: ICalcPrice;
-  clickEventSubscription: Subscription;
-
-  private getPriceString(): Observable<ICalcPrice> {
-    return this.orderButtonService.getPriceString();
-  }
+export class OrderButtonComponent {
+  @Input() calcPrice?: ICalcPrice;
 
   private openDialog(): void {
     const dialogRef = this.dialog.open(AuthorizationDialogComponent);
@@ -43,23 +38,9 @@ export class OrderButtonComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-    this.getPriceString().subscribe((data: ICalcPrice) => {
-      this.calcPrice = data;
-    });
-  }
-
   constructor(
-    private orderButtonService: OrderButtonService,
-    private getPriceService: GetPriceService,
     private appStateService: AppStateService,
     private dialog: MatDialog,
     private errorSnackBar: MatSnackBar
-  ) {
-    this.clickEventSubscription = this.getPriceService
-      .getClickEvent()
-      .subscribe(() => {
-        this.getPriceString();
-      });
-  }
+  ) {}
 }

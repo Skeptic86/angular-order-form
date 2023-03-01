@@ -28,16 +28,12 @@ export class AutocompleteInputAddressComponent implements OnInit, OnChanges {
   filteredAddresses!: Observable<IAddress[]>;
 
   addressSelected(address: IAddress): void {
-    this.sendAddress(address);
+    this.sendAddressEvent.emit(address);
   }
 
   clearInput(): void {
     this.autocompleteInput.setValue('');
     this.addressSelected({ title: '' } as IAddress);
-  }
-
-  sendAddress(value: IAddress): void {
-    this.sendAddressEvent.emit(value);
   }
 
   private getAddressesApi(

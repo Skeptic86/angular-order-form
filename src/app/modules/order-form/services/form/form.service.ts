@@ -139,6 +139,12 @@ export class FormService {
       .pipe(
         catchError((error) => of(error)),
         tap(({ tariffs, payments, addressesFrom, addressesTo }) => {
+          if (baseIdURLParam) {
+            console.log(baseIdURLParam);
+            this.appStateService.setAppState({
+              baseId: this.ConvertStringToNumber(baseIdURLParam),
+            });
+          }
           this.tariffInfo$$.next(tariffs);
           this.payment$$.next(payments);
           this.addressesFrom$$.next(addressesFrom);
@@ -174,12 +180,6 @@ export class FormService {
                 addressToURLParam
               )
             );
-          }
-          if (baseIdURLParam) {
-            console.log(baseIdURLParam);
-            this.appStateService.setAppState({
-              baseId: this.ConvertStringToNumber(baseIdURLParam),
-            });
           }
         })
       )

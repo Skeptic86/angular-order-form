@@ -24,7 +24,7 @@
       </div>
       <div class="buttons">
         <app-option-choose (toggleShowCountriesEvent)="toggleShowCountries()" [paymentMethod]="(paymentMethod$ | async)!" [payment]="(payment$ | async)!"></app-option-choose>
-        <app-order-button></app-order-button>
+        <app-order-button [calcPrice]="calcPrice"></app-order-button>
         <app-tariff [tariffGroups]="(defaults$ | async)?.info?.tariffGroups" [tariff]="(tariff$ | async)!"></app-tariff>
       </div>
     </div>

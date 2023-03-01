@@ -1,3 +1,6 @@
+import { ICalcPrice } from 'src/app/interfaces/calc-price.interface';
+import { OrderButtonService } from './../../services/order-button/order-button.service';
+import { GetPriceService } from './../../services/get-price/get-price.service';
 import { BaseService } from './../../services/base/base.service';
 import { CountryService } from './../../services/country/country.service';
 import { ICountry } from './../../../../interfaces/country.interface';
@@ -32,7 +35,7 @@ import { IBase } from 'src/app/interfaces/base.interface';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
 })
-export class MainComponent implements OnInit, OnDestroy {
+export class MainComponent implements OnInit {
   addressesSubscription?: Subscription;
   addressFrom?: IAddress;
   addressTo?: IAddress;
@@ -41,24 +44,22 @@ export class MainComponent implements OnInit, OnDestroy {
   readonly tariff$ = this.tariffChanged();
   readonly defaults$ = this.getDefaults();
   readonly countries$ = this.getCountries();
+  calcPrice?: ICalcPrice;
   bases$?: IBase[];
-  selectedBaseId = this.appStateService.getStateValue().baseId;
+  selectedBaseId?: number;
   selectedCountryCode = 'ru';
   showCountries = false;
-
-  ngOnDestroy() {
-    console.log('main destroyed');
-  }
+  clickEventSubscription: Subscription;
 
   private getCountries(): Observable<ICountry[]> {
     return this.countryService.getCountriesApi();
   }
 
-  doneButtonClick() {
+  doneButtonClick(): void {
     this.showCountries = false;
   }
 
-  selectBaseId(baseId: number) {
+  selectBaseId(baseId: number): void {
     this.selectedBaseId = baseId;
     this.appStateService.setAppState({ baseId: baseId });
   }
@@ -72,7 +73,7 @@ export class MainComponent implements OnInit, OnDestroy {
     return this.baseService.getBasesApi(countryCode);
   }
 
-  toggleShowCountries() {
+  toggleShowCountries(): void {
     this.showCountries = !this.showCountries;
   }
 
@@ -128,6 +129,9 @@ export class MainComponent implements OnInit, OnDestroy {
     this.formService.formInit();
     this.subscribeToState();
     this.route.queryParamMap.subscribe();
+    this.getPriceString().subscribe((data: ICalcPrice) => {
+      this.calcPrice = data;
+    });
   }
 
   private subscribeToState(): void {
@@ -142,10 +146,10 @@ export class MainComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((value: IAppState) => {
-        if (value?.addressFrom?.title) {
+        if (value?.addressFrom?.title || value?.addressFrom?.title === '') {
           this.addressFrom = value.addressFrom;
         }
-        if (value?.addressTo?.title) {
+        if (value?.addressTo?.title || value?.addressTo?.title === '') {
           this.addressTo = value.addressTo;
         }
       });
@@ -167,6 +171,10 @@ export class MainComponent implements OnInit, OnDestroy {
     }
   }
 
+  private getPriceString(): Observable<ICalcPrice> {
+    return this.orderButtonService.getPriceStringApi();
+  }
+
   constructor(
     private appStateService: AppStateService,
     private formService: FormService,
@@ -174,8 +182,19 @@ export class MainComponent implements OnInit, OnDestroy {
     private tariffService: TariffService,
     private paymentChooseService: PaymentChooseService,
     private countryService: CountryService,
-    private baseService: BaseService
-  ) {}
+    private baseService: BaseService,
+    private getPriceService: GetPriceService,
+    private orderButtonService: OrderButtonService
+  ) {
+    this.appStateService.getState().subscribe((value) => {
+      this.selectedBaseId = value.baseId;
+    });
+    this.clickEventSubscription = this.getPriceService
+      .getClickEvent()
+      .subscribe(() => {
+        this.getPriceString();
+      });
+  }
 
   drop(event: CdkDragDrop<string[]>): void {
     if (event.currentIndex !== event.previousIndex) {
