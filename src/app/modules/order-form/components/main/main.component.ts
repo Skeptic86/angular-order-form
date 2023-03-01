@@ -8,7 +8,7 @@ import { AddressTypeEnum } from 'src/app/enums/address-type.enum';
 import { IAddress } from 'src/app/interfaces/address.interface';
 import { FormService } from './../../services/form/form.service';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewChecked, Component, OnDestroy, OnInit } from '@angular/core';
 import { IAppState } from 'src/app/interfaces/app-state.interface';
 import { AppStateService } from 'src/app/services/app-state/app-state.service';
 import {
@@ -32,7 +32,7 @@ import { IBase } from 'src/app/interfaces/base.interface';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
 })
-export class MainComponent implements OnInit {
+export class MainComponent implements OnInit, OnDestroy {
   addressesSubscription?: Subscription;
   addressFrom?: IAddress;
   addressTo?: IAddress;
@@ -42,9 +42,13 @@ export class MainComponent implements OnInit {
   readonly defaults$ = this.getDefaults();
   readonly countries$ = this.getCountries();
   bases$?: IBase[];
-  selectedBase?: IBase;
-  selectedCountryCode?: string = 'ru';
+  selectedBaseId = this.appStateService.getStateValue().baseId;
+  selectedCountryCode = 'ru';
   showCountries = false;
+
+  ngOnDestroy() {
+    console.log('main destroyed');
+  }
 
   private getCountries(): Observable<ICountry[]> {
     return this.countryService.getCountriesApi();
@@ -54,9 +58,9 @@ export class MainComponent implements OnInit {
     this.showCountries = false;
   }
 
-  selectBase(base: IBase) {
-    this.selectedBase = base;
-    this.appStateService.setAppState({ baseId: base.id });
+  selectBaseId(baseId: number) {
+    this.selectedBaseId = baseId;
+    this.appStateService.setAppState({ baseId: baseId });
   }
 
   selectCountry(countryCode: string): void {

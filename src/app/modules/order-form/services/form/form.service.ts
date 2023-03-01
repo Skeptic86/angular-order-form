@@ -176,6 +176,7 @@ export class FormService {
             );
           }
           if (baseIdURLParam) {
+            console.log(baseIdURLParam);
             this.appStateService.setAppState({
               baseId: this.ConvertStringToNumber(baseIdURLParam),
             });

@@ -3,8 +3,8 @@
 
     <div *ngIf="showCountries" class="form mat-typography">
       <div class="selects">
-        <app-country-select [selectedCountry]="selectedCountryCode!" [countries]="(countries$ | async)!" (selectedCountryEvent)="selectCountry($event)"></app-country-select>
-        <app-base-select (selectedBaseEvent)="selectBase($event)" [bases]="bases$"></app-base-select>
+        <app-country-select [selectedCountryCode]="selectedCountryCode!" [countries]="(countries$ | async)!" (selectedCountryEvent)="selectCountry($event)"></app-country-select>
+        <app-base-select [selectedBaseId]="selectedBaseId" (selectedBaseEvent)="selectBaseId($event)" [bases]="bases$"></app-base-select>
         <app-done-button (buttonClickEvent)="doneButtonClick()"></app-done-button>
       </div>
     </div>

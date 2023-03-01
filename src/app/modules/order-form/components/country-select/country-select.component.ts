@@ -11,14 +11,14 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 export class CountrySelectComponent implements OnInit {
   @Output() selectedCountryEvent = new EventEmitter<string>();
   @Input() countries?: ICountry[];
-  @Input() selectedCountry?: string;
+  @Input() selectedCountryCode?: string;
 
-  sendSelectedCountry(): void {
-    this.selectedCountryEvent.emit(this.selectedCountry);
+  sendSelectedCountryCode(): void {
+    this.selectedCountryEvent.emit(this.selectedCountryCode);
   }
 
   ngOnInit(): void {
-    this.sendSelectedCountry();
+    this.sendSelectedCountryCode();
   }
 
   constructor(private countryService: CountryService) {}
