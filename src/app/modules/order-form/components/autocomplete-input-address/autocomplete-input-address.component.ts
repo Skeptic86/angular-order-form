@@ -77,6 +77,9 @@ export class AutocompleteInputAddressComponent implements OnInit, OnChanges {
         this.filteredAddresses = this.getAddressesApi(value) as Observable<
           IAddress[]
         >;
+        console.log('address: ', this.getAddressesApi(value) as Observable<
+        IAddress[]
+        >);
       });
   }
 

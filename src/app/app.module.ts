@@ -1,3 +1,4 @@
+import { AuthorizationModule } from './modules/authorization/authorization.module';
 import { AddressInterceptor } from './interceptors/address.interceptor';
 import {
   HttpClient,
@@ -19,6 +20,7 @@ import { OrderFormModule } from './modules/order-form/order-form.module';
     AppRoutingModule,
     OrderFormModule,
     BrowserAnimationsModule,
+    AuthorizationModule,
     HttpClientModule,
   ],
   providers: [

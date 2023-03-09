@@ -1,3 +1,5 @@
+import { GetPriceService } from './../../services/get-price/get-price.service';
+import { OrderButtonService } from '../../services/order-button/order-button.service';
 import { ITariff } from 'src/app/interfaces/tariff.interface';
 import { AppStateService } from 'src/app/services/app-state/app-state.service';
 import { Component, Input, OnInit } from '@angular/core';
@@ -24,7 +26,8 @@ export class TariffComponent implements OnInit {
 
   changeTarrif(tariff: ITariff): void {
     this.setAppStateTariff(tariff);
+    this.getPriceService.sendClickEvent();
   }
 
-  constructor(private appStateService: AppStateService) {}
+  constructor(private appStateService: AppStateService, private getPriceService: GetPriceService) {}
 }
