@@ -16,25 +16,37 @@ export class OrderButtonService {
   }
 
   getPriceStringApi(): Observable<ICalcPrice> {
+    const address = this.appStateService.getStateValue().addressFrom?.title
+      ? this.appStateService.getStateValue().addressFrom
+      : {
+          title: 'Пролетарская улица 61А',
+          subtitle: '',
+          isQuick: false,
+          isPlace: false,
+          isFull: true,
+          place: {
+            id: 1,
+            name: 'Курган',
+            description: 'Курганская область, городской округ Курган, город',
+          },
+          quick: { id: null, name: null },
+          street: { id: 100415, name: 'Пролетарская улица' },
+          zone: { id: 3098878, name: null },
+          house: '61А',
+          latitude: 55.445465,
+          longitude: 65.34778,
+          comment: null,
+          isCoordinates: false,
+        };
+    console.log(address);
     return this.http.post<ICalcPrice>(this.apiURL, {
       time: null,
-      tariffClasses: [this.appStateService.getStateValue().tariff?.classId || 1],
+      tariffClasses: [
+        this.appStateService.getStateValue().tariff?.classId || 1,
+      ],
       base: this.appStateService.getStateValue().baseId,
       services: [],
-      addresses:  [{"title": "Пролетарская улица 61А", subtitle: "", isQuick: false, isPlace: false, isFull: true, place: {
-        id: 1,
-        name: "Курган",
-        description: "Курганская область, городской округ Курган, город"
-        },
-        quick: {id:null, name: null},
-        street: {id: 100415, name: "Пролетарская улица"},
-        zone: {id: 3098878, name: null},
-        house: "61А",
-        latitude: 55.445465,
-        longitude: 65.34778,
-        comment: null,
-        isCoordinates: false,
-    }],
+      addresses: [address],
       guid: '0cb91e27-f2a0-43b1-b806-2ce51060229b',
     });
   }

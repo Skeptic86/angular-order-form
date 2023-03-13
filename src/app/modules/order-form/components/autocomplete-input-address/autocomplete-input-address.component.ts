@@ -60,6 +60,7 @@ export class AutocompleteInputAddressComponent implements OnInit, OnChanges {
     if (address?.title) {
       console.log('value changes, addressInput: ', address);
       this.autocompleteInput.setValue(address.title);
+      this.getPriceService.sendClickEvent();
     }
   }
 
@@ -68,18 +69,16 @@ export class AutocompleteInputAddressComponent implements OnInit, OnChanges {
       .pipe(
         debounceTime(1000),
         filter((value) => value!.length >= 3),
-        tap((_) => {
-          this.getPriceService.sendClickEvent();
-        }),
         startWith('')
       )
       .subscribe((value) => {
         this.filteredAddresses = this.getAddressesApi(value) as Observable<
           IAddress[]
         >;
-        console.log('address: ', this.getAddressesApi(value) as Observable<
-        IAddress[]
-        >);
+        console.log(
+          'address: ',
+          this.getAddressesApi(value) as Observable<IAddress[]>
+        );
       });
   }
 

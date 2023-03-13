@@ -16,9 +16,10 @@ export class AppStateService {
     tariff: {} as ITariff,
     addressFrom: {} as IAddress,
     addressTo: {} as IAddress,
-    baseId: this.ConvertStringToNumber(
-      this.route.snapshot.queryParamMap.get('baseId')
-    ),
+    baseId:
+      this.ConvertStringToNumber(
+        this.route.snapshot.queryParamMap.get('baseId')
+      ) || 1,
   });
 
   private updateRoute(): void {

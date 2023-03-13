@@ -23,6 +23,7 @@ import {
   Observable,
   of,
   Subscription,
+  switchMap,
   tap,
 } from 'rxjs';
 import { TariffService } from '../../services/tariff/tariff.service';
@@ -191,8 +192,9 @@ export class MainComponent implements OnInit {
     });
     this.clickEventSubscription = this.getPriceService
       .getClickEvent()
-      .subscribe(() => {
-        this.getPriceString();
+      .pipe(switchMap((data) => this.getPriceString()))
+      .subscribe((data: ICalcPrice) => {
+        this.calcPrice = data;
       });
   }
 
