@@ -24,7 +24,6 @@ export class AddressInterceptor implements HttpInterceptor {
         .set('base', this.appStateService.getStateValue().baseId || 1)
         .set('type', 0),
     });
-    console.log(this.appStateService.getStateValue());
     return next.handle(request).pipe(catchError(this.handleError));
   }
 

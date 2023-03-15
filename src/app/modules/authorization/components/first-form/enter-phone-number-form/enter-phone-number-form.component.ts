@@ -14,7 +14,6 @@ import {
   styleUrls: ['./enter-phone-number-form.component.scss'],
 })
 export class EnterPhoneNumberComponent {
-  @ViewChild('input') input?: ElementRef;
   @Output() showFirstFormEvent = new EventEmitter<string>();
   @Input() phoneInput? = '';
 

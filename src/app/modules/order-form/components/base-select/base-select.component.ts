@@ -1,8 +1,5 @@
-import { IAddress } from './../../../../interfaces/address.interface';
 import { AppStateService } from 'src/app/services/app-state/app-state.service';
 import { IBase } from './../../../../interfaces/base.interface';
-import { BaseService } from './../../services/base/base.service';
-import { HttpClient } from '@angular/common/http';
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
 @Component({

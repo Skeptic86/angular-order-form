@@ -1,3 +1,4 @@
+import { MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subscription } from 'rxjs';
 import { GetAddressesService } from './../../../order-form/services/get-addresses/get-addresses.service';
 import { AppStateService } from 'src/app/services/app-state/app-state.service';
@@ -90,6 +91,7 @@ export class MapDialogComponent implements OnInit {
 
   constructor(
     private appStateService: AppStateService,
-    private getAddressesService: GetAddressesService
+    private getAddressesService: GetAddressesService,
+    public dialogRef: MatDialogRef<MapDialogComponent>
   ) {}
 }
