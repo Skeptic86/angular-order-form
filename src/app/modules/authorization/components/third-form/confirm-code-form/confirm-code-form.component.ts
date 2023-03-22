@@ -22,7 +22,7 @@ export class ConfirmCodeFormComponent {
     // Validators.pattern(new RegExp(/^9\d+/)),
   ]);
 
-  confirmCode(code: string) {
+  confirmCode(code: string): void {
     this.confirmCodeEvent.emit(code);
   }
 
