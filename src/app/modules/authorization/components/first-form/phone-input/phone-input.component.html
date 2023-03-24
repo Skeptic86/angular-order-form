@@ -6,7 +6,7 @@
       <mat-error *ngIf="phoneFormControl!.hasError('pattern') || phoneFormControl!.hasError('required')">
         Введите верный номер телефона.
       </mat-error>
-      <button *ngIf="(isDisabled)" matSuffix mat-icon-button (click)="enableInput()">
+      <button class="enable-button" *ngIf="(isDisabled)" matSuffix mat-icon-button (click)="enableInput()">
         <mat-icon>create</mat-icon>
       </button>
       <button class="close-button" *ngIf="(phoneFormControl!.value && !isDisabled)" matSuffix mat-icon-button aria-label="Clear" (mousedown)="clearPhoneNumber()">

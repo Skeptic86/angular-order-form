@@ -8,9 +8,8 @@ describe('BaseSelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BaseSelectComponent ]
-    })
-    .compileComponents();
+      declarations: [BaseSelectComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(BaseSelectComponent);
     component = fixture.componentInstance;

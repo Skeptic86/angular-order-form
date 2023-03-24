@@ -16,20 +16,18 @@ import {
 export class EnterPhoneNumberComponent {
   @Output() showFirstFormEvent = new EventEmitter<string>();
   @Input() phoneInput? = '';
+  phoneFormControl = new FormControl('', [
+    Validators.required,
+    // Validators.pattern(new RegExp(/^9\d+/)),
+  ]);
 
   private sendFisrtFormFlag(phoneNumber: string): void {
     this.showFirstFormEvent.emit(phoneNumber);
   }
 
   onEnter($event: any) {
-    console.log($event);
     this.confirmPhoneInput();
   }
-
-  phoneFormControl = new FormControl('', [
-    Validators.required,
-    // Validators.pattern(new RegExp(/^9\d+/)),
-  ]);
 
   getPhoneInput(): string {
     if (this.phoneFormControl.valid && this.phoneFormControl.value) {
@@ -42,7 +40,6 @@ export class EnterPhoneNumberComponent {
 
   confirmPhoneInput(): void {
     if (this.phoneInput?.length! >= 10) {
-      console.log('flag sended');
       this.sendFisrtFormFlag(this.phoneInput!);
     }
   }
