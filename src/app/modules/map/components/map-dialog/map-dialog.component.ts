@@ -21,7 +21,7 @@ export class MapDialogComponent implements OnInit {
     const curLngLat = event.target.getLngLat();
 
     if (
-      this.markerLocation?.lat !== curLngLat.lat &&
+      this.markerLocation?.lat !== curLngLat.lat ||
       this.markerLocation?.lng !== curLngLat.lng
     ) {
       this.markerLocation = curLngLat;

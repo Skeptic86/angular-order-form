@@ -4,7 +4,7 @@ import { CdTimerModule } from 'angular-cd-timer';
 
 import { RequestCodeButtonComponent } from './request-code-button.component';
 
-fdescribe('RequestCodeButtonComponent', () => {
+describe('RequestCodeButtonComponent', () => {
   let component: RequestCodeButtonComponent;
   let fixture: ComponentFixture<RequestCodeButtonComponent>;
 

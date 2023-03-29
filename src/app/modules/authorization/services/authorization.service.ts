@@ -24,7 +24,7 @@ export class AuthorizationService {
     });
   }
 
-  confirmCode(code: string, token: string): Observable<any> {
+  confirmCode(code: string, token: string): Observable<ICode> {
     return this.http.post<ICode>(
       this.apiConfirmCodeURL,
       { code: code },

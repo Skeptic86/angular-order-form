@@ -1,10 +1,5 @@
-import { By } from '@angular/platform-browser';
-import { FormControl } from '@angular/forms';
-import {
-  CUSTOM_ELEMENTS_SCHEMA,
-  NO_ERRORS_SCHEMA,
-  DebugElement,
-} from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PhoneInputComponent } from './phone-input.component';
@@ -16,7 +11,8 @@ describe('PhoneInputComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [PhoneInputComponent],
-      schemas: [NO_ERRORS_SCHEMA],
+      imports: [ReactiveFormsModule],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PhoneInputComponent);

@@ -11,12 +11,6 @@ import { IAddress } from 'src/app/interfaces/address.interface';
   providedIn: 'root',
 })
 export class GetAddressesService {
-  options: string[] = ['One', 'Two', 'Three'];
-
-  // getOptions(): string[] {
-  //   return this.options;
-  // }
-
   private readonly jsonURL = 'http://localhost:3000/addresses';
 
   private readonly apiURL = 'https://dev-api.taxsee.com/client/v1/addresses';
