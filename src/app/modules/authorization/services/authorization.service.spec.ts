@@ -43,7 +43,7 @@ describe('AuthorizationService', () => {
     const phone = '89224223454';
     const type = 0;
     const mockICode: ICode = {
-      success: 'true',
+      success: true,
       message: 'string',
       token: '123',
     };
@@ -64,7 +64,7 @@ describe('AuthorizationService', () => {
     const code = '89224223454';
     const token = '0';
     const mockICode: ICode = {
-      success: 'true',
+      success: true,
       message: 'string',
       token: '123',
     };
@@ -83,7 +83,7 @@ describe('AuthorizationService', () => {
   it('should return expected code via #confrimCode (HttpClient called once)', (done: DoneFn) => {
     //Arrange
     const expectedCode: ICode = {
-      success: 'true',
+      success: true,
       message: 'string',
       token: '123',
     };

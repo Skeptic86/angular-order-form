@@ -1,3 +1,4 @@
+import { By } from '@angular/platform-browser';
 import { MatDialogRef } from '@angular/material/dialog';
 import { LocalService } from './../../../../services/local/local.service';
 import { ICode } from 'src/app/interfaces/code.interface';
@@ -57,7 +58,7 @@ class MockLocalService {
   }
 }
 
-fdescribe('AuthorizationDialogComponent', () => {
+describe('AuthorizationDialogComponent', () => {
   let component: AuthorizationDialogComponent;
   let fixture: ComponentFixture<AuthorizationDialogComponent>;
 
@@ -154,5 +155,39 @@ fdescribe('AuthorizationDialogComponent', () => {
     component.closeDialogIfCodeSuccess(code);
     //Assert
     expect(dialogrefCloseSpy).toHaveBeenCalled();
+  });
+
+  it('#sendPhoneNumberEvent should #setPhoneNumber', () => {
+    //Arrange
+    component.formState = 'thirdForm';
+    fixture.detectChanges();
+    const setPhoneNumberSpy = spyOn(component, 'setPhoneNumber');
+    const expectedPhoneNumber = '89224234432';
+    const confirmCodeFormEl = fixture.debugElement.query(
+      By.css('app-confirm-code-form')
+    );
+    //Act
+    confirmCodeFormEl.triggerEventHandler(
+      'sendPhoneNumberEvent',
+      '89224234432'
+    );
+    fixture.detectChanges();
+    //Assert
+    expect(setPhoneNumberSpy).toHaveBeenCalledWith(expectedPhoneNumber);
+  });
+
+  it('shoud put/remove token in localStorage', () => {
+    //Arrange
+    const token = '123';
+    const localStorageSetItemSpy = spyOn(localStorage, 'setItem');
+    const localStorageRemoveItemSpy = spyOn(localStorage, 'removeItem');
+    //Act
+    //@ts-ignore
+    component.putTokenInLocalStorage(token);
+    //@ts-ignore
+    component.removeTokenFromLocalStorage();
+    //Assert
+    expect(localStorageSetItemSpy).toHaveBeenCalledWith('token', token);
+    expect(localStorageRemoveItemSpy).toHaveBeenCalledWith('token');
   });
 });

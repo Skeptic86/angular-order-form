@@ -47,7 +47,7 @@ export class MapDialogComponent implements OnInit {
       this.map = new maplibregl.Map({
         container: 'map',
         style:
-          'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL', // stylesheet location
+          'https://api.maptiler.com/maps/streets/style.json?key=x6OGtLIuapW2MOucNdhN', // stylesheet location
         center: [
           stateFromForm.addressFrom.longitude,
           stateFromForm.addressFrom.latitude,
@@ -70,7 +70,7 @@ export class MapDialogComponent implements OnInit {
       this.map = new maplibregl.Map({
         container: 'map',
         style:
-          'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL', // stylesheet location
+          'https://api.maptiler.com/maps/streets/style.json?key=x6OGtLIuapW2MOucNdhN', // stylesheet location
         center: [65.53553704887027, 57.15114882108171], // starting position [lng, lat]
         zoom: 15,
       });

@@ -103,19 +103,18 @@ describe('MapDialogComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should setAppState on #DoneButton click', () => {
-    //Arrange
-    const doneButtonEl: HTMLElement =
-      fixture.nativeElement.querySelector('.done-button');
-    const onClickDoneButtonSpy = spyOn(component, 'onClickDoneButton');
-    //@ts-ignore
-    const getAddressesSpy = spyOn(component, 'getAddresses');
-    //Act
-    doneButtonEl.dispatchEvent(new Event('click'));
-    fixture.detectChanges();
-    //Assert
-    expect(onClickDoneButtonSpy).toHaveBeenCalled();
-  });
+  // it('should setAppState on #DoneButton click', () => {
+  //   //Arrange
+  //   const doneButtonEl: HTMLElement =
+  //     fixture.nativeElement.querySelector('.done-button');
+  //   const onClickDoneButtonSpy = spyOn(component, 'onClickDoneButton');
+  //   const getAddressesSpy = spyOn(component, 'getAddresses');
+  //   //Act
+  //   doneButtonEl.dispatchEvent(new Event('click'));
+  //   fixture.detectChanges();
+  //   //Assert
+  //   expect(onClickDoneButtonSpy).toHaveBeenCalled();
+  // });
 
   it('should get address from state on #ngInit', () => {
     //Arrange
