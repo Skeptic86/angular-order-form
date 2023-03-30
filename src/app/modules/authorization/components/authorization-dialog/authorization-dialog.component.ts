@@ -26,10 +26,10 @@ export class AuthorizationDialogComponent {
 
   codeSend(phoneNumber: string, codeIcon: string): Observable<ICode> {
     const fullPhoneNumber = '7' + phoneNumber;
-    console.log(fullPhoneNumber);
-    return this.authorizationService
-      .sendCode(fullPhoneNumber, this.convertCodeIconToType(codeIcon))
-      .pipe(tap((value) => console.log(value)));
+    return this.authorizationService.sendCode(
+      fullPhoneNumber,
+      this.convertCodeIconToType(codeIcon)
+    );
   }
 
   // codeSendAgain(phoneNumber: string, codeIcon: string): void {
@@ -46,7 +46,7 @@ export class AuthorizationDialogComponent {
     });
   }
 
-  private closeDialogIfCodeSuccses(confirmCodeData: ICode): void {
+  private closeDialogIfCodeSuccess(confirmCodeData: ICode): void {
     if (confirmCodeData.success) {
       this.dialogRef.close();
     }
@@ -54,7 +54,6 @@ export class AuthorizationDialogComponent {
 
   private putTokenInLocalStorage(token: string): void {
     this.local.saveData('token', token);
-    console.log(this.local.getData('token'));
   }
 
   private removeTokenFromLocalStorage(): void {
@@ -64,16 +63,11 @@ export class AuthorizationDialogComponent {
   codeConfirm(code: string, token: string): Subscription {
     return this.authorizationService
       .confirmCode(code, token)
-      .pipe(
-        tap((value) => {
-          console.log(value);
-        })
-      )
       .subscribe((value) => {
         this.codeConfirmInfo = value;
         this.putTokenInLocalStorage(this.codeConfirmInfo?.token!);
         this.removeTokenFromLocalStorage();
-        this.closeDialogIfCodeSuccses(value);
+        this.closeDialogIfCodeSuccess(value);
       });
   }
 

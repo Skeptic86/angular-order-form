@@ -74,7 +74,6 @@ describe('PhoneInputComponent', () => {
     fixture.detectChanges();
     const closeButton: HTMLButtonElement =
       fixture.nativeElement.querySelector('.close-button');
-    console.log(closeButton);
     closeButton.dispatchEvent(new Event('mousedown'));
     fixture.detectChanges();
     //Assert

@@ -58,7 +58,6 @@ export class AutocompleteInputAddressComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     const address = changes['addressInput'].currentValue as IAddress;
     if (address?.title) {
-      console.log('value changes, addressInput: ', address);
       this.autocompleteInput.setValue(address.title);
       this.getPriceService.sendClickEvent();
     }
@@ -75,10 +74,6 @@ export class AutocompleteInputAddressComponent implements OnInit, OnChanges {
         this.filteredAddresses = this.getAddressesApi(value) as Observable<
           IAddress[]
         >;
-        console.log(
-          'address: ',
-          this.getAddressesApi(value) as Observable<IAddress[]>
-        );
       });
   }
 
@@ -91,7 +86,6 @@ export class AutocompleteInputAddressComponent implements OnInit, OnChanges {
 
   constructor(
     private getAddressesService: GetAddressesService,
-    private getPriceService: GetPriceService,
-    private appStateService: AppStateService
+    private getPriceService: GetPriceService
   ) {}
 }

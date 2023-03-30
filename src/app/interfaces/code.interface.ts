@@ -1,5 +1,5 @@
 export interface ICode {
-  success: string;
+  success: boolean;
   message: string;
   token: string;
 }

@@ -67,7 +67,7 @@ class MockGetAddressesService {
   }
 }
 
-fdescribe('MapDialogComponent', () => {
+describe('MapDialogComponent', () => {
   let component: MapDialogComponent;
   let fixture: ComponentFixture<MapDialogComponent>;
   let mockAddresses: Observable<IAddress[]>;
@@ -108,6 +108,8 @@ fdescribe('MapDialogComponent', () => {
     const doneButtonEl: HTMLElement =
       fixture.nativeElement.querySelector('.done-button');
     const onClickDoneButtonSpy = spyOn(component, 'onClickDoneButton');
+    //@ts-ignore
+    const getAddressesSpy = spyOn(component, 'getAddresses');
     //Act
     doneButtonEl.dispatchEvent(new Event('click'));
     fixture.detectChanges();
@@ -116,8 +118,8 @@ fdescribe('MapDialogComponent', () => {
   });
 
   it('should get address from state on #ngInit', () => {
-    //Assert
-    expect(component.address).toEqual({
+    //Arrange
+    const expectedAddress = {
       title: 'address 1',
       longitude: 65.53553704887027,
       latitude: 57.15114882108171,
@@ -125,6 +127,8 @@ fdescribe('MapDialogComponent', () => {
       street: null,
       subtitle: null,
       house: null,
-    });
+    };
+    //Assert
+    expect(component.address).toEqual(expectedAddress);
   });
 });

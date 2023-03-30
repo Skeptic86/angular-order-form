@@ -38,7 +38,6 @@ export class OrderButtonService {
           comment: null,
           isCoordinates: false,
         };
-    console.log(address);
     return this.http.post<ICalcPrice>(this.apiURL, {
       time: null,
       tariffClasses: [

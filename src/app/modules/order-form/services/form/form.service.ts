@@ -140,7 +140,6 @@ export class FormService {
         catchError((error) => of(error)),
         tap(({ tariffs, payments, addressesFrom, addressesTo }) => {
           if (baseIdURLParam) {
-            console.log(baseIdURLParam);
             this.appStateService.setAppState({
               baseId: this.ConvertStringToNumber(baseIdURLParam),
             });
