@@ -47,6 +47,7 @@ export class AuthorizationDialogComponent {
   }
 
   private closeDialogIfCodeSuccess(confirmCodeData: ICode): void {
+    console.log(confirmCodeData);
     if (confirmCodeData.success) {
       this.dialogRef.close();
     }

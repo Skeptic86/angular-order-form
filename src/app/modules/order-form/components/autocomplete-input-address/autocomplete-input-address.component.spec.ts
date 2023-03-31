@@ -61,7 +61,7 @@ class MockGetAddressesService {
   }
 }
 
-fdescribe('AutocompleteComponent', () => {
+describe('AutocompleteComponent', () => {
   let component: AutocompleteInputAddressComponent;
   let fixture: ComponentFixture<AutocompleteInputAddressComponent>;
 
@@ -109,8 +109,43 @@ fdescribe('AutocompleteComponent', () => {
     const optionEl = document.querySelector('mat-option');
     optionEl!.dispatchEvent(new Event('onSelectionChange'));
     fixture.detectChanges();
-    console.log(optionEl);
     //Assert
     expect(sendAddressEventSpy).toHaveBeenCalledWith(expectedAddress);
+  });
+
+  it('should clear input via #clearInput', () => {
+    //Arrange
+    const sendAddressEventSpy = spyOn(component.sendAddressEvent, 'emit');
+    const inputEl: HTMLInputElement = fixture.debugElement.query(
+      By.css('input')
+    ).nativeElement;
+    //Act
+    inputEl.dispatchEvent(new Event('focusin'));
+    inputEl.value = 'кура';
+    component.autocompleteInput.setValue('кура');
+    inputEl.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    const clearButtonEl = fixture.nativeElement.querySelector('button');
+    clearButtonEl.dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+    //Assert
+    // expect(inputEl.value).toBe('');
+    expect(component.autocompleteInput.value).toBe('');
+    expect(sendAddressEventSpy).toHaveBeenCalled();
+  });
+
+  it('#getAddressesApi should emit #getAddressesService.getAddressesApi', () => {
+    //Arrange
+    const query = 'капо';
+    const getAddressesApiSpy = spyOn(
+      //@ts-ignore
+      component.getAddressesService,
+      'getAddressesApi'
+    );
+    //Act
+    //@ts-ignore
+    component.getAddressesApi(query);
+    //Assert
+    expect(getAddressesApiSpy).toHaveBeenCalledWith(query);
   });
 });
