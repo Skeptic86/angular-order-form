@@ -24,10 +24,13 @@ export class TariffComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  changeTarrif(tariff: ITariff): void {
+  changeTariff(tariff: ITariff): void {
     this.setAppStateTariff(tariff);
     this.getPriceService.sendClickEvent();
   }
 
-  constructor(private appStateService: AppStateService, private getPriceService: GetPriceService) {}
+  constructor(
+    private appStateService: AppStateService,
+    private getPriceService: GetPriceService
+  ) {}
 }

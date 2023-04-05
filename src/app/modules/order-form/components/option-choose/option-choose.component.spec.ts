@@ -6,6 +6,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { OptionChooseComponent } from './option-choose.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { PaymentTypeIconsEnum } from 'src/app/enums/payment-type-to-icons-enum';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 class MockAppStateService {
   setAppState() {}
@@ -19,7 +20,7 @@ class MockPaymentIconPipe implements PaymentIconPipe {
   }
 }
 
-fdescribe('OptionChooseComponent', () => {
+describe('OptionChooseComponent', () => {
   let component: OptionChooseComponent;
   let fixture: ComponentFixture<OptionChooseComponent>;
 
@@ -28,7 +29,7 @@ fdescribe('OptionChooseComponent', () => {
       declarations: [OptionChooseComponent, MockPaymentIconPipe],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [{ provide: AppStateService, useClass: MockAppStateService }],
-      imports: [MatMenuModule],
+      imports: [MatMenuModule, NoopAnimationsModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(OptionChooseComponent);
@@ -42,10 +43,13 @@ fdescribe('OptionChooseComponent', () => {
 
   it('should emit #toggleShowCountriesEvent on #toggleShowCountries', () => {
     //Arrange
-    const buttonEl = fixture.nativeElement.querySelector('location-button');
-    spyOn(component.toggleShowCountriesEvent, 'emit');
+    const mainButton = fixture.nativeElement.querySelector('button');
+    mainButton.dispatchEvent(new Event('click'));
+    fixture.detectChanges();
     //Act
-    buttonEl.dispatchEvent(new Event('click'));
+    const buttonEl = document.querySelector('button.location-button');
+    spyOn(component.toggleShowCountriesEvent, 'emit');
+    buttonEl!.dispatchEvent(new Event('click'));
     fixture.detectChanges();
     //Assert
     expect(component.toggleShowCountriesEvent.emit).toHaveBeenCalledWith(true);

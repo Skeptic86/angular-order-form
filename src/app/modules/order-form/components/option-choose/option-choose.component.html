@@ -1,23 +1,37 @@
 <button mat-icon-button [matMenuTriggerFor]="options">
-    <mat-icon>settings</mat-icon>
+  <mat-icon>settings</mat-icon>
 </button>
 <mat-menu #options="matMenu">
-  <button class="location-button" mat-menu-item (click)="toggleShowCountries()">Местоположение</button>
+  <button class="location-button" mat-menu-item (click)="toggleShowCountries()">
+    Местоположение
+  </button>
   <button mat-menu-item [matMenuTriggerFor]="payments">
     <mat-icon>{{ paymentMethod?.type | paymentIcon }}</mat-icon>
-    <span>Способ оплаты</span> 
+    <span>Способ оплаты</span>
   </button>
 </mat-menu>
 
 <mat-menu #payments="matMenu">
-    <ng-container *ngFor="let value of payment?.paymentMethods">
-        <button *ngIf="!value.bankCards.length" mat-menu-item (click)="changePayment(value!)">
-            <mat-icon>{{value.type | TariffCodeToIconName:this.codeIcons}}</mat-icon>
-            <span>{{value.name}}</span>
-        </button>
-        <button *ngIf="value.bankCards.length" mat-menu-item (click)="changePayment(value!)">
-            <mat-icon>{{value.type | TariffCodeToIconName:this.codeIcons}}</mat-icon>
-            <span>{{value.bankCards | choseActiveCard}}</span>
-        </button>
-    </ng-container>
+  <ng-container *ngFor="let value of payment?.paymentMethods">
+    <button
+      *ngIf="!value.bankCards.length"
+      mat-menu-item
+      (click)="changePayment(value!)"
+    >
+      <mat-icon>{{
+        value.type | tariffCodeToIconName : this.codeIcons
+      }}</mat-icon>
+      <span>{{ value.name }}</span>
+    </button>
+    <button
+      *ngIf="value.bankCards.length"
+      mat-menu-item
+      (click)="changePayment(value!)"
+    >
+      <mat-icon>{{
+        value.type | tariffCodeToIconName : this.codeIcons
+      }}</mat-icon>
+      <span>{{ value.bankCards | choseActiveCard }}</span>
+    </button>
+  </ng-container>
 </mat-menu>
